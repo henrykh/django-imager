@@ -27,7 +27,7 @@ class profile(models.Model):
     email_privacy = models.BooleanField(default=True)
 
     def user(self):
-        return self.user.username
+        return self.associated_user.username
 
     def is_active(self):
-        return self.user.is_active
+        return self.associated_user.is_active
