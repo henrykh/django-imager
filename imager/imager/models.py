@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import AbstractUser
 
 
 class profile(models.Model):
@@ -14,7 +15,7 @@ class profile(models.Model):
     name_privacy = models.BooleanField()
     email_privacy = models.BooleanField()
 
-    def profile_user():
+    def user():
         pass
 
     def is_active():
