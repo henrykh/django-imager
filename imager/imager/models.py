@@ -2,15 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class ImagerProfile(models.Manager):
-    def active(self):
-        qs = self.get_queryset()
-        return qs.filter(associated_user__is_active=True)
-
-
-class profile(models.Model):
-    objects = ImagerProfile()
-
+class ImagerProfile(models.Model):
     associated_user = models.OneToOneField(User)
 
     picture = models.FileField(blank=True)
@@ -30,3 +22,8 @@ class profile(models.Model):
 
     def is_active(self):
         return self.associated_user.is_active
+
+    @classmethod
+    def active(self):
+        qs = self.get_queryset()
+        return qs.filter(associated_user__is_active=True)
