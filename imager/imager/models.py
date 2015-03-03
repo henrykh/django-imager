@@ -13,16 +13,16 @@ class profile(models.Model):
     # objects = ImagerProfile()
 
     picture = models.FileField()
-    picture_privacy = models.BooleanField()
+    picture_privacy = models.BooleanField(default=True)
 
     phone_number = models.CharField(max_length=20)
-    phone_privacy = models.BooleanField()
+    phone_privacy = models.BooleanField(default=True)
 
     birthday = models.DateField()
-    birthday_privacy = models.BooleanField()
+    birthday_privacy = models.BooleanField(default=True)
 
-    name_privacy = models.BooleanField()
-    email_privacy = models.BooleanField()
+    name_privacy = models.BooleanField(default=True)
+    email_privacy = models.BooleanField(default=True)
 
     def user(self):
         return self.user.username
