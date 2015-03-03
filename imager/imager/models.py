@@ -3,16 +3,15 @@ from django.contrib.auth.models import User
 
 
 class ImagerProfile(models.Manager):
-    def active():
-        from django.db import connection
-        cursor = connection.cursor()
+    def active(self):
+        qs = self.get_queryset()
+        return qs.filter(associated_user__is_active=True)
 
 
 class profile(models.Model):
-    # objects = ImagerProfile()
+    objects = ImagerProfile()
 
     associated_user = models.OneToOneField(User)
-
 
     picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
