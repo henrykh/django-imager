@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete
 
 
+class ActiveProfileManager(models.Manager):
+    def get_queryset(self):
+        qs = super(ActiveProfileManger, self).get_queryset()
+        return qs.filter(associated_user__is_active__exact=True)
+
+
 class ImagerProfile(models.Model):
 
     associated_user = models.OneToOneField(User)
@@ -19,16 +25,14 @@ class ImagerProfile(models.Model):
     name_privacy = models.BooleanField(default=True)
     email_privacy = models.BooleanField(default=True)
 
+    objects = models.Manager()
+    active = ActiveProfileManager()
+
     def user(self):
         return self.associated_user
 
     def is_active(self):
         return self.associated_user.is_active
-
-    @classmethod
-    def active(self):
-        qs = self.get_queryset()
-        return qs.filter(associated_user__is_active=True)
 
     def create_profile(sender, **kwargs):
         if kwargs["created"]:
