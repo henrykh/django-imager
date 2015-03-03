@@ -20,7 +20,7 @@ class ImagerProfile(models.Model):
     email_privacy = models.BooleanField(default=True)
 
     def user(self):
-        return self.associated_user.username
+        return self.associated_user
 
     def is_active(self):
         return self.associated_user.is_active
