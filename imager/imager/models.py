@@ -12,7 +12,7 @@ class profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     # objects = ImagerProfile()
 
-    picture = models.FileField()
+    picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
 
     phone_number = models.CharField(max_length=20)
