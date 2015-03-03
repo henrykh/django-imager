@@ -5,7 +5,7 @@ from django.db.models.signals import post_save, pre_delete
 
 class ActiveProfileManager(models.Manager):
     def get_queryset(self):
-        qs = super(ActiveProfileManger, self).get_queryset()
+        qs = super(ActiveProfileManager, self).get_queryset()
         return qs.filter(associated_user__is_active__exact=True)
 
 
