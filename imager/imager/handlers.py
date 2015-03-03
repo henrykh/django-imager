@@ -5,7 +5,7 @@ from imager.models import ImagerProfile
 
 
 @receiver(post_save, sender=User)
-def create_profile(sender, **kwargs):
+def create_profile(sender, instance, *args, **kwargs):
     if kwargs["created"]:
         ip = ImagerProfile(user=kwargs["instance"])
         ip.save()
