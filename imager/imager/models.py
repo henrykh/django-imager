@@ -13,7 +13,7 @@ class ImagerProfile(models.Model):
     phone_number = models.CharField(max_length=20, blank=True)
     phone_privacy = models.BooleanField(default=True)
 
-    birthday = models.DateField(blank=True)
+    birthday = models.DateField(null=True, blank=True)
     birthday_privacy = models.BooleanField(default=True)
 
     name_privacy = models.BooleanField(default=True)
@@ -31,8 +31,9 @@ class ImagerProfile(models.Model):
         return qs.filter(associated_user__is_active=True)
 
     def create_profile(sender, **kwargs):
-        ip = ImagerProfile(associated_user=kwargs["instance"])
-        ip.save()
+        if kwargs["created"]:
+            ip = ImagerProfile(associated_user=kwargs["instance"])
+            ip.save()
 
 
     post_save.connect(create_profile, sender=User)
