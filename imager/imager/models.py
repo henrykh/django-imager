@@ -35,10 +35,4 @@ class ImagerProfile(models.Model):
             ip = ImagerProfile(associated_user=kwargs["instance"])
             ip.save()
 
-    def delete_profile(sender, **kwargs):
-        if kwargs["created"]:
-            ip = ImagerProfile(associated_user=kwargs["instance"])
-            ip.delete()
-
     post_save.connect(create_profile, sender=User)
-    post_delete.connect(delete_profile, sender=User)
