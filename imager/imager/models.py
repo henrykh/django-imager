@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_delete
 
 
 class ActiveProfileManager(models.Manager):
@@ -33,17 +32,3 @@ class ImagerProfile(models.Model):
 
     def is_active(self):
         return self.associated_user.is_active
-
-
-def create_profile(sender, **kwargs):
-    if kwargs["created"]:
-        ip = ImagerProfile(associated_user=kwargs["instance"])
-        ip.save()
-
-post_save.connect(create_profile, sender=User)
-
-# def delete_user(sender, instance, *args, **kwargs):
-#     if instance.associated_user:
-#         instance.associated_user.delete()
-
-# pre_delete.connect(delete_user, sender=ImagerProfile)
