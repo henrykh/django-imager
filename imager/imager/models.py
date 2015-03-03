@@ -10,7 +10,7 @@ class ActiveProfileManager(models.Manager):
 
 class ImagerProfile(models.Model):
 
-    associated_user = models.OneToOneField(User)
+    user = models.OneToOneField(User)
 
     picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
@@ -27,8 +27,5 @@ class ImagerProfile(models.Model):
     objects = models.Manager()
     active = ActiveProfileManager()
 
-    def user(self):
-        return self.associated_user
-
     def is_active(self):
-        return self.associated_user.is_active
+        return self.user.is_active
