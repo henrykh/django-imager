@@ -34,15 +34,16 @@ class ImagerProfile(models.Model):
     def is_active(self):
         return self.associated_user.is_active
 
-    def create_profile(sender, **kwargs):
-        if kwargs["created"]:
-            ip = ImagerProfile(associated_user=kwargs["instance"])
-            ip.save()
 
-    # def delete_user(sender, instance, *args, **kwargs):
-    #     if instance.associated_user:
-    #         instance.associated_user.delete()
+def create_profile(sender, **kwargs):
+    if kwargs["created"]:
+        ip = ImagerProfile(associated_user=kwargs["instance"])
+        ip.save()
 
-    post_save.connect(create_profile, sender=User)
+post_save.connect(create_profile, sender=User)
 
-    # pre_delete.connect(delete_user, sender=ImagerProfile)
+# def delete_user(sender, instance, *args, **kwargs):
+#     if instance.associated_user:
+#         instance.associated_user.delete()
+
+# pre_delete.connect(delete_user, sender=ImagerProfile)
