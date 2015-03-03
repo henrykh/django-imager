@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+USER_NAME = os.environ.get('USER')
 
 
 # Quick-start development settings - unsuitable for production
@@ -58,8 +59,11 @@ WSGI_APPLICATION = 'imager.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_imager',
+        'USER': USER_NAME,
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
