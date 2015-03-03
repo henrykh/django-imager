@@ -1,8 +1,17 @@
 from django.db import models
-from django.contrib.auth import AbstractUser
+from django.conf import settings
+
+
+class ImagerProfile(models.Manager):
+    def active():
+        from django.db import connection
+        cursor = connection.cursor()
 
 
 class profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    objects = ImagerProfile()
+
     picture = models.FileField()
     picture_privacy = models.BooleanField()
 
@@ -15,8 +24,8 @@ class profile(models.Model):
     name_privacy = models.BooleanField()
     email_privacy = models.BooleanField()
 
-    def user():
-        pass
+    def user(self):
+        return self.user.username
 
-    def is_active():
-        pass
+    def is_active(self):
+        return self.user.is_active
