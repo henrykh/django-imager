@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, pre_delete
 
 
 class ImagerProfile(models.Model):
 
-    associated_user = models.OneToOneField(User)
+    user = models.OneToOneField(User)
 
     picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
@@ -28,11 +28,19 @@ class ImagerProfile(models.Model):
     @classmethod
     def active(self):
         qs = self.get_queryset()
-        return qs.filter(associated_user__is_active=True)
+        return qs.filter(user__is_active=True)
 
-    def create_profile(sender, **kwargs):
-        if kwargs["created"]:
-            ip = ImagerProfile(associated_user=kwargs["instance"])
-            ip.save()
 
-    post_save.connect(create_profile, sender=User)
+def create_profile(sender, **kwargs):
+    if kwargs["created"]:
+        ip = ImagerProfile(user=kwargs["instance"])
+        ip.save()
+
+
+def delete_user(sender, instance, *args, **kwargs):
+    if instance.user:
+        instance.user.delete()
+
+post_save.connect(create_profile, sender=User)
+
+pre_delete.connect(delete_user, sender=ImagerProfile)
