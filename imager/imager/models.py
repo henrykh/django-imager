@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 
 class ImagerProfile(models.Model):
@@ -35,5 +35,10 @@ class ImagerProfile(models.Model):
             ip = ImagerProfile(associated_user=kwargs["instance"])
             ip.save()
 
+    def delete_profile(sender, **kwargs):
+        if kwargs["created"]:
+            ip = ImagerProfile(associated_user=kwargs["instance"])
+            ip.delete()
 
     post_save.connect(create_profile, sender=User)
+    post_delete.connect(delete_profile, sender=User)
