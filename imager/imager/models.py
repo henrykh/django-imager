@@ -13,6 +13,7 @@ class profile(models.Model):
 
     associated_user = models.OneToOneField(User)
 
+
     picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
 
