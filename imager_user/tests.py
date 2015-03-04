@@ -54,3 +54,16 @@ class ActiveProfileManagerTestCase(TestCase):
         profile2 = ImagerProfile.objects.get(user=user2)
 
         self.assertNotEqual(ImagerProfile.active.all()[0].user, profile2.user)
+
+
+class FollowingTestCase(TestCase):
+    def setUp(self):
+        UserFactory()
+        UserFactory(username='jane')
+
+    def test_follow():
+        john_profile = User.object.get(username='john').profile
+        john_profile.follow(User.object.get(username='jane').profile)
+
+        assert john_profile.following.get(username='jane')
+
