@@ -58,12 +58,18 @@ class ActiveProfileManagerTestCase(TestCase):
 
 class FollowingTestCase(TestCase):
     def setUp(self):
-        UserFactory()
-        UserFactory(username='jane')
+        self.john = UserFactory()
+        self.jane = UserFactory(username='jane')
 
-    def test_follow():
-        john_profile = User.object.get(username='john').profile
-        john_profile.follow(User.object.get(username='jane').profile)
+    def test_follow(self):
+        self.john.profile.follow(self.jane.profile)
+        self.assertIn(self.jane.profile, self.john.profile.following.all())
 
-        assert john_profile.following.get(username='jane')
+    def test_followers(self):
+        self.john.profile.follow(self.jane.profile)
+        self.assertIn(self.john.profile, self.jane.profile.followers.all())
 
+    def test_unfollow(self):
+        self.john.profile.follow(self.jane.profile)
+        self.john.profile.unfollow(self.jane.profile)
+        self.assertNotIn(self.jane.profile, self.john.profile.following.all())
