@@ -15,18 +15,19 @@ class UserFactory(factory.django.DjangoModelFactory):
 class ImagerProfileTestCase(TestCase):
     def setUp(self):
         UserFactory()
-        UserFactory(username='jane')
+        UserFactory(username='jane', is_active=False)
 
     def test_profile_linked_to_user(self):
-        self.assertEqual(type(User.objects.get(username='john').profile), ImagerProfile)
+        self.assertEqual(
+            type(User.objects.get(username='john').profile), ImagerProfile)
 
-    # def test_user_is_active(self):
-    #     profile1 = ImagerProfile.objects.filter(phone_number='1').all()
-    #     self.assertEqual(profile1[0].is_active(), True)
+    def test_user_is_active(self):
+        self.assertEqual(
+            User.objects.get(username='john').profile.is_active(), True)
 
-    # def test_user_is_inactive(self):
-    #     profile2 = ImagerProfile.objects.filter(phone_number='2').all()
-    #     self.assertEqual(profile2[0].is_active(), True)
+    def test_user_is_inactive(self):
+        self.assertEqual(
+            User.objects.get(username='jane').profile.is_active(), False)
 
 
 class ActiveProfileManagerTestCase(TestCase):
