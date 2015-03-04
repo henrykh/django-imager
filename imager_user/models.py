@@ -12,6 +12,8 @@ class ActiveProfileManager(models.Manager):
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile')
+    following = models.ManyToManyField(symmetrical=False, related_name='followers')
+
 
     picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
@@ -33,3 +35,9 @@ class ImagerProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def follow(self, other):
+        return self.following.add(other)
+
+    def unfollow(self, other):
+        return self.following.remove(other)
