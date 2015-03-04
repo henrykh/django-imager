@@ -14,7 +14,6 @@ class ImagerProfile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
     following = models.ManyToManyField("self", symmetrical=False, related_name='followers')
 
-
     picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
 
