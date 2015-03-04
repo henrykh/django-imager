@@ -17,9 +17,8 @@ class ImagerProfileTestCase(TestCase):
         UserFactory()
         UserFactory(username='jane')
 
-
     def test_profile_linked_to_user(self):
-        self.assertEqual(type(User.objects.get(username='john').imager_profile), ImagerProfile)
+        self.assertEqual(type(User.objects.get(username='john').profile), ImagerProfile)
 
     # def test_user_is_active(self):
     #     profile1 = ImagerProfile.objects.filter(phone_number='1').all()

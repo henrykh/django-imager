@@ -10,7 +10,7 @@ class ActiveProfileManager(models.Manager):
 
 class ImagerProfile(models.Model):
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name='profile')
 
     picture = models.FileField(blank=True)
     picture_privacy = models.BooleanField(default=True)
