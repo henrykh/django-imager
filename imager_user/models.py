@@ -13,7 +13,7 @@ class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile')
 
-    picture = models.ImageField(upload_to='imager_user/images/', blank=True)
+    picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
 
     phone_number = PhoneNumberField(blank=True)
