@@ -13,6 +13,7 @@ class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile')
     following = models.ManyToManyField("self", symmetrical=False, related_name='followers')
+    blocking = models.ManyToManyField("self", symmetrical=False, related_name='blocked')
 
     picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
@@ -40,3 +41,9 @@ class ImagerProfile(models.Model):
 
     def unfollow(self, other):
         return self.following.remove(other)
+
+    def following(self):
+        return self.following.all().filter(blocking!=self)
+
+    def followers(self):
+        
