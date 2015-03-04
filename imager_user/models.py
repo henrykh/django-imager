@@ -29,3 +29,6 @@ class ImagerProfile(models.Model):
 
     def is_active(self):
         return self.user.is_active
+
+    def __str__(self):
+        return self.user.username

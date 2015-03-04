@@ -1,27 +1,25 @@
+import factory
 from django.test import TestCase
 from models import ImagerProfile
 from django.contrib.auth.models import User
 
 
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+        django_get_or_create = ('username', )
+
+    username = 'john'
+
+
 class ImagerProfileTestCase(TestCase):
     def setUp(self):
-        user1 = User.objects.create_user('user1')
-        user2 = User.objects.create_user('user2')
-        user2.is_active = False
-        user2.save()
-        profile1 = ImagerProfile()
-        profile1.user = user1
-        profile1.birthday = '1'
-        profile1.save(update_fields=['birthday'])
+        UserFactory()
+        UserFactory(username='jane')
 
-        profile2 = ImagerProfile()
-        profile2.user = user2
-        profile2.phone_number = '2'
 
     def test_profile_linked_to_user(self):
-        user1 = User.objects.get(username='user1')
-        profile1 = ImagerProfile.objects.get(user=user1)
-        self.assertEqual(profile1.picture, user1)
+        self.assertEqual(type(User.objects.get(username='john').imager_profile), ImagerProfile)
 
     # def test_user_is_active(self):
     #     profile1 = ImagerProfile.objects.filter(phone_number='1').all()
