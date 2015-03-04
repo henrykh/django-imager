@@ -1,1 +1,1 @@
-default_app_config = 'imager.apps.ImagerConfig'
+default_app_config = 'imager_user.apps.ImagerConfig'
