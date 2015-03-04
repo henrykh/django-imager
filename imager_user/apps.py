@@ -6,4 +6,4 @@ class ImagerConfig(AppConfig):
     verbose_name = "Imager User"
 
     def ready(self):
-        import handlers
+        from handlers import create_profile
