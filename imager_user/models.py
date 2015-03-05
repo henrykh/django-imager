@@ -12,7 +12,7 @@ class ActiveProfileManager(models.Manager):
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile')
-    following = models.ManyToManyField("self", symmetrical=False, related_name='followers')
+    follows = models.ManyToManyField("self", symmetrical=False, related_name='followers')
     blocking = models.ManyToManyField("self", symmetrical=False, related_name='blocked')
 
     picture = models.ImageField(upload_to='imager_user', blank=True)
@@ -37,7 +37,13 @@ class ImagerProfile(models.Model):
         return self.user.username
 
     def follow(self, other):
-        return self.following.add(other)
+        return self.follows.add(other)
 
     def unfollow(self, other):
-        return self.following.remove(other)
+        return self.follows.remove(other)
+
+    def following(self):
+        return self.follows.exclude(blocking=self)
+
+    def block(self, other):
+        return self.blocking.add(other)

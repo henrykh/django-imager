@@ -63,7 +63,7 @@ class FollowingTestCase(TestCase):
 
     def test_follow(self):
         self.john.profile.follow(self.jane.profile)
-        self.assertIn(self.jane.profile, self.john.profile.following.all())
+        self.assertIn(self.jane.profile, self.john.profile.follows.all())
 
     def test_followers(self):
         self.john.profile.follow(self.jane.profile)
@@ -72,4 +72,9 @@ class FollowingTestCase(TestCase):
     def test_unfollow(self):
         self.john.profile.follow(self.jane.profile)
         self.john.profile.unfollow(self.jane.profile)
-        self.assertNotIn(self.jane.profile, self.john.profile.following.all())
+        self.assertNotIn(self.jane.profile, self.john.profile.follows.all())
+
+    def test_block(self):
+        self.john.profile.follow(self.jane.profile)
+        self.jane.profile.block(self.john.profile)
+        self.assertNotIn(self.jane.profile, self.john.profile.following())
