@@ -56,3 +56,6 @@ class Photo(models.Model):
     published = models.CharField(max_length=3,
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
+
+    def album(self, other):
+        return self.albums.add(other)
