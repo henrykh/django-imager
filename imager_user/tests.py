@@ -85,3 +85,8 @@ class FollowingTestCase(TestCase):
         self.assertNotIn(self.jane.profile, self.john.profile.following())
         self.jane.profile.unblock(self.john.profile)
         self.assertIn(self.jane.profile, self.john.profile.following())
+
+
+class AlbumTestCase(TestCase):
+        def setUp(self):
+            the_image = factory.django.ImageField(color='blue')

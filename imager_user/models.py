@@ -12,8 +12,12 @@ class ActiveProfileManager(models.Manager):
 class ImagerProfile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile')
-    follows = models.ManyToManyField("self", symmetrical=False, related_name='followers')
-    blocking = models.ManyToManyField("self", symmetrical=False, related_name='blocked')
+    follows = models.ManyToManyField("self",
+                                     symmetrical=False,
+                                     related_name='followers')
+    blocking = models.ManyToManyField("self",
+                                      symmetrical=False,
+                                      related_name='blocked')
 
     picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
