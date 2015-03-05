@@ -78,3 +78,10 @@ class FollowingTestCase(TestCase):
         self.john.profile.follow(self.jane.profile)
         self.jane.profile.block(self.john.profile)
         self.assertNotIn(self.jane.profile, self.john.profile.following())
+
+    def test_unblock(self):
+        self.john.profile.follow(self.jane.profile)
+        self.jane.profile.block(self.john.profile)
+        self.assertNotIn(self.jane.profile, self.john.profile.following())
+        self.jane.profile.unblock(self.john.profile)
+        self.assertIn(self.jane.profile, self.john.profile.following())
