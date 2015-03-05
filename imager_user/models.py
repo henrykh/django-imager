@@ -41,9 +41,3 @@ class ImagerProfile(models.Model):
 
     def unfollow(self, other):
         return self.following.remove(other)
-
-    def following(self):
-        return self.following.all().filter(blocking!=self)
-
-    def followers(self):
-        
