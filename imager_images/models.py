@@ -15,8 +15,8 @@ class Album(models.Model):
     user = models.ForeignKey(User, related_name='albums')
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(auto_now=True)
+    date_uploaded = models.DateField(auto_now_add=True, null=True)
+    date_modified = models.DateField(auto_now=True, null=True)
     date_published = models.DateField(null=True, blank=True)
 
     published = models.CharField(max_length=3,
@@ -32,21 +32,30 @@ class Album(models.Model):
 
     # cover = models.CharField(blank=True, choices=create_cover_choices())
 
+    def __str__(self):
+        return self.title
+
+    def album_photos(self):
+        self.photos.all()
+
 
 class Photo(models.Model):
     image = models.ImageField(upload_to='imager_images', blank=True)
     user = models.ForeignKey(User, related_name='photos')
-    albums = models.ManyToManyField(Album, related_name='photos')
+    albums = models.ManyToManyField(Album, related_name='photos', blank=True)
 
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(auto_now=True)
+    date_uploaded = models.DateField(auto_now_add=True, null=True)
+    date_modified = models.DateField(auto_now=True, null=True)
     date_published = models.DateField(null=True, blank=True)
 
     published = models.CharField(max_length=3,
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
 
-    def album(self, other):
-        return self.albums.add(other)
+    def __str__(self):
+        return self.title
+
+    # def album(self, other):
+    #     return self.albums.add(other)
