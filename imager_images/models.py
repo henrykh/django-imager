@@ -23,8 +23,20 @@ class Album(models.Model):
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
 
+    def create_cover_choices(self):
+        photo_paths = self.photos.all().image.name
+        choices = ()
+        for path in photo_paths:
+            choices + ((path, path.split('/')[-1]),)
+        return choices
+
+    cover = models.CharField(blank=True, choices=create_cover_choices())
+
+
+
 
 class Photo(models.Model):
+    image = models.ImageField(upload_to='imager_images', blank=True)
     user = models.ForeignKey(User, related_name='photos')
     albums = models.ManyToManyField(Album, related_name='photos')
 
