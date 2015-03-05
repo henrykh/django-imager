@@ -47,3 +47,6 @@ class ImagerProfile(models.Model):
 
     def block(self, other):
         return self.blocking.add(other)
+
+    def unblock(self, other):
+        return self.blocking.remove(other)
