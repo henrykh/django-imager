@@ -40,8 +40,8 @@ class Photo(models.Model):
 
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
-    date_uploaded = models.DateField(null=True, blank=True)
-    date_modified = models.DateField(null=True, blank=True)
+    date_uploaded = models.DateField(auto_now_add=True, null=True, blank=True)
+    date_modified = models.DateField(auto_now=True, null=True, blank=True)
     date_published = models.DateField(null=True, blank=True)
 
     PRIVATE = 'pvt'
