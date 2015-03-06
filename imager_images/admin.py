@@ -18,7 +18,7 @@ class PhotoAdmin(admin.ModelAdmin):
                 obj.image, "50x50", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
-            return 'image'
+            return 'No Image'
 
     def size(self, obj):
         file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
@@ -57,7 +57,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 class PhotoInline(admin.TabularInline):
-    # form = PhotoAlbumForm
+    form = PhotoAlbumForm
     model = Photo.albums.through
 
 
