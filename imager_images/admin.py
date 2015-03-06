@@ -1,7 +1,6 @@
 from django.contrib import admin
 from models import Album, Photo
-from forms import NewAlbumForm, EditAlbumForm
-# , PhotoAlbumForm
+from forms import *
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
 from sorl.thumbnail import get_thumbnail
@@ -10,6 +9,45 @@ import os
 
 
 class PhotoAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        if not obj:
+            self.form = NewPhotoForm
+        else:
+            self.form = EditPhotoForm
+        return super(PhotoAdmin, self).get_form(request, obj, **kwargs)
+
+    def get_fields(self, request, obj=None):
+        if obj:
+            return ['user',
+                      'image',
+                      'albums',
+                      'title',
+                      'description',
+                      'date_published',
+                      'published',
+                      'date_uploaded',
+                      'date_modified',
+                      'size']
+        else:
+            return ['user',
+                    'image',
+                    'title',
+                    'description',
+                    'date_published',
+                    'published',
+                    ]
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'image_thumbnail',
+                    'date_uploaded',
+                    'date_modified',
+                    'size'
+                    )
+        else:
+            return ()
+
     def image_thumbnail(self, obj):
         # import pdb; pdb.set_trace()
 
@@ -18,7 +56,7 @@ class PhotoAdmin(admin.ModelAdmin):
                 obj.image, "50x50", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
-            return 'image'
+            return 'No Image'
 
     def size(self, obj):
         file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
@@ -49,11 +87,6 @@ class PhotoAdmin(admin.ModelAdmin):
                      'image'
                      )
 
-    readonly_fields = ('image_thumbnail',
-                       'date_uploaded',
-                       'date_modified',
-                       'size'
-                       )
 
 
 class PhotoInline(admin.TabularInline):
@@ -70,7 +103,6 @@ class AlbumAdmin(admin.ModelAdmin):
         return super(AlbumAdmin, self).get_form(request, obj, **kwargs)
 
     list_display = ('title',
-                    'user',
                     'description',
                     'date_uploaded',
                     'date_modified',
@@ -86,7 +118,8 @@ class AlbumAdmin(admin.ModelAdmin):
                      'description',
                      )
 
-    readonly_fields = ('date_uploaded',
+    readonly_fields = ('user',
+                       'date_uploaded',
                        'date_modified'
                        )
 
