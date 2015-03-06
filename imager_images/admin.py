@@ -40,6 +40,9 @@ class PhotoAdmin(admin.ModelAdmin):
                    'albums'
                    )
     search_fields = ('user',
+                     'user__first_name',
+                     'user__last_name',
+                     'user__email_name',
                      'albums',
                      'title',
                      'description',
@@ -76,6 +79,9 @@ class AlbumAdmin(admin.ModelAdmin):
 
     list_filter = ('user',)
     search_fields = ('user',
+                     'user__first_name',
+                     'user__last_name',
+                     'user__email_name',
                      'title',
                      'description',
                      )
