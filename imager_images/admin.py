@@ -6,13 +6,24 @@ from django.contrib.admin.options import csrf_protect_m
 
 
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('title',
+    list_display = ('image',
+                    'title',
                     'user',
                     'description',
                     'date_uploaded',
                     'date_modified',
                     'date_published'
                     )
+
+    list_filter = ('user',
+                   'albums'
+                   )
+    search_fields = ('user',
+                     'albums',
+                     'title',
+                     'description',
+                     'image'
+                     )
 
 
 class PhotoInline(admin.TabularInline):
@@ -35,6 +46,12 @@ class AlbumAdmin(admin.ModelAdmin):
                     'date_modified',
                     'date_published'
                     )
+
+    list_filter = ('user',)
+    search_fields = ('user',
+                     'title',
+                     'description',
+                     )
 
     inlines = [PhotoInline, ]
 
