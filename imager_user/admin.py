@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 
 class ProfileInline(admin.StackedInline):
     model = ImagerProfile
-    fk_name = 'user'
 
 
 class ProfileAdmin(admin.ModelAdmin):
