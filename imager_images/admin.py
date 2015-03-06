@@ -1,6 +1,6 @@
 from django.contrib import admin
 from models import Album, Photo
-from forms import AlbumForm
+from forms import NewAlbumForm, EditAlbumForm
 
 
 class photoAdmin(admin.ModelAdmin):
@@ -14,7 +14,13 @@ class photoAdmin(admin.ModelAdmin):
 
 
 class albumAdmin(admin.ModelAdmin):
-    form = AlbumForm
+    def get_form(self, request, obj=None, **kwargs):
+        if not obj:
+            self.form = NewAlbumForm
+        else:
+            self.form = EditAlbumForm
+        return super(albumAdmin, self).get_form(request, obj, **kwargs)
+
     list_display = ('title',
                     'user',
                     'description',
