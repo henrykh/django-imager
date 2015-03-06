@@ -4,6 +4,7 @@ from models import ImagerProfile
 
 class ProfileInline(admin.StackedInline):
     model = ImagerProfile
+    fk_name = 'user'
 
 
 class ProfileAdmin(admin.ModelAdmin):
