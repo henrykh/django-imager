@@ -90,7 +90,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 class PhotoInline(admin.TabularInline):
-    # form = PhotoAlbumForm
+    form = PhotoAlbumForm
     model = Photo.albums.through
 
 

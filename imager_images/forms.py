@@ -38,8 +38,9 @@ class EditAlbumForm(ModelForm):
 #         self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
 #             user=self.instance.album.user)
 
-#     class Meta:
-#         model = Photo.albums.through
+
+    class Meta:
+        model = Photo.albums.through
 
 
 class NewPhotoForm(ModelForm):
