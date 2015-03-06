@@ -1,6 +1,7 @@
 from django.contrib import admin
 from models import Album, Photo
-from forms import NewAlbumForm, EditAlbumForm, PhotoAlbumForm
+from forms import NewAlbumForm, EditAlbumForm
+# , PhotoAlbumForm
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
 
@@ -27,7 +28,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 class PhotoInline(admin.TabularInline):
-    form = PhotoAlbumForm
+    # form = PhotoAlbumForm
     model = Photo.albums.through
 
 
@@ -52,6 +53,10 @@ class AlbumAdmin(admin.ModelAdmin):
                      'title',
                      'description',
                      )
+
+    readonly_fields = ('date_uploaded',
+                       'date_modified'
+                       )
 
     inlines = [PhotoInline, ]
 
