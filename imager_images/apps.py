@@ -6,4 +6,4 @@ class ImagerImagesConfig(AppConfig):
     verbose_name = "Imager Images"
 
     def ready(self):
-        from handlers import set_file_size
+        import imager_images.handlers
