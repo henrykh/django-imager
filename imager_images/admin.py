@@ -4,6 +4,8 @@ from forms import NewAlbumForm, EditAlbumForm
 # , PhotoAlbumForm
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
+import imager.settings as settings
+import os
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -25,6 +27,18 @@ class PhotoAdmin(admin.ModelAdmin):
                      'description',
                      'image'
                      )
+
+    readonly_fields = ('image_thumb',
+                       'date_uploaded',
+                       'date_modified',
+                       'size'
+                       )
+
+    def size(self, obj):
+            file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
+            if os.path.exists(file):
+                return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
+            return "0 MB"
 
 
 class PhotoInline(admin.TabularInline):

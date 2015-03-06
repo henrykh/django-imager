@@ -36,6 +36,11 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
+    def image_thumb(self):
+        return '<img src="/media/%s" width="100" height="100" />' % (self.image)
+
+    image_thumb.allow_tags = True
+
 
 class Album(models.Model):
     user = models.ForeignKey(User, related_name='albums')
