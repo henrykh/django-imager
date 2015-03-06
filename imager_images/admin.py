@@ -4,8 +4,9 @@ from forms import NewAlbumForm, EditAlbumForm
 # , PhotoAlbumForm
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
-from sorl.thumbnail.admin import AdminImageMixin
 from sorl.thumbnail import get_thumbnail
+from imager import settings
+import os
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -16,8 +17,14 @@ class PhotoAdmin(admin.ModelAdmin):
             return u'<img src="%s"/>' % thumb.url
         else:
             return u'image'
-    image_thumbnail.short_description = 'Thumbnail'
-    image_thumbnail.allow_tags = True
+
+    def size(self, obj):
+        import pdb; pdb.set_trace()
+
+        file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
+        if os.path.exists(file_name):
+            return "%0.1f KB" % (os.path.getsize(file_name)/(1024.0))
+        return "0 MB"
 
     list_display = ('image',
                     'title',
@@ -25,7 +32,8 @@ class PhotoAdmin(admin.ModelAdmin):
                     'description',
                     'date_uploaded',
                     'date_modified',
-                    'date_published'
+                    'date_published',
+                    'size'
                     )
 
     list_filter = ('user',
@@ -41,6 +49,7 @@ class PhotoAdmin(admin.ModelAdmin):
     readonly_fields = ('image_thumbnail',
                        'date_uploaded',
                        'date_modified',
+                       'size'
                        )
 
 
