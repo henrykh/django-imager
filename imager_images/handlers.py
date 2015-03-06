@@ -5,5 +5,4 @@ from models import Photo
 
 @receiver(pre_save, sender=Photo)
 def set_file_size(sender, instance, *args, **kwargs):
-    import pdb; pdb.set_trace()
     instance.file_size = instance.image.size

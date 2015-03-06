@@ -6,6 +6,7 @@ from django.contrib.admin.options import csrf_protect_m
 from sorl.thumbnail import get_thumbnail
 from imager import settings
 import os
+from imager_images.filters import PhotoSizeFilter
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -77,7 +78,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
     list_filter = ('user',
                    'albums',
-                   'file_size'
+                   PhotoSizeFilter,
                    )
 
     search_fields = ('user__username',
@@ -88,7 +89,7 @@ class PhotoAdmin(admin.ModelAdmin):
                      'albums__description',
                      'title',
                      'description'
-                     )  
+                     )
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
