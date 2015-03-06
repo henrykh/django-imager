@@ -11,16 +11,16 @@ import os
 
 class PhotoAdmin(admin.ModelAdmin):
     def image_thumbnail(self, obj):
+        # import pdb; pdb.set_trace()
+
         if obj.image:
             thumb = get_thumbnail(
                 obj.image, "50x50", crop='center', quality=99)
-            return u'<img src="%s"/>' % thumb.url
+            return '<img src="%s"/>' % (thumb.url)
         else:
-            return u'image'
+            return 'image'
 
     def size(self, obj):
-        import pdb; pdb.set_trace()
-
         file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
         if os.path.exists(file_name):
             return "%0.1f KB" % (os.path.getsize(file_name)/(1024.0))

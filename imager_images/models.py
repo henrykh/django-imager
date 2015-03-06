@@ -39,22 +39,6 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
-    # def image_thumbnail(self, obj):
-    #     if obj.image:
-    #         thumb = get_thumbnail(
-    #             obj.image, "50x50", crop='center', quality=99)
-    #         return u'<img src="%s"/>' % thumb.url
-    #     else:
-    #         return u'image'
-    # image_thumbnail.short_description = 'Thumbnail'
-    # image_thumbnail.allow_tags = True
-
-    # def size(self, obj):
-    #         file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
-    #         if os.path.exists(file):
-    #             return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
-    #         return "0 MB"
-
 
 class Album(models.Model):
     user = models.ForeignKey(User, related_name='albums')
