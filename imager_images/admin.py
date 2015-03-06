@@ -4,8 +4,6 @@ from forms import NewAlbumForm, EditAlbumForm
 # , PhotoAlbumForm
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
-import imager.settings as settings
-import os
 
 
 class PhotoAdmin(admin.ModelAdmin):
