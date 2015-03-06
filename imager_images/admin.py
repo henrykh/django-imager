@@ -34,12 +34,6 @@ class PhotoAdmin(admin.ModelAdmin):
                        'size'
                        )
 
-    def size(self, obj):
-            file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
-            if os.path.exists(file):
-                return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
-            return "0 MB"
-
 
 class PhotoInline(admin.TabularInline):
     # form = PhotoAlbumForm

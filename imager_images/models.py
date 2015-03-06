@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
 
 
 PRIVATE = 'pvt'
@@ -38,6 +39,12 @@ class Photo(models.Model):
 
     def image_thumb(self):
         return '<img src="/media/%s" width="100" height="100" />' % (self.image)
+
+    def size(self, obj):
+            file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
+            if os.path.exists(file):
+                return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
+            return "0 MB"
 
     image_thumb.allow_tags = True
 
