@@ -92,6 +92,7 @@ class PhotoAdmin(admin.ModelAdmin):
         return '<a href=%s%s>%s</a>' % (
             '/admin/auth/user/', obj.user.pk, obj.user)
     user_linked.allow_tags = True
+    user_linked.short_description = 'User'
 
 
 class PhotoInline(admin.TabularInline):
@@ -140,6 +141,8 @@ class AlbumAdmin(admin.ModelAdmin):
             '/admin/auth/user/', obj.user.pk, obj.user)
 
     user_linked.allow_tags = True
+    user_linked.short_description = 'User'
+
 
     @csrf_protect_m
     @transaction.atomic
@@ -161,6 +164,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
     list_display = ('title',
                     'description',
+                    'user_linked',
                     'date_uploaded',
                     'date_modified',
                     'date_published'
