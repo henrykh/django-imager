@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import os
+from sorl.thumbnail import ImageField
 
 
 PRIVATE = 'pvt'
@@ -21,7 +21,7 @@ class UserPhotosManager(models.Manager):
 
 class Photo(models.Model):
     user = models.ForeignKey(User, related_name='photos')
-    image = models.ImageField(upload_to='imager_images', blank=True)
+    image = ImageField(upload_to='imager_images', blank=True)
     albums = models.ManyToManyField('Album', related_name='photos', blank=True)
 
     title = models.CharField(max_length=100, blank=True)
@@ -37,16 +37,23 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
-    def image_thumb(self):
-        return '<img src="/media/%s" width="100" height="100" />' % (self.image)
+    def image_thumbnail(self, obj):
+        if obj.image:
+            thumb = get_thumbnail(
+                obj.image, "50x50", crop='center', quality=99)
+            return u'<img src="%s"/>' % thumb.url
+        else:
+            return u'image'
+    image_thumbnail.short_description = 'Thumbnail'
+    image_thumbnail.allow_tags = True
 
-    def size(self, obj):
-            file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
-            if os.path.exists(file):
-                return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
-            return "0 MB"
+    # def size(self, obj):
+    #         file = '%s/customers/%s/resources/%s' % (settings.MEDIA_ROOT, obj.customer, obj.media.name.split("/")[-1])
+    #         if os.path.exists(file):
+    #             return "%0.1f KB" % (os.path.getsize(file)/(1024.0))
+    #         return "0 MB"
 
-    image_thumb.allow_tags = True
+    # image_thumb.allow_tags = True
 
 
 class Album(models.Model):

@@ -4,9 +4,21 @@ from forms import NewAlbumForm, EditAlbumForm
 # , PhotoAlbumForm
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
+from sorl.thumbnail.admin import AdminImageMixin
+from sorl.thumbnail import get_thumbnail
 
 
 class PhotoAdmin(admin.ModelAdmin):
+    def image_thumbnail(self, obj):
+        if obj.image:
+            thumb = get_thumbnail(
+                obj.image, "50x50", crop='center', quality=99)
+            return u'<img src="%s"/>' % thumb.url
+        else:
+            return u'image'
+    image_thumbnail.short_description = 'Thumbnail'
+    image_thumbnail.allow_tags = True
+
     list_display = ('image',
                     'title',
                     'user',
@@ -26,10 +38,9 @@ class PhotoAdmin(admin.ModelAdmin):
                      'image'
                      )
 
-    readonly_fields = ('image_thumb',
+    readonly_fields = ('image_thumbnail',
                        'date_uploaded',
                        'date_modified',
-                       'size'
                        )
 
 
