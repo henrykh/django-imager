@@ -1,6 +1,6 @@
 from django.contrib import admin
 from models import Album, Photo
-from forms import NewAlbumForm, EditAlbumForm
+from forms import NewAlbumForm, EditAlbumForm, PhotoAlbumForm
 
 
 class photoAdmin(admin.ModelAdmin):
@@ -14,6 +14,7 @@ class photoAdmin(admin.ModelAdmin):
 
 
 class PhotoInline(admin.TabularInline):
+    form = PhotoAlbumForm
     model = Photo.albums.through
 
 

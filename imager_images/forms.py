@@ -30,6 +30,17 @@ class EditAlbumForm(ModelForm):
                   'cover']
 
 
+class PhotoAlbumForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PhotoAlbumForm, self).__init__(*args, **kwargs)
+        self.fields['photo'].queryset.filter(user=self.instance.album.user)
+
+    class Meta:
+        model = Photo.albums.through
+
+
+
+
 class PhotoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PhotoForm, self).__init__(*args, **kwargs)
