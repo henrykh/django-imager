@@ -78,15 +78,15 @@ class PhotoAdmin(admin.ModelAdmin):
     list_filter = ('user',
                    'albums'
                    )
-    search_fields = ('user',
+    search_fields = ('user__username',
                      'user__first_name',
                      'user__last_name',
-                     'user__email_name',
-                     'albums',
+                     'user__email',
+                     'albums__title',
+                     'albums__description',
                      'title',
-                     'description',
-                     'image'
-                     )
+                     'description'
+                     )  
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
@@ -171,10 +171,10 @@ class AlbumAdmin(admin.ModelAdmin):
                     )
 
     list_filter = ('user',)
-    search_fields = ('user',
+    search_fields = ('user__username',
                      'user__first_name',
                      'user__last_name',
-                     'user__email_name',
+                     'user__email',
                      'title',
                      'description',
                      )
