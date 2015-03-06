@@ -76,8 +76,10 @@ class PhotoAdmin(admin.ModelAdmin):
                     )
 
     list_filter = ('user',
-                   'albums'
+                   'albums',
+                   'file_size'
                    )
+
     search_fields = ('user__username',
                      'user__first_name',
                      'user__last_name',
