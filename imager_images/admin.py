@@ -18,24 +18,25 @@ class PhotoAdmin(admin.ModelAdmin):
 
     def get_fields(self, request, obj=None):
         if obj:
-            return ['user',
-                      'image',
-                      'albums',
-                      'title',
-                      'description',
-                      'date_published',
-                      'published',
-                      'date_uploaded',
-                      'date_modified',
-                      'size']
+            return ('user',
+                    'image',
+                    'albums',
+                    'title',
+                    'description',
+                    'date_published',
+                    'published',
+                    'date_uploaded',
+                    'date_modified',
+                    'size',
+                    )
         else:
-            return ['user',
+            return ('user',
                     'image',
                     'title',
                     'description',
                     'date_published',
                     'published',
-                    ]
+                    )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -88,9 +89,8 @@ class PhotoAdmin(admin.ModelAdmin):
                      )
 
 
-
 class PhotoInline(admin.TabularInline):
-    form = PhotoAlbumForm
+    # form = PhotoAlbumForm
     model = Photo.albums.through
 
 
@@ -101,6 +101,52 @@ class AlbumAdmin(admin.ModelAdmin):
         else:
             self.form = EditAlbumForm
         return super(AlbumAdmin, self).get_form(request, obj, **kwargs)
+
+    def get_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'title',
+                    'description',
+                    'cover',
+                    'date_published',
+                    'published',
+                    'date_uploaded',
+                    'date_modified',
+                    )
+        else:
+            return ('user',
+                    'title',
+                    'description',
+                    'date_published',
+                    'published',
+                    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'date_uploaded',
+                    'date_modified',
+                    )
+        else:
+            return ()
+
+    @csrf_protect_m
+    @transaction.atomic
+    def changeform_view(
+        self, request, object_id=None, form_url='', extra_context=None
+    ):
+        if not object_id:
+            try:
+                self.inlines.remove(PhotoInline)
+            except ValueError:
+                pass
+        else:
+            if PhotoInline not in self.inlines:
+                self.inlines.append(PhotoInline)
+
+        return super(AlbumAdmin, self).changeform_view(
+            request, object_id, form_url, extra_context
+            )
 
     list_display = ('title',
                     'description',
@@ -124,24 +170,6 @@ class AlbumAdmin(admin.ModelAdmin):
                        )
 
     inlines = [PhotoInline, ]
-
-    @csrf_protect_m
-    @transaction.atomic
-    def changeform_view(
-        self, request, object_id=None, form_url='', extra_context=None
-    ):
-        if not object_id:
-            try:
-                self.inlines.remove(PhotoInline)
-            except ValueError:
-                pass
-        else:
-            if PhotoInline not in self.inlines:
-                self.inlines.append(PhotoInline)
-
-        return super(AlbumAdmin, self).changeform_view(
-            request, object_id, form_url, extra_context
-            )
 
 admin.site.register(Album, AlbumAdmin)
 admin.site.register(Photo, PhotoAdmin)
