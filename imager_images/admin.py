@@ -8,6 +8,7 @@ from imager import settings
 import os
 
 
+
 class PhotoAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
@@ -19,15 +20,15 @@ class PhotoAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         if obj:
             return ['user',
-                      'image',
-                      'albums',
-                      'title',
-                      'description',
-                      'date_published',
-                      'published',
-                      'date_uploaded',
-                      'date_modified',
-                      'size']
+                    'image',
+                    'albums',
+                    'title',
+                    'description',
+                    'date_published',
+                    'published',
+                    'date_uploaded',
+                    'date_modified',
+                    'size']
         else:
             return ['user',
                     'image',
@@ -66,7 +67,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
     list_display = ('image',
                     'title',
-                    'user',
+                    'user_linked',
                     'description',
                     'date_uploaded',
                     'date_modified',
@@ -87,10 +88,14 @@ class PhotoAdmin(admin.ModelAdmin):
                      'image'
                      )
 
+    def user_linked(self, obj):
+        return '<a href=%s%s>%s</a>' % (
+            '/admin/auth/user/', obj.user.pk, obj.user)
+    user_linked.allow_tags = True
 
 
 class PhotoInline(admin.TabularInline):
-    form = PhotoAlbumForm
+    # form = PhotoAlbumForm
     model = Photo.albums.through
 
 
@@ -104,6 +109,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
     list_display = ('title',
                     'description',
+                    'user_linked',
                     'date_uploaded',
                     'date_modified',
                     'date_published'
@@ -124,6 +130,12 @@ class AlbumAdmin(admin.ModelAdmin):
                        )
 
     inlines = [PhotoInline, ]
+
+    def user_linked(self, obj):
+        return '<a href=%s%s>%s</a>' % (
+            '/admin/auth/user/', obj.user.pk, obj.user)
+
+    user_linked.allow_tags = True
 
     @csrf_protect_m
     @transaction.atomic
