@@ -1,7 +1,6 @@
-from datetime import date
-
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+
 
 class PhotoSizeFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -32,8 +31,8 @@ class PhotoSizeFilter(admin.SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        # Compare the requested value (either '80s' or '90s')
-        # to decide how to filter the queryset.
+        # Compare the requested value (either 'small', 'medium',
+        # 'large', or 'xlarge') to decide how to filter the queryset.
         if self.value() == 'small':
             return queryset.filter(birthday__gte=date(1980, 1, 1),
                                     birthday__lte=date(1989, 12, 31))
