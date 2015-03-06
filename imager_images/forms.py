@@ -1,4 +1,4 @@
-from django.forms.models import ModelForm, BaseInlineFormSet
+from django.forms.models import ModelForm
 from models import Album, Photo
 
 
@@ -37,8 +37,6 @@ class PhotoAlbumForm(ModelForm):
 
     class Meta:
         model = Photo.albums.through
-
-
 
 
 class PhotoForm(ModelForm):
