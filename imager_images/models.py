@@ -12,6 +12,12 @@ PHOTO_PRIVACY_OPTIONS = (
 )
 
 
+class UserPhotosManager(models.Manager):
+    def get_queryset(self):
+        qs = super(UserPhotosManager, self).get_queryset()
+        return qs.filter(user__photos=True)
+
+
 class Photo(models.Model):
     user = models.ForeignKey(User, related_name='photos')
     image = models.ImageField(upload_to='imager_images', blank=True)
@@ -44,6 +50,9 @@ class Album(models.Model):
                                  default=PRIVATE)
 
     cover = models.ForeignKey('Photo', null=True)
+
+    objects = models.Manager()
+    userPhotos = UserPhotosManager()
 
     def __str__(self):
         return self.title

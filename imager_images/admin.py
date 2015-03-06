@@ -13,6 +13,10 @@ class photoAdmin(admin.ModelAdmin):
                     )
 
 
+class PhotoInline(admin.TabularInline):
+    model = Photo.albums.through
+
+
 class albumAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
@@ -28,6 +32,7 @@ class albumAdmin(admin.ModelAdmin):
                     'date_modified',
                     'date_published'
                     )
+    inlines = [PhotoInline,]
 
 admin.site.register(Album, albumAdmin)
 admin.site.register(Photo, photoAdmin)
