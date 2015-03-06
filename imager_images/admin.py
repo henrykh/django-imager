@@ -8,7 +8,6 @@ from imager import settings
 import os
 
 
-
 class PhotoAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
@@ -19,7 +18,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
     def get_fields(self, request, obj=None):
         if obj:
-            return ['user',
+            return ('user',
                     'image',
                     'albums',
                     'title',
@@ -28,15 +27,16 @@ class PhotoAdmin(admin.ModelAdmin):
                     'published',
                     'date_uploaded',
                     'date_modified',
-                    'size']
+                    'size',
+                    )
         else:
-            return ['user',
+            return ('user',
                     'image',
                     'title',
                     'description',
                     'date_published',
                     'published',
-                    ]
+                    )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -107,29 +107,33 @@ class AlbumAdmin(admin.ModelAdmin):
             self.form = EditAlbumForm
         return super(AlbumAdmin, self).get_form(request, obj, **kwargs)
 
-    list_display = ('title',
+    def get_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'title',
                     'description',
-                    'user_linked',
+                    'cover',
+                    'date_published',
+                    'published',
                     'date_uploaded',
                     'date_modified',
-                    'date_published'
+                    )
+        else:
+            return ('user',
+                    'title',
+                    'description',
+                    'date_published',
+                    'published',
                     )
 
-    list_filter = ('user',)
-    search_fields = ('user',
-                     'user__first_name',
-                     'user__last_name',
-                     'user__email_name',
-                     'title',
-                     'description',
-                     )
-
-    readonly_fields = ('user',
-                       'date_uploaded',
-                       'date_modified'
-                       )
-
-    inlines = [PhotoInline, ]
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'date_uploaded',
+                    'date_modified',
+                    )
+        else:
+            return ()
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
@@ -154,6 +158,29 @@ class AlbumAdmin(admin.ModelAdmin):
         return super(AlbumAdmin, self).changeform_view(
             request, object_id, form_url, extra_context
             )
+
+    list_display = ('title',
+                    'description',
+                    'date_uploaded',
+                    'date_modified',
+                    'date_published'
+                    )
+
+    list_filter = ('user',)
+    search_fields = ('user',
+                     'user__first_name',
+                     'user__last_name',
+                     'user__email_name',
+                     'title',
+                     'description',
+                     )
+
+    readonly_fields = ('user',
+                       'date_uploaded',
+                       'date_modified'
+                       )
+
+    inlines = [PhotoInline, ]
 
 admin.site.register(Album, AlbumAdmin)
 admin.site.register(Photo, PhotoAdmin)

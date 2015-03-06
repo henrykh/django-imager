@@ -8,11 +8,6 @@ class NewAlbumForm(ModelForm):
 
     class Meta:
         model = Album
-        fields = ['user',
-                  'title',
-                  'description',
-                  'date_published',
-                  'published']
 
 
 class EditAlbumForm(ModelForm):
@@ -23,13 +18,6 @@ class EditAlbumForm(ModelForm):
 
     class Meta:
         model = Album
-        fields = ['user',
-                  'title',
-                  'description',
-                  'date_published',
-                  'published',
-                  'cover']
-
 
 # class PhotoAlbumForm(ModelForm):
 #     def __init__(self, *args, **kwargs):
@@ -39,18 +27,16 @@ class EditAlbumForm(ModelForm):
 #             user=self.instance.album.user)
 
 
-    class Meta:
-        model = Photo.albums.through
+#     class Meta:
+#         model = Photo.albums.through
 
 
 class NewPhotoForm(ModelForm):
-
     class Meta:
         model = Photo
 
 
 class EditPhotoForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(EditPhotoForm, self).__init__(*args, **kwargs)
         self.fields['albums'].queryset = self.instance.user.albums.all()
