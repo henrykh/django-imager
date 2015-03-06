@@ -1,4 +1,4 @@
-from django.forms.models import ModelForm
+from django.forms.models import ModelForm, BaseInlineFormSet
 from models import Album, Photo
 
 

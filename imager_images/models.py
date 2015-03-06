@@ -49,7 +49,7 @@ class Album(models.Model):
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
 
-    cover = models.ForeignKey('Photo', null=True)
+    cover = models.ForeignKey('Photo', null=True, blank=True)
 
     objects = models.Manager()
     userPhotos = UserPhotosManager()
