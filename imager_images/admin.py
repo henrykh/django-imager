@@ -24,6 +24,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
