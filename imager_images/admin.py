@@ -50,8 +50,6 @@ class PhotoAdmin(admin.ModelAdmin):
             return ()
 
     def image_thumbnail(self, obj):
-        # import pdb; pdb.set_trace()
-
         if obj.image:
             thumb = get_thumbnail(
                 obj.image, "50x50", crop='center', quality=99)
@@ -86,7 +84,7 @@ class PhotoAdmin(admin.ModelAdmin):
                      'albums__description',
                      'title',
                      'description'
-                     )  
+                     )
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
@@ -96,12 +94,18 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 class PhotoInline(admin.TabularInline):
-    # form = PhotoAlbumForm
     model = Photo.albums.through
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field = super(PhotoInline, self).formfield_for_foreignkey(
+            db_field, request, **kwargs)
+        field.queryset = field.queryset.filter(user=request._obj_.user)
+        return field
 
 
 class AlbumAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
+        request._obj_ = obj
         if not obj:
             self.form = NewAlbumForm
         else:

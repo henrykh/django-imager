@@ -19,17 +19,6 @@ class EditAlbumForm(ModelForm):
     class Meta:
         model = Album
 
-# class PhotoAlbumForm(ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
-#         # import pdb; pdb.set_trace()
-#         self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
-#             user=self.instance.album.user)
-
-
-#     class Meta:
-#         model = Photo.albums.through
-
 
 class NewPhotoForm(ModelForm):
     class Meta:
