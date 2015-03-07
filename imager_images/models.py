@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from sorl.thumbnail import ImageField
-import os
-from imager import settings
 
 
 PRIVATE = 'pvt'
@@ -24,6 +22,7 @@ class UserPhotosManager(models.Manager):
 class Photo(models.Model):
     user = models.ForeignKey(User, related_name='photos')
     image = ImageField(upload_to='imager_images', blank=True)
+    file_size = models.IntegerField(null=True, blank=True)
     albums = models.ManyToManyField('Album', related_name='photos', blank=True)
 
     title = models.CharField(max_length=100, blank=True)
@@ -62,3 +61,6 @@ class Album(models.Model):
 
     def album_photos(self):
         self.photos.all()
+
+    def file_size(self):
+        self.image.size.one()

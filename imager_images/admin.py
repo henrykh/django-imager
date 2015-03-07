@@ -6,6 +6,7 @@ from django.contrib.admin.options import csrf_protect_m
 from sorl.thumbnail import get_thumbnail
 from imager import settings
 import os
+from imager_images.filters import PhotoSizeFilter
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -74,8 +75,10 @@ class PhotoAdmin(admin.ModelAdmin):
                     )
 
     list_filter = ('user',
-                   'albums'
+                   'albums',
+                   PhotoSizeFilter,
                    )
+
     search_fields = ('user__username',
                      'user__first_name',
                      'user__last_name',
