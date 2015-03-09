@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'imager_user',
     'imager_images',
     'sorl.thumbnail'
@@ -94,3 +95,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, "imager/templates")
     ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
