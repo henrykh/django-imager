@@ -19,7 +19,7 @@ class AlbumTestCase(TestCase):
             UserFactory()
             self.file = SimpleUploadedFile('test.png', 'a photo')
 
-        def test_album_exists(self):
+        def test_album_owner(self):
             user_john = User.objects.get(username='john')
             album1 = Album()
             album1.user = user_john
