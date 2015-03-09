@@ -4,6 +4,7 @@ from imager_images.models import Album, Photo
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
+import os
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 
@@ -57,7 +58,7 @@ class AlbumTestCase(TestCase):
         album1 = Album()
         album1.user = user_john
         album1.save()
-        self.assertEqual(Album.objects.get(pk=1).user, user_john)
+        self.assertEqual(Album.objects.get(pk=2).user, user_john)
 
     def test_photo_in_album(self):
         user_john = User.objects.get(username='john')
@@ -106,3 +107,18 @@ class AlbumTestCase(TestCase):
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo1, album2.photos.all())
 
+    def test_album_metadata(self):
+        user_john = User.objects.get(username='john')
+        album1 = Album()
+        album1.user = user_john
+        album1.title = "Album Title"
+        album1.description = "An Album"
+        album1.published = "pvt"
+        album1.save()
+        the_photo = Album.objects.all()[0]
+        self.assertEquals(the_photo.title, "Album Title")
+        self.assertEquals(the_photo.description, "An Album")
+        self.assertEquals(the_photo.published, "pvt")
+        self.assertEquals(the_photo.date_uploaded, datetime.date.today())
+        self.assertEquals(the_photo.date_modified, datetime.date.today())
+        # os.remove('media/imager_images/test*')
