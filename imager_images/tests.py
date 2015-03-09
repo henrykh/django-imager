@@ -5,8 +5,14 @@ from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
 import os
+import glob
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
+
+
+def clean_up():
+    for file in glob.glob("media/imager_images/test*.png"):
+        os.remove(file)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -29,6 +35,7 @@ class PhotoTestCase(TestCase):
         photo1.image = THE_FILE
         photo1.save()
         self.assertEquals(Photo.objects.all()[0].user, user_john)
+        clean_up()
 
     def test_photo_metadata(self):
         user_john = User.objects.get(username='john')
@@ -45,6 +52,7 @@ class PhotoTestCase(TestCase):
         self.assertEquals(the_photo.published, "pvt")
         self.assertEquals(the_photo.date_uploaded, datetime.date.today())
         self.assertEquals(the_photo.date_modified, datetime.date.today())
+        clean_up()
 
 
 class AlbumTestCase(TestCase):
@@ -59,6 +67,7 @@ class AlbumTestCase(TestCase):
         album1.user = user_john
         album1.save()
         self.assertEqual(Album.objects.all()[0].user, user_john)
+        clean_up()
 
     def test_photo_in_album(self):
         user_john = User.objects.get(username='john')
@@ -71,6 +80,7 @@ class AlbumTestCase(TestCase):
         photo1.save()
         photo1.albums.add(album1)
         self.assertIn(photo1, album1.photos.all())
+        clean_up()
 
     def test_photos_in_album(self):
         user_john = User.objects.get(username='john')
@@ -89,6 +99,7 @@ class AlbumTestCase(TestCase):
         photo2.albums.add(album1)
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo2, album1.photos.all())
+        clean_up()
 
     def test_photo_in_multiple_albums(self):
         user_john = User.objects.get(username='john')
@@ -106,6 +117,7 @@ class AlbumTestCase(TestCase):
         photo1.albums.add(album2)
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo1, album2.photos.all())
+        clean_up()
 
     def test_album_metadata(self):
         user_john = User.objects.get(username='john')
@@ -121,4 +133,4 @@ class AlbumTestCase(TestCase):
         self.assertEquals(the_photo.published, "pvt")
         self.assertEquals(the_photo.date_uploaded, datetime.date.today())
         self.assertEquals(the_photo.date_modified, datetime.date.today())
-        # os.remove('media/imager_images/test*')
+        clean_up()
