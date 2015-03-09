@@ -13,15 +13,15 @@
         {% block sidebar %}
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="{% url 'myapp:mypage' %}">Login</a></li>
-            <li><a href="{% url 'myapp:mypage' %}">Logout</a></li>            
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
         </ul>
         {% endblock %}
     </div>
     <div id="content">
         <div id="coverPhoto"></div>
         <div id="text">
-            <p></p>
+            {% block body %}
+            {% endblock %}
         </div>
     </div>
 </body>

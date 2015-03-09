@@ -1,8 +1,10 @@
 Django==1.7.5
+Pillow==2.7.0
 django-phonenumber-field==0.7.1
+django-registration-redux==1.1
 factory-boy==2.4.1
 phonenumbers==7.0.2
-Pillow==2.7.0
 postgres==2.1.2
 psycopg2==2.6
 sorl-thumbnail==12.2
+wsgiref==0.1.2
