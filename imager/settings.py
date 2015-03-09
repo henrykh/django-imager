@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'imager_user',
     'imager_images',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'registration'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,4 +97,12 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, "imager/templates")
     ]
 
+# Email backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Registration settings
+
+# One-week activation window; you may, of course, use a different value.
+ACCOUNT_ACTIVATION_DAYS = 7
+# Automatically log the user in.
+REGISTRATION_AUTO_LOGIN = True
