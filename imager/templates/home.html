@@ -1,1 +1,28 @@
-<p>Hello {{name|upper}}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}Imager{% endblock %}</title>
+</head>
+
+<body>
+    <h2>
+        Title
+    </h2>
+    <div id="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'myapp:mypage' %}">Login</a></li>
+            <li><a href="{% url 'myapp:mypage' %}">Logout</a></li>            
+        </ul>
+        {% endblock %}
+    </div>
+    <div id="content">
+        <div id="coverPhoto"></div>
+        <div id="text">
+            <p></p>
+        </div>
+    </div>
+</body>
+</html>
