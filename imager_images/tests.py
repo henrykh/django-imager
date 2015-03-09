@@ -2,8 +2,8 @@ import factory
 from django.test import TestCase
 from imager_images.models import Album, Photo
 from django.contrib.auth.models import User
-from tempfile import NamedTemporaryFile
 from django.core.files.uploadedfile import SimpleUploadedFile
+import datetime
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 
@@ -28,6 +28,22 @@ class PhotoTestCase(TestCase):
         photo1.image = THE_FILE
         photo1.save()
         self.assertEquals(Photo.objects.all()[0].user, user_john)
+
+    def test_photo_metadata(self):
+        user_john = User.objects.get(username='john')
+        photo1 = Photo()
+        photo1.user = user_john
+        photo1.image = THE_FILE
+        photo1.title = "Image Title"
+        photo1.description = "An Image"
+        photo1.published = "pvt"
+        photo1.save()
+        the_photo = Photo.objects.all()[0]
+        self.assertEquals(the_photo.title, "Image Title")
+        self.assertEquals(the_photo.description, "An Image")
+        self.assertEquals(the_photo.published, "pvt")
+        self.assertEquals(the_photo.date_uploaded, datetime.date.today())
+        self.assertEquals(the_photo.date_modified, datetime.date.today())
 
 
 class AlbumTestCase(TestCase):
