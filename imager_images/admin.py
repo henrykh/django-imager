@@ -97,6 +97,8 @@ class PhotoAdmin(admin.ModelAdmin):
                 return "{:0.1f} KB".format(obj.file_size/1024.0)
             if obj.image.size <= 1073741824:
                 return "{:0.1f} MB".format(obj.file_size/1048576.0)
+            if obj.image.size <= 1073741824:
+                return "{:0.1f} GB".format(obj.file_size/1099511627776.0)
             return "0 MB"
 
 
