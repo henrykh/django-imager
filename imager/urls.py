@@ -6,7 +6,8 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
                        # Examples:
-                       # url(r'^$', 'imager.views.home', name='home'),
+                       url(r'^foo/(?P<name>\w+)/(?P<id>\d+)',
+                           'imager.views.stub', name='home'),
                        # url(r'^blog/', include('blog.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        )

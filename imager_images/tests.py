@@ -1,10 +1,9 @@
 import factory
 from django.test import TestCase
-from models import Album, Photo
+from imager_images.models import Album, Photo
 from django.contrib.auth.models import User
 from tempfile import NamedTemporaryFile
 from django.core.files.uploadedfile import SimpleUploadedFile
-
 
 
 class UserFactory(factory.django.DjangoModelFactory):
