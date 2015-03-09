@@ -29,7 +29,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'published',
                     'date_uploaded',
                     'date_modified',
-                    'file_size',
+                    'size',
                     )
         else:
             return ('user',
@@ -46,7 +46,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'image_thumbnail',
                     'date_uploaded',
                     'date_modified',
-                    'file_size'
+                    'size'
                     )
         else:
             return ()
@@ -66,7 +66,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'date_uploaded',
                     'date_modified',
                     'date_published',
-                    'file_size'
+                    'size'
                     )
 
     list_filter = ('user',
@@ -89,6 +89,15 @@ class PhotoAdmin(admin.ModelAdmin):
             '/admin/auth/user/', obj.user.pk, obj.user)
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
+
+    def size(self, obj):
+            if obj.image.size <= 1024:
+                return "%0.1f B".format(obj.image.file_size)
+            if obj.image.size <= 1048576:
+                return "%0.1f KB".format(obj.image.file_size/1024.0)
+            if obj.image.size <= 1073741824:
+                return "%0.1f MB".format(obj.image.file_size/1048576.0)
+            return "0 MB"
 
 
 class PhotoInline(admin.TabularInline):
