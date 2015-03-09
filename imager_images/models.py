@@ -61,6 +61,3 @@ class Album(models.Model):
 
     def album_photos(self):
         self.photos.all()
-
-    def file_size(self):
-        self.image.size.one()
