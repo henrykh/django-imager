@@ -1,5 +1,5 @@
 from django.forms.models import ModelForm
-from models import Album, Photo
+from imager_images.models import Album, Photo
 
 
 class NewAlbumForm(ModelForm):

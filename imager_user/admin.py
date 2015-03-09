@@ -1,9 +1,9 @@
 from django.contrib import admin
-from models import ImagerProfile
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
+from imager_user.models import ImagerProfile
 
 
 class ProfileInline(admin.StackedInline):

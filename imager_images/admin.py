@@ -1,12 +1,10 @@
 from django.contrib import admin
-from models import Album, Photo
-from forms import *
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
 from sorl.thumbnail import get_thumbnail
-from imager import settings
-import os
 from imager_images.filters import PhotoSizeFilter
+from imager_images.forms import *
+from imager_images.models import Album, Photo
 
 
 class PhotoAdmin(admin.ModelAdmin):
