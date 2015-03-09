@@ -37,9 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'imager_user',
     'imager_images',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'registration'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,3 +96,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, "imager/templates")
     ]
+
+# Email backend for development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Registration settings
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_OPEN = True
