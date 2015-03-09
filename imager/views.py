@@ -1,4 +1,6 @@
-import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.template import RequestContext, loader
+from django.shortcuts import render
 
 
 def stub(request, *args, **kwargs):
@@ -9,4 +11,9 @@ def stub(request, *args, **kwargs):
     if kwargs:
         body += 'Kwargs:\n'
         body += '\n'.join(['\t%s: %s' % i for i in kwargs.items()])
-    return HttpResponse()
+    return HttpResponse(body, content_type='text/plain')
+
+
+def home(request):
+    context = {'name': 'bob'}
+    return render(request, 'home.html', context)
