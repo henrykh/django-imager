@@ -27,20 +27,28 @@ class PhotoTestCase(TestCase):
         photo1.user = user_john
         photo1.image = THE_FILE
         photo1.save()
-        self.assertEquals(Photo.objects.all()[0].user, user_john) 
+        self.assertEquals(Photo.objects.all()[0].user, user_john)
 
 
 class AlbumTestCase(TestCase):
-    def setUp(self):
-        UserFactory()
+        def setUp(self):
+            UserFactory()
+            self.file = SimpleUploadedFile('test.png', 'a photo')
 
-    def test_photo_in_album(self):
-        photo1 = Photo()
-        photo1.user = User.objects.get(username='john')
-        photo1.image = THE_FILE
-        album1 = Album()
-        album1.user = User.objects.get(username='john')
-        album1.save()
-        photo1.save()
-        photo1.albums.add(album1)
-        self.assertIn(photo1, album1.photos.all())
+        def test_album_exists(self):
+            user_john = User.objects.get(username='john')
+            album1 = Album()
+            album1.user = user_john
+            album1.save()
+            self.assertEqual(Album.objects.get(pk=1).user, user_john)
+
+        def test_photo_in_album(self):
+            photo1 = Photo()
+            photo1.user = User.objects.get(username='john')
+            photo1.image = THE_FILE
+            album1 = Album()
+            album1.user = User.objects.get(username='john')
+            album1.save()
+            photo1.save()
+            photo1.albums.add(album1)
+            self.assertIn(photo1, album1.photos.all())

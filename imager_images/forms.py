@@ -8,6 +8,7 @@ class NewAlbumForm(ModelForm):
 
     class Meta:
         model = Album
+        exclude = []
 
 
 class EditAlbumForm(ModelForm):
@@ -18,6 +19,8 @@ class EditAlbumForm(ModelForm):
 
     class Meta:
         model = Album
+        exclude = []
+
 
 # class PhotoAlbumForm(ModelForm):
 #     def __init__(self, *args, **kwargs):
@@ -28,7 +31,6 @@ class EditAlbumForm(ModelForm):
 #         self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
 #              user=self.instance.album.user)
 
- 
 #     class Meta:
 #          model = Photo.albums.through
 
@@ -36,6 +38,7 @@ class EditAlbumForm(ModelForm):
 class NewPhotoForm(ModelForm):
     class Meta:
         model = Photo
+        exclude = []
 
 
 class EditPhotoForm(ModelForm):
@@ -45,3 +48,4 @@ class EditPhotoForm(ModelForm):
 
     class Meta:
         model = Photo
+        exclude = []
