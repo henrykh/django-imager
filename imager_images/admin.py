@@ -59,12 +59,6 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return 'No Image'
 
-    def size(self, obj):
-        file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
-        if os.path.exists(file_name):
-            return "%0.1f KB" % (os.path.getsize(file_name)/(1024.0))
-        return "0 MB"
-
     list_display = ('image',
                     'title',
                     'user_linked',
@@ -95,6 +89,17 @@ class PhotoAdmin(admin.ModelAdmin):
             '/admin/auth/user/', obj.user.pk, obj.user)
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
+
+    def size(self, obj):
+            if obj.image.size <= 1024:
+                return "{:0.1f} B".format(obj.file_size)
+            if obj.image.size <= 1024.0**2:
+                return "{:0.1f} KB".format(obj.file_size/1024.0)
+            if obj.image.size <= 1024.0**3:
+                return "{:0.1f} MB".format(obj.file_size/(1024.0**2))
+            if obj.image.size <= 1024.0**4:
+                return "{:0.1f} GB".format(obj.file_size/(1024.0**3))
+            return "0 MB"
 
 
 class PhotoInline(admin.TabularInline):
