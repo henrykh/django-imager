@@ -58,7 +58,7 @@ class AlbumTestCase(TestCase):
         album1 = Album()
         album1.user = user_john
         album1.save()
-        self.assertEqual(Album.objects.get(pk=2).user, user_john)
+        self.assertEqual(Album.objects.all()[0].user, user_john)
 
     def test_photo_in_album(self):
         user_john = User.objects.get(username='john')
