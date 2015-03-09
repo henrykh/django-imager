@@ -1,7 +1,7 @@
 import factory
 from django.test import TestCase
-from models import ImagerProfile
 from django.contrib.auth.models import User
+from imager_user.models import ImagerProfile
 
 
 class UserFactory(factory.django.DjangoModelFactory):
