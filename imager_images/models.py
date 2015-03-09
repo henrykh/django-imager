@@ -21,7 +21,7 @@ class UserPhotosManager(models.Manager):
 
 class Photo(models.Model):
     user = models.ForeignKey(User, related_name='photos')
-    image = ImageField(upload_to='imager_images', blank=True)
+    image = ImageField(upload_to='imager_images')
     file_size = models.IntegerField(null=True, blank=True)
     albums = models.ManyToManyField('Album', related_name='photos', blank=True)
 
