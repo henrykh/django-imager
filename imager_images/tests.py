@@ -127,10 +127,24 @@ class AlbumTestCase(TestCase):
         album1.description = "An Album"
         album1.published = "pvt"
         album1.save()
-        the_photo = Album.objects.all()[0]
-        self.assertEquals(the_photo.title, "Album Title")
-        self.assertEquals(the_photo.description, "An Album")
-        self.assertEquals(the_photo.published, "pvt")
-        self.assertEquals(the_photo.date_uploaded, datetime.date.today())
-        self.assertEquals(the_photo.date_modified, datetime.date.today())
+        the_album = Album.objects.all()[0]
+        self.assertEquals(the_album.title, "Album Title")
+        self.assertEquals(the_album.description, "An Album")
+        self.assertEquals(the_album.published, "pvt")
+        self.assertEquals(the_album.date_uploaded, datetime.date.today())
+        self.assertEquals(the_album.date_modified, datetime.date.today())
+        clean_up()
+
+    def test_album_cover(self):
+        user_john = User.objects.get(username='john')
+        photo1 = Photo()
+        photo1.user = user_john
+        photo1.image = THE_FILE
+        photo1.save()
+        album1 = Album()
+        album1.user = user_john
+        album1.cover = photo1
+        album1.save()
+        the_album = Album.objects.all()[0]
+        self.assertEquals(the_album.cover, photo1)
         clean_up()
