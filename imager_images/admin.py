@@ -93,12 +93,12 @@ class PhotoAdmin(admin.ModelAdmin):
     def size(self, obj):
             if obj.image.size <= 1024:
                 return "{:0.1f} B".format(obj.file_size)
-            if obj.image.size <= 1048576:
+            if obj.image.size <= 1024.0**2:
                 return "{:0.1f} KB".format(obj.file_size/1024.0)
-            if obj.image.size <= 1073741824:
-                return "{:0.1f} MB".format(obj.file_size/1048576.0)
-            if obj.image.size <= 1073741824:
-                return "{:0.1f} GB".format(obj.file_size/1099511627776.0)
+            if obj.image.size <= 1024.0**3:
+                return "{:0.1f} MB".format(obj.file_size/(1024.0**2))
+            if obj.image.size <= 1024.0**4:
+                return "{:0.1f} GB".format(obj.file_size/(1024.0**3))
             return "0 MB"
 
 
