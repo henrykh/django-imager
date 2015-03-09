@@ -29,7 +29,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'published',
                     'date_uploaded',
                     'date_modified',
-                    'size',
+                    'file_size',
                     )
         else:
             return ('user',
@@ -46,7 +46,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'image_thumbnail',
                     'date_uploaded',
                     'date_modified',
-                    'size'
+                    'file_size'
                     )
         else:
             return ()
@@ -59,12 +59,6 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return 'No Image'
 
-    def size(self, obj):
-        file_name = '%s/%s' % (settings.MEDIA_ROOT, obj.image.name)
-        if os.path.exists(file_name):
-            return "%0.1f KB" % (os.path.getsize(file_name)/(1024.0))
-        return "0 MB"
-
     list_display = ('image',
                     'title',
                     'user_linked',
@@ -72,7 +66,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'date_uploaded',
                     'date_modified',
                     'date_published',
-                    'size'
+                    'file_size'
                     )
 
     list_filter = ('user',
