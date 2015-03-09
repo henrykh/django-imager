@@ -73,16 +73,20 @@ class AlbumTestCase(TestCase):
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo2, album1.photos.all())
 
-    def test_photo_not_owned_by_album_owner_not_addable(self):
+    def test_photo_in_multiple_albums(self):
         user_john = User.objects.get(username='john')
-        import pdb; pdb.set_trace()
-        user_jane = User.objects.get(username='jane')
         photo1 = Photo()
-        photo1.user = user_jane
+        photo1.user = user_john
         photo1.image = THE_FILE
         album1 = Album()
         album1.user = user_john
+        album2 = Album()
+        album2.user = user_john
         album1.save()
+        album2.save()
         photo1.save()
         photo1.albums.add(album1)
+        photo1.albums.add(album2)
         self.assertIn(photo1, album1.photos.all())
+        self.assertIn(photo1, album2.photos.all())
+
