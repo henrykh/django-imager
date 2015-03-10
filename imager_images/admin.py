@@ -49,14 +49,6 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def image_thumbnail(self, obj):
-        if obj.image:
-            thumb = get_thumbnail(
-                obj.image, "50x50", crop='center', quality=99)
-            return '<img src="%s"/>' % (thumb.url)
-        else:
-            return 'No Image'
-
     list_display = ('image',
                     'title',
                     'description',
@@ -82,6 +74,14 @@ class PhotoAdmin(admin.ModelAdmin):
                      'title',
                      'description'
                      )
+
+    def image_thumbnail(self, obj):
+        if obj.image:
+            thumb = get_thumbnail(
+                obj.image, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
