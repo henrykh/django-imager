@@ -22,7 +22,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    'image_thumbnail',
+                    'thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -49,13 +49,8 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def image_thumbnail(self, obj):
-        if obj.image:
-            thumb = get_thumbnail(
-                obj.image, "50x50", crop='center', quality=99)
-            return '<img src="%s"/>' % (thumb.url)
-        else:
-            return 'No Image'
+    def thumbnail(self, obj):
+        return obj.image_thumbnail()
 
     list_display = ('image',
                     'title',

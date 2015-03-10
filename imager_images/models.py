@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from sorl.thumbnail import ImageField
-
+from sorl.thumbnail import get_thumbnail
 
 PRIVATE = 'pvt'
 SHARED = 'shd'
@@ -34,6 +34,14 @@ class Photo(models.Model):
     published = models.CharField(max_length=3,
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
+
+    def image_thumbnail(self,):
+        if self.image:
+            thumb = get_thumbnail(
+                self.image, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     def __str__(self):
         return self.title

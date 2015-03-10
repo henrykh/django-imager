@@ -59,7 +59,7 @@ class ImagerProfile(models.Model):
         return self.blocking.remove(other)
 
     def picture_thumbnail(self):
-        if self.image:
+        if self.picture:
             thumb = get_thumbnail(
                 self.picture, "50x50", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
