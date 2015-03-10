@@ -1,5 +1,3 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext, loader
 from django.shortcuts import render
 from imager_images.models import Photo
 import os
