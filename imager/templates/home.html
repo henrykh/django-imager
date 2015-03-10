@@ -24,11 +24,13 @@
         {% endblock %}
     </div>
     <div id="content">
-        <div id="coverPhoto" style="background-image: url({{cover_photo_path}}); width: 20em; height: 20em;"></div>
-        <div id="text">
-            {% block body %}
-            {% endblock %}
-        </div>
+        {% block body %}
+            <div id="coverPhoto" style="background-image: url({{cover_photo_path}});
+            max-width: 100%; height: 32em; background-size:cover;"></div>
+            <div id="text">
+                Welcome to Imgr! Sign up to share images and be awesome!
+            </div>
+        {% endblock %}
     </div>
 </body>
 </html>
