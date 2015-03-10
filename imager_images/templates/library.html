@@ -1,0 +1,25 @@
+{% extends "home.html" %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager/profile.css' %}" />
+{% endblock %}
+
+{% block title %}Library: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profilePicture" style="background-image: url({user.profile.picture.image.url})">
+    </div>
+    <div id="profileInfo">
+        <h3>Library</h3>
+        <ul>
+            {%  %}
+            <li id="username">{{user}}<span id="namePrivacy">{{user.profile.name_privacy}}</span></li>
+            <li id="email">{{user.email}}<span id="emailPrivacy">{{user.profile.email_privacy}}</span></li>
+            <li id="phone_number">{{user.profile.phone_number}}<span id="phone_privacy">{{user.profile.phone_privacy}}</span></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+{% endblock %}
+
