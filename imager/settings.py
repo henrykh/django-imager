@@ -32,6 +32,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,11 +87,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Request context processor
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.core.context_processors.request",
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     )
@@ -98,9 +104,9 @@ STATICFILES_DIRS = (
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, "imager/templates")
-    ]
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "imager/templates"),
+    )
 
 # Email backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
