@@ -1,8 +1,21 @@
-
-#headerTitle {
-    float: left;
+a {
+    text-decoration: none;
+    color: black;
 }
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    margin-bottom: 3em;
+    display: block;
+    height: 8em;
+}
+
+#headerTitle {
+    float: left
+}
 
 nav {
     float: right;
@@ -16,6 +29,13 @@ nav ul {
 nav li {
     display: inline-block;
 }
+
+#content {
+    max-width: 90%;
+
+    margin: auto
+}
+
 
 #coverPhoto {
     max-width: 100%;
