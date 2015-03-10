@@ -4,6 +4,7 @@ from django.contrib.admin.options import csrf_protect_m
 from imager_images.filters import PhotoSizeFilter
 from imager_images.forms import *
 from imager_images.models import Album, Photo
+from sorl.thumbnail import get_thumbnail
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -21,7 +22,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    # 'thumbnail',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -40,7 +41,7 @@ class PhotoAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
-                    'image_thumbnail',
+                    'thumbnail',
                     'date_uploaded',
                     'date_modified',
                     'size'
@@ -48,8 +49,13 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def thumbnail(self, obj):
-        return obj.image_thumbnail()
+    def image_thumbnail(self, obj):
+        if obj.image:
+            thumb = get_thumbnail(
+                obj.image, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     list_display = ('image',
                     'title',
@@ -123,7 +129,7 @@ class AlbumAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'cover',
-                    # 'thumbnail',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -150,8 +156,13 @@ class AlbumAdmin(admin.ModelAdmin):
         return '<a href=%s%s>%s</a>' % (
             '/admin/auth/user/', obj.user.pk, obj.user)
 
-    def thumbnail(self, obj):
-        return obj.cover_thumbnail()
+    def image_thumbnail(self, obj):
+        if obj.cover.image:
+            thumb = get_thumbnail(
+                obj.cover.image, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
