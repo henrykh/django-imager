@@ -108,7 +108,7 @@ class PhotoInline(admin.TabularInline):
 class AlbumAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         request._obj_ = obj
         if not obj:
