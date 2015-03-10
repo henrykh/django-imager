@@ -1,0 +1,26 @@
+
+#headerTitle {
+    float: left;
+}
+
+
+nav {
+    float: right;
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    display: inline-block;
+}
+
+#coverPhoto {
+    max-width: 100%;
+    height: 32em;
+    background-size:contain;
+    background-repeat:no-repeat
+}
+
