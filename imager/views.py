@@ -1,23 +1,11 @@
 from django.shortcuts import render
 from imager_images.models import Photo
-import os
-from django.conf import settings
-
-# def stub(request, *args, **kwargs):
-#     body = 'Stub View\n\n'
-#     if args:
-#         body += 'Args:\n'
-#         body += '\n'.join(['\t%s' % a for a in args])
-#     if kwargs:
-#         body += 'Kwargs:\n'
-#         body += '\n'.join(['\t%s: %s' % i for i in kwargs.items()])
-#     return HttpResponse(body, content_type='text/plain')
 
 
 def home(request):
-    # import pdb; pdb.set_trace()
     try:
-        cover_photo_url = Photo.objects.filter(published='pub').order_by('?')[0].image.url
+        cover_photo_url = Photo.objects.filter(
+            published='pub').order_by('?')[0].image.url
     except IndexError:
         cover_photo_url = "imager_images/Space_Needle002.jpg"
     context = {'cover_photo_url': cover_photo_url}
