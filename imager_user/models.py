@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
-from sorl.thumbnail import get_thumbnail
 
 
 class ActiveProfileManager(models.Manager):
@@ -57,11 +56,3 @@ class ImagerProfile(models.Model):
 
     def unblock(self, other):
         return self.blocking.remove(other)
-
-    def picture_thumbnail(self):
-        if self.picture:
-            thumb = get_thumbnail(
-                self.picture, "50x50", crop='center', quality=99)
-            return '<img src="%s"/>' % (thumb.url)
-        else:
-            return 'No Image'

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
 from imager_user.models import ImagerProfile
+from sorl.thumbnail import get_thumbnail
 
 
 class ProfileInline(admin.StackedInline):
@@ -18,7 +19,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     'follows',
                     'blocking',
                     'picture',
-                    # 'thumbnail',
+                    'thumbnail',
                     'picture_privacy',
                     'phone_number',
                     'phone_privacy',
@@ -49,7 +50,12 @@ class ProfileAdmin(admin.ModelAdmin):
             return ()
 
     def thumbnail(self, obj):
-        return obj.picture_thumbnail()
+        if obj.picture:
+            thumb = get_thumbnail(
+                obj.picture, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     list_display = ('user',
                     'phone_number',
