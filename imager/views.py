@@ -13,11 +13,6 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-def profile(request):
-    context = {'name': request.user}
-    return render(request, 'profile.html', context)
-
-
 def activation_complete(request):
     context = {'name': request.user}
     return render(request, 'activation_complete.html', context)
