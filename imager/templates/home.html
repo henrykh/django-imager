@@ -1,17 +1,17 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'imager/style.css' %}" />
-    <title>{% block title %}Imager{% endblock %}</title>
+    <title>{% block title %}Imgr{% endblock %}</title>
 </head>
 
 <body>
     <header>
         <h2 id="headerTitle"><a href="{% url 'home'}">Imgr</a></h2>
         <nav>
-            <ul style="float:right; display: inline-block">
-                <li><a href="/">Home</a></li>
+            <ul>
+                <li><a href="{% url 'home'}">Home</a></li>
                 {% if not user.is_authenticated %}
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                 {% endif %}

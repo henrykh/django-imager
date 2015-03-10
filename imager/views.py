@@ -19,11 +19,10 @@ from django.conf import settings
 def home(request):
     # import pdb; pdb.set_trace()
     try:
-        cover_photo = Photo.objects.filter(published='pub').order_by('?')[0]
-        cover_photo_path = os.path.join(settings.MEDIA_URL, cover_photo.image.name)
+        cover_photo_url = Photo.objects.filter(published='pub').order_by('?')[0].image.url
     except IndexError:
-        cover_photo_path = os.path.join(settings.MEDIA_URL, "imager_images/Space_Needle002.jpg")
-    context = {'cover_photo_path': cover_photo_path}
+        cover_photo_url = "imager_images/Space_Needle002.jpg"
+    context = {'cover_photo_url': cover_photo_url}
     return render(request, 'home.html', context)
 
 
