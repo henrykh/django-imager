@@ -3,6 +3,8 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'imager/style.css' %}" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+    {% block stylesheets %}{% endblock %}
     <title>{% block title %}Imgr{% endblock %}</title>
 </head>
 
@@ -25,7 +27,7 @@
     </div>
     <div id="content">
         {% block body %}
-            <div id="coverPhoto" style="background-image: url({{cover_photo_path}});"></div>
+            <div id="coverPhoto" style="background-image: url({{cover_photo_url}});"></div>
             <div id="text">
                 Welcome to Imgr! Sign up to share images and be awesome!
             </div>

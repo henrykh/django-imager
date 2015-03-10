@@ -1,33 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="style.css" />
-    <title>{% block title %}Imager{% endblock %}</title>
-</head>
+{% extends "home.html" %}
+{% load staticfiles %}
 
-<body>
-    <h2>
-        Profile: {{user}}
-    </h2>
-    <div id="sidebar">
-        {% block sidebar %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager/profile.css' %}" />
+{% endblock %}
+
+{% block title %}Profile: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profilePicture" style="background-image: url({user.profile.picture.image.url})">
+    </div>
+    <div id="profileInfo">
+        <h3>Profile Info</h3>
         <ul>
-            <li><a href="/">Home</a></li>
-            {% if not user.is_authenticated %}
-                <li><a href="{% url 'auth_login' %}">Login</li>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'auth_logout' %}?next=/">Logout</li>
-            {% endif %}
+            <li id="username">{{user}}<span id="namePrivacy">{{user.profile.name_privacy}}</span></li>
+            <li id="email">{{user.email}}<span id="emailPrivacy">{{user.profile.email_privacy}}</span></li>
+            <li id="phone_number">{{user.profile.phone_number}}<span id="phone_privacy">{{user.profile.phone_privacy}}</span></li>
+            <li></li>
+            <li></li>
         </ul>
-        {% endblock %}
     </div>
-    <div id="content">
-        <div id="coverPhoto"></div>
-        <div id="text">
-            {% block body %}
-            {% endblock %}
-        </div>
-    </div>
-</body>
-</html>
+{% endblock %}
+

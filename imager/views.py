@@ -3,6 +3,7 @@ from imager_images.models import Photo
 
 
 def home(request):
+    # import pdb; pdb.set_trace()
     try:
         cover_photo_url = Photo.objects.filter(
             published='pub').order_by('?')[0].image.url
