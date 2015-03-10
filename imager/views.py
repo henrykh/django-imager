@@ -22,3 +22,8 @@ def home(request):
     cover_photo_path = os.path.join(settings.MEDIA_URL, cover_photo.image.name)
     context = {'name': 'bob', 'cover_photo_path': cover_photo_path}
     return render(request, 'home.html', context)
+
+
+def profile(request):
+    context = {'name': request.user}
+    return render(request, 'profile.html', context)
