@@ -22,7 +22,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    'thumbnail',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -49,7 +49,7 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def thumbnail(self, obj):
+    def image_thumbnail(self, obj):
         if obj.image:
             thumb = get_thumbnail(
                 obj.image, "50x50", crop='center', quality=99)
@@ -129,7 +129,7 @@ class AlbumAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'cover',
-                    'thumbnail',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -156,10 +156,10 @@ class AlbumAdmin(admin.ModelAdmin):
         return '<a href=%s%s>%s</a>' % (
             '/admin/auth/user/', obj.user.pk, obj.user)
 
-    def thumbnail(self, obj):
-        if obj.cover:
+    def image_thumbnail(self, obj):
+        if obj.cover.image:
             thumb = get_thumbnail(
-                obj.cover, "50x50", crop='center', quality=99)
+                obj.cover.image, "50x50", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
             return 'No Image'

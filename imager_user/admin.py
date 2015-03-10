@@ -19,7 +19,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     'follows',
                     'blocking',
                     'picture',
-                    'thumbnail',
+                    'image_thumbnail',
                     'picture_privacy',
                     'phone_number',
                     'phone_privacy',
@@ -49,7 +49,7 @@ class ProfileAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def thumbnail(self, obj):
+    def image_thumbnail(self, obj):
         if obj.picture:
             thumb = get_thumbnail(
                 obj.picture, "50x50", crop='center', quality=99)
