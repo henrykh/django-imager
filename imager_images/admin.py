@@ -59,8 +59,9 @@ class PhotoAdmin(admin.ModelAdmin):
 
     list_display = ('image',
                     'title',
-                    'user_linked',
                     'description',
+                    'user_linked',
+                    'published',
                     'date_uploaded',
                     'date_modified',
                     'date_published',
@@ -176,6 +177,7 @@ class AlbumAdmin(admin.ModelAdmin):
     list_display = ('title',
                     'description',
                     'user_linked',
+                    'published',
                     'date_uploaded',
                     'date_modified',
                     'date_published'
