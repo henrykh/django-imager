@@ -1,9 +1,10 @@
-{% extends "home.html" %}
-{% load staticfiles %}
+{% extends "../../imager/templates/home.html" %}
 {% load thumbnail %}
+{% load staticfiles %}
+
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{% static 'imager/profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/library.css' %}" />
 {% endblock %}
 
 {% block title %}Library: {{user}}{% endblock %}
@@ -11,12 +12,12 @@
 {% block body %}
     <div id="profileInfo">
         <h3>Library</h3>
-        <ul> 
+        <ul id="gallery"> 
             {% for album in albums %}
                 {% thumbnail album.cover.image "200x200" as thumb %}
                 <img src="{{ thumb.url }}">
                 {% empty %}
-                <img src="{{ thumb.url }}">
+                <img src="/static/imager_user/man.png">
                 {% endthumbnail %}
                 <li class="albumTitle">{{album.title}}</li>
             {% endfor %}
