@@ -16,6 +16,7 @@
                 {% thumbnail album.cover.image "200x200" as thumb %}
                 <img src="{{ thumb.url }}">
                 {% empty %}
+                <img src="{{ thumb.url }}">
                 {% endthumbnail %}
                 <li class="albumTitle">{{album.title}}</li>
             {% endfor %}
