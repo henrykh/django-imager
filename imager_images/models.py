@@ -35,7 +35,7 @@ class Photo(models.Model):
                                  choices=PHOTO_PRIVACY_OPTIONS,
                                  default=PRIVATE)
 
-    def image_thumbnail(self,):
+    def image_thumbnail(self):
         if self.image:
             thumb = get_thumbnail(
                 self.image, "50x50", crop='center', quality=99)
@@ -66,6 +66,14 @@ class Album(models.Model):
 
     def __str__(self):
         return self.title
+
+    def cover_thumbnail(self,):
+        if self.cover:
+            thumb = get_thumbnail(
+                self.cover, "50x50", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
 
     def album_photos(self):
         self.photos.all()
