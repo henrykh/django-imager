@@ -11,10 +11,10 @@
 
 <body>
     <header>
-        <h2 id="headerTitle"><a href="{% url 'home'}">Imgr</a></h2>
+        <h2 id="headerTitle"><a href="{% url 'home' %}">Imgr</a></h2>
         <nav>
             <ul>
-                <li><a href="{% url 'home'}">Home</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
                 {% if not user.is_authenticated %}
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                     <li><a href="{% url 'registration_register' %}">Join</a></li>

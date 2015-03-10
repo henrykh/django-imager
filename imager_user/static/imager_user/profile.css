@@ -1,0 +1,22 @@
+#profilePicture {
+    width: 45%;
+    height: 20em;
+    float: left;
+    margin-right: 5%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#profileInfo {
+    width: 50%;
+    background-color: green;
+    float: right;
+}
+
+#profileInfo .privacy {
+    float: right;
+}
+
+ul {
+    list-style: none;
+}

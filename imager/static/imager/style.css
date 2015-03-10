@@ -11,15 +11,23 @@ header {
     margin-bottom: 3em;
     display: block;
     height: 8em;
+    background-color: #a0f7a0;
 }
 
 #headerTitle {
-    float: left
+    float: left;
+    margin-left: 2%;
 }
+
+#headerTitle a {
+    color: gray;
+}
+
 
 nav {
     float: right;
     text-decoration: none;
+    margin-right: 2%;
 }
 
 nav ul {
