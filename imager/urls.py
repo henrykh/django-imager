@@ -11,8 +11,10 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^accounts/', include(
                            'registration.backends.default.urls')),
-                       url(r'^profile/', include('imager_user.urls', namespace='profile')),
-                       url(r'^content/', include('imager_images.urls', namespace='content'))
+                       url(r'^profile/', include(
+                           'imager_user.urls', namespace='profile')),
+                       url(r'^content/', include(
+                           'imager_images.urls', namespace='content'))
                        )
 
 if settings.DEBUG:
