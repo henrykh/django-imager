@@ -12,7 +12,7 @@ class ProfileInline(admin.StackedInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if obj:
             return ('user',
                     'follows',
