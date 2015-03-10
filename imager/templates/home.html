@@ -19,6 +19,7 @@
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                     <li><a href="{% url 'registration_register' %}">Join</a></li>
                 {% else %}
+                    <li><a href="{% url 'content:library' %}">Library</a></li>
                     <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
                 {% endif %}
             </ul>
