@@ -6,10 +6,12 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
                        # Examples:
-                       url(r'^$', 'imager.views.home', name='Home'),
+                       url(r'^$', 'imager.views.home', name='home'),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^accounts/', include(
-                           'registration.backends.default.urls'))
+                           'registration.backends.default.urls')),
+                       url(r'accounts/profile/',
+                           'imager.views.profile', name='profile')
                        )
 
 if settings.DEBUG:

@@ -17,3 +17,8 @@ from django.shortcuts import render
 def home(request):
     context = {'name': 'bob'}
     return render(request, 'home.html', context)
+
+
+def profile(request):
+    context = {'name': request.user}
+    return render(request, 'profile.html', context)

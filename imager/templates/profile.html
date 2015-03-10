@@ -7,7 +7,7 @@
 
 <body>
     <h2>
-        Title
+        Profile: {{user}}
     </h2>
     <div id="sidebar">
         {% block sidebar %}
@@ -19,7 +19,6 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'auth_logout' %}?next=/">Logout</li>
             {% endif %}
-            <li><a href="{% url 'registration_register' %}">Register</a></li>
         </ul>
         {% endblock %}
     </div>
