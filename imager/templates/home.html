@@ -19,7 +19,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'auth_logout' %}?next=/">Logout</li>
             {% endif %}
-            <li><a href="{% url 'registration_register' %}">Register</a></li>
+            <li><a href="{% url 'registration_register' %}">Join</a></li>
         </ul>
         {% endblock %}
     </div>
