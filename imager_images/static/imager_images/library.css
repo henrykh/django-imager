@@ -18,3 +18,13 @@
   font-size: 0.75em;
   color: #bdc3c7
 }
+
+.album_cover {
+  margin: auto;
+  padding: 2.5%;
+}
+
+.album_cover img {
+  margin: auto;
+  width: 100%;
+}

@@ -14,12 +14,14 @@
         <h3>Library</h3>
         <ul id="gallery"> 
             {% for album in albums %}
-                {% thumbnail album.cover.image "200x200" as thumb %}
-                <img src="{{ thumb.url }}">
-                {% empty %}
-                <img src="/static/imager_user/man.png">
-                {% endthumbnail %}
-                <li class="albumTitle">{{album.title}}</li>
+                <li class="album_cover">
+                    {% thumbnail album.cover.image "1000x1000" as thumb %}
+                        <img src="{{ thumb.url }}">
+                    {% empty %}
+                        <img src="/static/imager_user/man.png">
+                    {% endthumbnail %}
+                    <p>{{album.title}}</p>
+                </li>
             {% endfor %}
         </ul>
     </div>
