@@ -14,11 +14,10 @@
                 <li><a href="/">Home</a></li>
                 {% if not user.is_authenticated %}
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
-                {% endif %}
-                {% if user.is_authenticated %}
+                    <li><a href="{% url 'registration_register' %}">Join</a></li>
+                {% else %}
                     <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
                 {% endif %}
-                <li><a href="{% url 'registration_register' %}">Join</a></li>
             </ul>
         </nav>
     </header>
