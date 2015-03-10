@@ -11,6 +11,46 @@ class ProfileInline(admin.StackedInline):
 
 
 class ProfileAdmin(admin.ModelAdmin):
+    def get_fields(self, request, obj=None):
+        # import pdb; pdb.set_trace()
+        if obj:
+            return ('user',
+                    'follows',
+                    'blocking',
+                    'picture',
+                    # 'thumbnail',
+                    'picture_privacy',
+                    'phone_number',
+                    'phone_privacy',
+                    'birthday',
+                    'birthday_privacy',
+                    'name_privacy',
+                    'email_privacy',
+                    )
+        else:
+            return ('user',
+                    'follows',
+                    'blocking',
+                    'picture',
+                    'picture_privacy',
+                    'phone_number',
+                    'phone_privacy',
+                    'birthday',
+                    'birthday_privacy',
+                    'name_privacy',
+                    'email_privacy',
+                    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    )
+        else:
+            return ()
+
+    def thumbnail(self, obj):
+        return obj.picture_thumbnail()
+
     list_display = ('user',
                     'phone_number',
                     'birthday',

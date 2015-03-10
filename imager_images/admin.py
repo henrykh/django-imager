@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
-from sorl.thumbnail import get_thumbnail
 from imager_images.filters import PhotoSizeFilter
 from imager_images.forms import *
 from imager_images.models import Album, Photo
@@ -22,7 +21,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    'image_thumbnail',
+                    # 'thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -49,13 +48,8 @@ class PhotoAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def image_thumbnail(self, obj):
-        if obj.image:
-            thumb = get_thumbnail(
-                obj.image, "50x50", crop='center', quality=99)
-            return '<img src="%s"/>' % (thumb.url)
-        else:
-            return 'No Image'
+    def thumbnail(self, obj):
+        return obj.image_thumbnail()
 
     list_display = ('image',
                     'title',
