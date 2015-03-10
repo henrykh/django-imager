@@ -88,9 +88,8 @@ USE_L10N = True
 USE_TZ = True
 
 # Request context processor
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.request",
-)
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += ("django.core.context_processors.request",)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -98,8 +97,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "imager/static/")
+    os.path.join(BASE_DIR, "imager/static/"),
     )
 
 MEDIA_URL = "/media/"
