@@ -106,7 +106,10 @@ class PhotoInline(admin.TabularInline):
 
 
 class AlbumAdmin(admin.ModelAdmin):
+
     def get_form(self, request, obj=None, **kwargs):
+        import pdb; pdb.set_trace()
+
         request._obj_ = obj
         if not obj:
             self.form = NewAlbumForm
@@ -120,6 +123,7 @@ class AlbumAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'cover',
+                    # 'thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -145,6 +149,9 @@ class AlbumAdmin(admin.ModelAdmin):
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
             '/admin/auth/user/', obj.user.pk, obj.user)
+
+    def thumbnail(self, obj):
+        return obj.cover_thumbnail()
 
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
