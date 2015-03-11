@@ -1,0 +1,15 @@
+#photoStream .photo {
+    display: block;
+    float: left;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    position: relative;
+}
+
+
+#photoStream .photoTitle {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    color: white;
+}
