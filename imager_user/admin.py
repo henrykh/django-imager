@@ -19,7 +19,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     'follows',
                     'blocking',
                     'picture',
-                    'image_thumbnail',
+                    # 'image_thumbnail',
                     'picture_privacy',
                     'phone_number',
                     'phone_privacy',

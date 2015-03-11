@@ -22,7 +22,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    'image_thumbnail',
+                    # 'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -41,7 +41,7 @@ class PhotoAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
-                    'thumbnail',
+                    # 'thumbnail',
                     'date_uploaded',
                     'date_modified',
                     'size'
@@ -129,7 +129,7 @@ class AlbumAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'cover',
-                    'image_thumbnail',
+                    # 'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
