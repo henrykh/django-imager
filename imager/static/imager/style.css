@@ -15,7 +15,8 @@ header {
     margin-bottom: 3em;
     display: block;
     height: 8em;
-    background-color: #a0f7a0;
+    background-color: #2800D7;
+    color: white;
 }
 
 #headerTitle {
@@ -24,7 +25,7 @@ header {
 }
 
 #headerTitle a {
-    color: gray;
+    color: white;
 }
 
 
@@ -37,6 +38,10 @@ nav {
 nav li {
     display: inline-block;
     margin-left: 1em;
+}
+
+nav li a {
+    color: white;
 }
 
 #content {
