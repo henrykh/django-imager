@@ -19,10 +19,10 @@ class PhotoAdmin(admin.ModelAdmin):
         if obj:
             return ('user',
                     'image',
+                    'thumbnail',
                     'albums',
                     'title',
                     'description',
-                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -41,13 +41,41 @@ class PhotoAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
-                    'image_thumbnail',
+                    'thumbnail',
                     'date_uploaded',
                     'date_modified',
                     'size'
                     )
         else:
             return ()
+
+    def thumbnail(self, obj):
+        if obj.image:
+            thumb = get_thumbnail(
+                obj.image, "100x100", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
+
+    thumbnail.short_description = 'Image Thumbnail'
+    thumbnail.allow_tags = True
+
+    def user_linked(self, obj):
+        return '<a href=%s%s>%s</a>' % (
+            '/admin/auth/user/', obj.user.pk, obj.user)
+    user_linked.allow_tags = True
+    user_linked.short_description = 'User'
+
+    def size(self, obj):
+            if obj.image.size <= 1024:
+                return "{:0.1f} B".format(obj.file_size)
+            if obj.image.size <= 1024.0**2:
+                return "{:0.1f} KB".format(obj.file_size/1024.0)
+            if obj.image.size <= 1024.0**3:
+                return "{:0.1f} MB".format(obj.file_size/(1024.0**2))
+            if obj.image.size <= 1024.0**4:
+                return "{:0.1f} GB".format(obj.file_size/(1024.0**3))
+            return "0 MB"
 
     list_display = ('image',
                     'title',
@@ -75,36 +103,6 @@ class PhotoAdmin(admin.ModelAdmin):
                      'description'
                      )
 
-    def image_thumbnail(self, obj):
-        # import pdb; pdb.set_trace()
-
-        if obj.image:
-            thumb = get_thumbnail(
-                obj.image, "100x100", crop='center', quality=99)
-            return '<img src="%s"/>' % (thumb.url)
-        else:
-            return 'No Image'
-
-    image_thumbnail.short_description = 'Image Thumbnail'
-    image_thumbnail.allow_tags = True
-
-    def user_linked(self, obj):
-        return '<a href=%s%s>%s</a>' % (
-            '/admin/auth/user/', obj.user.pk, obj.user)
-    user_linked.allow_tags = True
-    user_linked.short_description = 'User'
-
-    def size(self, obj):
-            if obj.image.size <= 1024:
-                return "{:0.1f} B".format(obj.file_size)
-            if obj.image.size <= 1024.0**2:
-                return "{:0.1f} KB".format(obj.file_size/1024.0)
-            if obj.image.size <= 1024.0**3:
-                return "{:0.1f} MB".format(obj.file_size/(1024.0**2))
-            if obj.image.size <= 1024.0**4:
-                return "{:0.1f} GB".format(obj.file_size/(1024.0**3))
-            return "0 MB"
-
 
 class PhotoInline(admin.TabularInline):
     model = Photo.albums.through
@@ -117,8 +115,6 @@ class PhotoInline(admin.TabularInline):
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    # import pdb; pdb.set_trace()
-
     def get_form(self, request, obj=None, **kwargs):
         request._obj_ = obj
         if not obj:
@@ -133,7 +129,7 @@ class AlbumAdmin(admin.ModelAdmin):
                     'title',
                     'description',
                     'cover',
-                    # 'image_thumbnail',
+                    'thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -150,14 +146,14 @@ class AlbumAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
+                    'thumbnail',
                     'date_uploaded',
                     'date_modified',
                     )
         else:
             return ()
 
-    def image_thumbnail(self, obj):
-
+    def thumbnail(self, obj):
         if obj.cover.image:
             thumb = get_thumbnail(
                 obj.cover.image, "100x100", crop='center', quality=99)
@@ -165,8 +161,8 @@ class AlbumAdmin(admin.ModelAdmin):
         else:
             return 'No Image'
 
-    image_thumbnail.short_description = 'Image Thumbnail'
-    image_thumbnail.allow_tags = True
+    thumbnail.short_description = 'Cover Thumbnail'
+    thumbnail.allow_tags = True
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
@@ -174,7 +170,6 @@ class AlbumAdmin(admin.ModelAdmin):
 
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
-
 
     @csrf_protect_m
     @transaction.atomic

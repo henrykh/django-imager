@@ -19,7 +19,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     'follows',
                     'blocking',
                     'picture',
-                    # 'image_thumbnail',
+                    'thumbnail',
                     'picture_privacy',
                     'phone_number',
                     'phone_privacy',
@@ -45,11 +45,12 @@ class ProfileAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
+                    'thumbnail',
                     )
         else:
             return ()
 
-    def image_thumbnail(self, obj):
+    def thumbnail(self, obj):
         if obj.picture:
             thumb = get_thumbnail(
                 obj.picture, "100x100", crop='center', quality=99)
@@ -57,8 +58,8 @@ class ProfileAdmin(admin.ModelAdmin):
         else:
             return 'No Image'
 
-    image_thumbnail.short_description = 'Image Thumbnail'
-    image_thumbnail.allow_tags = True
+    thumbnail.short_description = 'Image Thumbnail'
+    thumbnail.allow_tags = True
 
     list_display = ('user',
                     'phone_number',
