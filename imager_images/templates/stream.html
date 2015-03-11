@@ -1,0 +1,21 @@
+{% extends "../../imager/templates/home.html" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/library.css' %}" />
+{% endblock %}
+
+{% block title %}Stream: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profileInfo">
+        <h3>Recent Photos</h3>
+        <ul id="photoStream"> 
+            {% for photo in photos %}
+                {% thumbnail photo.image "200x200" as thumb %}
+                <img src="{{ thumb.url }}">
+                {% endthumbnail %}
+                <li class="photoTitle">{{photo.title}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
