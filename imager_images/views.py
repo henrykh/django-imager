@@ -11,9 +11,9 @@ def library(request):
 
 @login_required
 def stream(request):
-    # import pdb; pdb.set_trace();
     stream_users = [profile.user for profile in request.user.profile.following()]
     stream_users.append(request.user)
     context = {'photos': Photo.objects.filter(
-        user__in=stream_users).filter(published__in=['pub', 'shd']).order_by('date_published')}
+        user__in=stream_users).filter(
+        published__in=['pub', 'shd']).order_by('date_published')}
     return render(request, 'stream.html', context)

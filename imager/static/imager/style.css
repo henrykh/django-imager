@@ -3,6 +3,10 @@ a {
     color: black;
 }
 
+ul {
+    list-style: none;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
 }
@@ -30,12 +34,9 @@ nav {
     margin-right: 2%;
 }
 
-nav ul {
-    list-style: none;
-}
-
 nav li {
     display: inline-block;
+    margin-left: 1em;
 }
 
 #content {
