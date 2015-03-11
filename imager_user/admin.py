@@ -52,10 +52,13 @@ class ProfileAdmin(admin.ModelAdmin):
     def image_thumbnail(self, obj):
         if obj.picture:
             thumb = get_thumbnail(
-                obj.picture, "50x50", crop='center', quality=99)
+                obj.picture, "100x100", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
             return 'No Image'
+
+    image_thumbnail.short_description = 'Image Thumbnail'
+    image_thumbnail.allow_tags = True
 
     list_display = ('user',
                     'phone_number',

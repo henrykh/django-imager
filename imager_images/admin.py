@@ -22,7 +22,7 @@ class PhotoAdmin(admin.ModelAdmin):
                     'albums',
                     'title',
                     'description',
-                    # 'image_thumbnail',
+                    'image_thumbnail',
                     'date_published',
                     'published',
                     'date_uploaded',
@@ -41,7 +41,7 @@ class PhotoAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ('user',
-                    # 'thumbnail',
+                    'image_thumbnail',
                     'date_uploaded',
                     'date_modified',
                     'size'
@@ -76,12 +76,17 @@ class PhotoAdmin(admin.ModelAdmin):
                      )
 
     def image_thumbnail(self, obj):
+        # import pdb; pdb.set_trace()
+
         if obj.image:
             thumb = get_thumbnail(
-                obj.image, "50x50", crop='center', quality=99)
+                obj.image, "100x100", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
             return 'No Image'
+
+    image_thumbnail.short_description = 'Image Thumbnail'
+    image_thumbnail.allow_tags = True
 
     def user_linked(self, obj):
         return '<a href=%s%s>%s</a>' % (
@@ -112,10 +117,9 @@ class PhotoInline(admin.TabularInline):
 
 
 class AlbumAdmin(admin.ModelAdmin):
+    # import pdb; pdb.set_trace()
 
     def get_form(self, request, obj=None, **kwargs):
-        # import pdb; pdb.set_trace()
-
         request._obj_ = obj
         if not obj:
             self.form = NewAlbumForm
@@ -152,17 +156,21 @@ class AlbumAdmin(admin.ModelAdmin):
         else:
             return ()
 
-    def user_linked(self, obj):
-        return '<a href=%s%s>%s</a>' % (
-            '/admin/auth/user/', obj.user.pk, obj.user)
-
     def image_thumbnail(self, obj):
+
         if obj.cover.image:
             thumb = get_thumbnail(
-                obj.cover.image, "50x50", crop='center', quality=99)
+                obj.cover.image, "100x100", crop='center', quality=99)
             return '<img src="%s"/>' % (thumb.url)
         else:
             return 'No Image'
+
+    image_thumbnail.short_description = 'Image Thumbnail'
+    image_thumbnail.allow_tags = True
+
+    def user_linked(self, obj):
+        return '<a href=%s%s>%s</a>' % (
+            '/admin/auth/user/', obj.user.pk, obj.user)
 
     user_linked.allow_tags = True
     user_linked.short_description = 'User'
