@@ -32,6 +32,7 @@ class PhotoAddView(CreateView):
 
 
 class PhotoUpdateView(UpdateView):
+    import pdb; pdb.set_trace()
     template_name = 'photo_form.html'
     model = Photo
 
@@ -44,6 +45,6 @@ class PhotoUpdateView(UpdateView):
 
 
 class PhotoDeleteView(DeleteView):
-    template_name = 'photo_form.html'
+    template_name = 'photo_confirm_delete.html'
     model = Photo
-    success_url = reverse_lazy('library')
+    success_url = reverse_lazy('images:library')

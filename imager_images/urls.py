@@ -11,8 +11,8 @@ urlpatterns = patterns('',
                            name='stream'),
                        url(r'^photo/add/$', login_required(PhotoAddView.as_view()),
                            name='photo_add'),
-                       url(r'^photo/update/(?P<pk>\d+)/$', PhotoUpdateView.as_view(),
+                       url(r'^photo/update/(?P<pk>\d+)/$', login_required(PhotoUpdateView.as_view()),
                            name='photo_update'),
-                       url(r'^photo/delete/(?P<pk>\d+)/$', PhotoDeleteView.as_view(),
-                           name='photo_update')
+                       url(r'^photo/delete/(?P<pk>\d+)/$', login_required(PhotoDeleteView.as_view()),
+                           name='photo_delete')
                        )
