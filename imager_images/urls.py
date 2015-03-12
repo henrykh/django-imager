@@ -1,16 +1,17 @@
 from django.conf.urls import patterns, url
 from imager_images.views import AlbumCreate, AlbumUpdate, AlbumDelete
-from imager_images.views import PhotoAddView, PhotoUpdateView, PhotoDeleteView, LibraryView
+from imager_images.views import PhotoAddView, PhotoUpdateView, PhotoDeleteView
+# LibraryView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
                        # Examples:
-                       # url(r'library/',
-                       #     'imager_images.views.library',
-                       #     name='library'),
                        url(r'library/',
-                           login_required(LibraryView.as_view()),
+                           'imager_images.views.library',
                            name='library'),
+                       # url(r'library/',
+                       #     login_required(LibraryView.as_view()),
+                       #     name='library'),
                        url(r'stream/', 'imager_images.views.stream',
                            name='stream'),
                        url(r'album/add/$',
