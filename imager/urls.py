@@ -7,6 +7,16 @@ from django.conf.urls.static import static
 urlpatterns = patterns('',
                        # Examples:
                        url(r'^$', 'imager.views.home', name='home'),
+<<<<<<< HEAD
+                       url(r'^grappelli/', include('grappelli.urls')),
+                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^accounts/', include(
+                           'registration.backends.default.urls')),
+                       url(r'^profile/', include(
+                           'imager_user.urls', namespace='profile')),
+                       url(r'^', include(
+                           'imager_images.urls', namespace='images'))
+=======
                        url(r'^grappelli/',
                            include('grappelli.urls')),
                        url(r'^admin/',
@@ -17,6 +27,7 @@ urlpatterns = patterns('',
                            include('imager_user.urls', namespace='profile')),
                        url(r'^',
                            include('imager_images.urls', namespace='images')),
+>>>>>>> 3124e880a617e6385fd6e8aac737b5d3a7281715
                        )
 
 if settings.DEBUG:

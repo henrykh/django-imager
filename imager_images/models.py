@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from sorl.thumbnail import ImageField
+from django.core.urlresolvers import reverse
 
 PRIVATE = 'pvt'
 SHARED = 'shd'
@@ -60,3 +61,6 @@ class Album(models.Model):
 
     def album_photos(self):
         self.photos.all()
+
+    def get_absolute_url(self):
+        return reverse('album', kwargs={'pk': self.pk})

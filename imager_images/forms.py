@@ -27,9 +27,14 @@ class EditAlbumForm(ModelForm):
 #         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
 
 #         # # self.fields['photo'].queryset.filter(user=self.instance.album.user)
-#         # import pdb; pdb.set_trace()
-#         self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
-#              user=self.instance.album.user)
+#         import pdb; pdb.set_trace()
+#         try:
+#             self.instance.album
+#         except:
+#             pass
+#         else:
+#             self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
+#                 user=self.instance.album.user)
 
 #     class Meta:
 #          model = Photo.albums.through
