@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView
 from imager_images.models import Photo, Album
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.views import redirect_to_login
 
 
 @login_required
@@ -28,11 +29,35 @@ class AlbumCreate(CreateView):
 
 
 class AlbumUpdate(UpdateView):
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(PhotoUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
     model = Album
     field = ['title', 'description', 'published']
 
 
 class AlbumDelete(DeleteView):
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(PhotoUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
     model = Album
 
 
@@ -47,7 +72,18 @@ class PhotoAddView(CreateView):
 
 
 class PhotoUpdateView(UpdateView):
-    import pdb; pdb.set_trace()
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(PhotoUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
     template_name = 'photo_form.html'
     model = Photo
 
@@ -60,6 +96,18 @@ class PhotoUpdateView(UpdateView):
 
 
 class PhotoDeleteView(DeleteView):
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(PhotoUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
     template_name = 'photo_confirm_delete.html'
     model = Photo
     success_url = reverse_lazy('images:library')
