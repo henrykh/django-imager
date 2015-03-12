@@ -4,6 +4,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from imager_images.models import Photo, Album
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
+from imager_images.forms import PhotoUpdateViewForm
 
 
 @login_required
@@ -84,15 +85,11 @@ class PhotoUpdateView(UpdateView):
         return super(PhotoUpdateView, self).dispatch(
             request, *args, **kwargs)
 
-    template_name = 'photo_form.html'
+    form_class = PhotoUpdateViewForm
     model = Photo
+    template_name = 'photo_form.html'
 
-    fields = ('albums',
-              'title',
-              'description',
-              'date_published',
-              'published',
-              )
+
 
 
 class PhotoDeleteView(DeleteView):

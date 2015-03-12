@@ -54,3 +54,20 @@ class EditPhotoForm(ModelForm):
     class Meta:
         model = Photo
         exclude = []
+
+
+class PhotoUpdateViewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
+        # import ipdb; ipdb.set_trace()
+        self.fields['albums'].queryset = self.instance.user.albums.all()
+
+    class Meta:
+        model = Photo
+
+        fields = ('albums',
+                  'title',
+                  'description',
+                  'date_published',
+                  'published',
+                  )
