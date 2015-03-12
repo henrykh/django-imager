@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView
 from imager_images.models import Photo, Album
+from django.core.urlresolvers import reverse_lazy
+
 
 @login_required
 def library(request):
-    # import pdb; pdb.set_trace();
     context = {'albums': request.user.albums.all()}
     return render(request, 'library.html', context)
 
@@ -33,3 +34,31 @@ class AlbumUpdate(UpdateView):
 
 class AlbumDelete(DeleteView):
     model = Album
+
+
+class PhotoAddView(CreateView):
+    template_name = 'photo_form.html'
+    model = Photo
+    fields = ('image',
+              'title',
+              'description',
+              'published',
+              )
+
+
+class PhotoUpdateView(UpdateView):
+    template_name = 'photo_form.html'
+    model = Photo
+
+    fields = ('albums',
+              'title',
+              'description',
+              'date_published',
+              'published',
+              )
+
+
+class PhotoDeleteView(DeleteView):
+    template_name = 'photo_form.html'
+    model = Photo
+    success_url = reverse_lazy('library')
