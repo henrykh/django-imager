@@ -13,8 +13,8 @@ urlpatterns = patterns('',
                            'registration.backends.default.urls')),
                        url(r'^profile/', include(
                            'imager_user.urls', namespace='profile')),
-                       url(r'^content/', include(
-                           'imager_images.urls', namespace='content'))
+                       url(r'^', include(
+                           'imager_images.urls', namespace='images'))
                        )
 
 if settings.DEBUG:
