@@ -63,4 +63,5 @@ class Album(models.Model):
         self.photos.all()
 
     def get_absolute_url(self):
-        return reverse('album', kwargs={'pk': self.pk})
+        # import pdb; pdb.set_trace()
+        return reverse('images:album_create', kwargs={'pk': self.pk})
