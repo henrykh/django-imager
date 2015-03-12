@@ -106,7 +106,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 class PhotoInline(admin.TabularInline):
     model = Photo.albums.through
-    # form = PhotoAlbumForm
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super(PhotoInline, self).formfield_for_foreignkey(
             db_field, request, **kwargs)

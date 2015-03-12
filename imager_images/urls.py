@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
 from imager_images.views import AlbumCreate, AlbumUpdate, AlbumDelete
 from imager_images.views import PhotoAddView, PhotoUpdateView, PhotoDeleteView
-# LibraryView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
@@ -31,5 +30,8 @@ urlpatterns = patterns('',
                            name='photo_update'),
                        url(r'^photo/delete/(?P<pk>\d+)/$',
                            login_required(PhotoDeleteView.as_view()),
-                           name='photo_delete')
+                           name='photo_delete'),
+                       url(r'^album/(?P<pk>\d+)/$',
+                           'imager_images.views.AlbumPhotoList',
+                           name='album_photo_list')
                        )

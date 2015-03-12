@@ -23,24 +23,6 @@ class EditAlbumForm(ModelForm):
         exclude = []
 
 
-# class PhotoAlbumForm(ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
-
-#         # # self.fields['photo'].queryset.filter(user=self.instance.album.user)
-#         import pdb; pdb.set_trace()
-#         try:
-#             self.instance.album
-#         except:
-#             pass
-#         else:
-#             self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
-#                 user=self.instance.album.user)
-
-#     class Meta:
-#          model = Photo.albums.through
-
-
 class NewPhotoForm(ModelForm):
     class Meta:
         model = Photo
@@ -56,6 +38,22 @@ class EditPhotoForm(ModelForm):
         model = Photo
         exclude = []
 
+
+class PhotoUpdateViewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
+        # import ipdb; ipdb.set_trace()
+        self.fields['albums'].queryset = self.instance.user.albums.all()
+
+    class Meta:
+        model = Photo
+
+        fields = ('albums',
+                  'title',
+                  'description',
+                  'date_published',
+                  'published',
+                  )
 
 # class AlbumUpdateViewForm(ModelForm):
 #     def __init__(self, *args, **kwargs):
@@ -74,19 +72,19 @@ class EditPhotoForm(ModelForm):
 
 # PhotoFormSet = inlineformset_factory(Album, Photo)
 
+# class PhotoAlbumForm(ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
 
-class PhotoUpdateViewForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
-        # import ipdb; ipdb.set_trace()
-        self.fields['albums'].queryset = self.instance.user.albums.all()
+#         # # self.fields['photo'].queryset.filter(user=self.instance.album.user)
+#         import pdb; pdb.set_trace()
+#         try:
+#             self.instance.album
+#         except:
+#             pass
+#         else:
+#             self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
+#                 user=self.instance.album.user)
 
-    class Meta:
-        model = Photo
-
-        fields = ('albums',
-                  'title',
-                  'description',
-                  'date_published',
-                  'published',
-                  )
+#     class Meta:
+#          model = Photo.albums.through

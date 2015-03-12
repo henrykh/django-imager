@@ -10,20 +10,16 @@ from imager_images.models import Photo, Album
 
 @login_required
 def library(request):
+    import ipdb; ipdb.set_trace()
+
     context = {'albums': request.user.albums.all()}
     return render(request, 'library.html', context)
 
 
-# class LibraryView(ListView):
-#     def get_queryset(self):
-#         import ipdb; ipdb.set_trace()
-#         field = super(LibraryView, self).formfield_for_foreignkey(
-#             db_field, request, **kwargs)
-#         field.queryset = field.queryset.filter(user=request._obj_.user)
-#         return field
-
-#     model = Album
-#     template_name = 'library.html'
+@login_required
+def AlbumPhotoList(request, pk):
+    context = {'photos': Photo.objects.filter(user=request.user).filter(albums__pk=pk)}
+    return render(request, 'albumphoto_list.html', context)
 
 
 @login_required
@@ -97,6 +93,9 @@ class PhotoUpdateView(UpdateView):
             return redirect_to_login(request.get_full_path())
         return super(PhotoUpdateView, self).dispatch(
             request, *args, **kwargs)
+
+    def get_success_url(self):
+        return self.request.META['HTTP_REFERER'].split(self.request.META['HTTP_HOST'])[-1].lstrip('/')
 
     form_class = PhotoUpdateViewForm
     model = Photo
