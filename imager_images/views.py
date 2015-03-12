@@ -90,8 +90,6 @@ class PhotoUpdateView(UpdateView):
     template_name = 'photo_form.html'
 
 
-
-
 class PhotoDeleteView(DeleteView):
     def user_passes_test(self, request):
         if request.user.is_authenticated():

@@ -1,5 +1,6 @@
 from django.forms.models import ModelForm
 from imager_images.models import Album, Photo
+# from django.forms.models import inlineformset_factory
 
 
 class NewAlbumForm(ModelForm):
@@ -54,6 +55,24 @@ class EditPhotoForm(ModelForm):
     class Meta:
         model = Photo
         exclude = []
+
+
+# class AlbumUpdateViewForm(ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
+#         # import ipdb; ipdb.set_trace()
+#         self.fields['photos'].queryset = self.instance.user.photos.all()
+
+#     class Meta:
+#         model = Album
+
+#         fields = ('title',
+#                   'description',
+#                   'photos',
+#                   'published'
+#                   )
+
+# PhotoFormSet = inlineformset_factory(Album, Photo)
 
 
 class PhotoUpdateViewForm(ModelForm):

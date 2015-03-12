@@ -1,0 +1,12 @@
+{% extends "../../imager/templates/home.html" %}
+{% block title %}Album: {{user}}{% endblock %}
+
+{% block body %}
+<h2>
+<a href="{% url 'images:album_delete' object.pk %}">Delete</a>
+</h2>
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create" />
+</form>
+{% endblock %}
