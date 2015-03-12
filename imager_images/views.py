@@ -1,34 +1,36 @@
 from django import forms
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import PhotoUpdateViewForm
 from imager_images.models import Photo, Album
 
 
+# @login_required
+# def library(request):
+#     context = {'albums': request.user.albums.all()}
+#     return render(request, 'library.html', context)
 
-@login_required
-def library(request):
-    context = {'albums': request.user.albums.all()}
-    return render(request, 'library.html', context)
 
+class LibraryView(ListView):
 
-# class LibraryForm(FormView):
-#     def user_passes_test(self, request):
-#         if request.user.is_authenticated():
-#             self.object = self.get_object()
-#             return self.object.user == request.user
-#         return False
+    def user_passes_test(self, request):
+        # import ipdb; ipdb.set_trace()
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
 
-#     def dispatch(self, request, *args, **kwargs):
-#         if not self.user_passes_test(request):
-#             return redirect_to_login(request.get_full_path())
-#         return super(PhotoUpdateView, self).dispatch(
-#             request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(PhotoUpdateView, self).dispatch(
+            request, *args, **kwargs)
 
-#     template_name = 'library.html'
+    model = Album
+    template_name = 'library.html'
 
 
 @login_required
