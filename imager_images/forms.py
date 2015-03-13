@@ -5,8 +5,6 @@ from imager_images.models import Album
 
 
 class NewAlbumAdminForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(NewAlbumAdminForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Album
@@ -21,6 +19,23 @@ class EditAlbumForm(ModelForm):
 
     class Meta:
         model = Album
+        exclude = []
+
+
+class NewPhotoForm(ModelForm):
+
+    class Meta:
+        model = Photo
+        exclude = []
+
+
+class EditPhotoAdminForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditPhotoAdminForm, self).__init__(*args, **kwargs)
+        self.fields['albums'].queryset = self.instance.user.albums.all()
+
+    class Meta:
+        model = Photo
         exclude = []
 
 
@@ -65,16 +80,6 @@ class CreatePhotoViewForm(ModelForm):
                   ]
 
 
-class EditPhotoForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(EditPhotoForm, self).__init__(*args, **kwargs)
-        self.fields['albums'].queryset = self.instance.user.albums.all()
-
-    class Meta:
-        model = Photo
-        exclude = []
-
-
 class PhotoUpdateViewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
@@ -106,7 +111,6 @@ class PhotoUpdateViewForm(ModelForm):
 #                   'published'
 #                   )
 
-# PhotoFormSet = inlineformset_factory(Album, Photo)
 
 # class PhotoAlbumForm(ModelForm):
 #     def __init__(self, *args, **kwargs):
@@ -118,8 +122,7 @@ class PhotoUpdateViewForm(ModelForm):
 #             self.instance.album
 #         except:
 #             pass
-#         else:
-#             self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
+#         else:'photo'].queryset = self.fields['photo'].queryset.filter(
 #                 user=self.instance.album.user)
 
 #     class Meta:

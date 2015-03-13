@@ -12,7 +12,7 @@ class PhotoAdmin(admin.ModelAdmin):
         if not obj:
             self.form = NewPhotoForm
         else:
-            self.form = EditPhotoForm
+            self.form = EditPhotoAdminForm
         return super(PhotoAdmin, self).get_form(request, obj, **kwargs)
 
     def get_fields(self, request, obj=None):
@@ -118,7 +118,7 @@ class AlbumAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         request._obj_ = obj
         if not obj:
-            self.form = NewAlbumForm
+            self.form = NewAlbumAdminForm
         else:
             self.form = EditAlbumForm
         return super(AlbumAdmin, self).get_form(request, obj, **kwargs)
