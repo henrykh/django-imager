@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import CreateAlbumForm, EditAlbumForm, PhotoUpdateViewForm
 from imager_images.models import Photo, Album
+from django.core.urlresolvers import reverse
 
 
 @login_required
@@ -38,10 +39,12 @@ class AlbumCreate(CreateView):
     form_class = CreateAlbumForm
 
     def get_form_kwargs(self):
-        kwargs = super( AlbumCreate, self ).get_form_kwargs()
+        kwargs = super(AlbumCreate, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
+    def get_success_url(self):
+        return reverse('images:album_update', kwargs={'pk': self.object.pk})
 
 
 class AlbumUpdate(UpdateView):
@@ -61,6 +64,7 @@ class AlbumUpdate(UpdateView):
     model = Album
     form = EditAlbumForm
     field = ['title', 'description', 'published']
+
 
 class AlbumDelete(DeleteView):
     def user_passes_test(self, request):
