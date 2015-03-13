@@ -35,6 +35,10 @@ class ProfileUpdateView(UpdateView):
         return super(ProfileUpdateView, self).dispatch(
             request, *args, **kwargs)
 
+    def get_success_url(self):
+        # import ipdb; ipdb.set_trace()
+        return reverse('profile:profile')
+
     form_class = ProfileUpdateViewForm
     model = ImagerProfile
     template_name = 'profile_form.html'

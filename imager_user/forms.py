@@ -10,17 +10,28 @@ class ProfileUpdateViewForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('instance'):
-            import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             firstName = kwargs['instance'].user.first_name
             kwargs.setdefault('initial', {})['first_name'] = firstName
 
             lastName = kwargs['instance'].user.last_name
             kwargs.setdefault('initial', {})['last_name'] = lastName
 
-            email = kwargs['instance'].user.email
-            kwargs.setdefault('initial', {})['email_address'] = email
-
+            emailAddress = kwargs['instance'].user.email
+            kwargs.setdefault('initial', {})['email_address'] = emailAddress
         return super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        kwargs['commit'] = False
+        # import ipdb; ipdb.set_trace()
+        obj = super(ProfileUpdateViewForm, self).save(*args, **kwargs)
+        import ipdb; ipdb.set_trace()
+        obj.user.first_name = self.cleaned_data['first_name']
+        obj.user.last_name = self.cleaned_data['last_name']
+        obj.user.email = self.cleaned_data['email_address']
+        obj.user.save()
+        obj.save()
+        return obj
 
     class Meta:
         model = ImagerProfile
