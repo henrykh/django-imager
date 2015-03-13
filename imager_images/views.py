@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
-from imager_images.forms import CreateAlbumForm, EditAlbumForm, PhotoUpdateViewForm
+from imager_images.forms import CreateAlbumViewForm, EditAlbumForm, PhotoUpdateViewForm, CreatePhotoViewForm
 from imager_images.models import Photo, Album
 from django.core.urlresolvers import reverse
 
@@ -36,7 +36,7 @@ def stream(request):
 class AlbumCreate(CreateView):
     template_name = "new_album_form.html"
     model = Album
-    form_class = CreateAlbumForm
+    form_class = CreateAlbumViewForm
 
     def get_form_kwargs(self):
         kwargs = super(AlbumCreate, self).get_form_kwargs()
@@ -83,6 +83,18 @@ class AlbumDelete(DeleteView):
 
 
 class PhotoAddView(CreateView):
+    template_name = "new_photo_form.html"
+    model = Photo
+    form_class = CreatePhotoViewForm
+
+    def get_form_kwargs(self):
+        kwargs = super(PhotoAddView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('images:photo_update', kwargs={'pk': self.object.pk})
+
     template_name = 'photo_form.html'
     model = Photo
     fields = ('image',

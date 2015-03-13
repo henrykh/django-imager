@@ -4,9 +4,9 @@ from imager_images.models import Album
 # from django.forms.models import inlineformset_factory
 
 
-class NewAlbumForm(ModelForm):
+class NewAlbumAdminForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(NewAlbumForm, self).__init__(*args, **kwargs)
+        super(NewAlbumAdminForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Album
@@ -24,15 +24,14 @@ class EditAlbumForm(ModelForm):
         exclude = []
 
 
-class CreateAlbumForm(ModelForm):
+class CreateAlbumViewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('user', None)
-        return super(CreateAlbumForm, self).__init__(*args, **kwargs)
+        return super(CreateAlbumViewForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        # import pdb; pdb.set_trace()
         kwargs['commit'] = False
-        obj = super(CreateAlbumForm, self).save(*args, **kwargs)
+        obj = super(CreateAlbumViewForm, self).save(*args, **kwargs)
         if self.request:
             obj.user = self.request
         obj.save()
@@ -43,30 +42,27 @@ class CreateAlbumForm(ModelForm):
         fields = ['title', 'description', 'published']
 
 
+class CreatePhotoViewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('user', None)
+        return super(CreatePhotoViewForm, self).__init__(*args, **kwargs)
 
-# class PhotoAlbumForm(ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        # import pdb; pdb.set_trace();
+        kwargs['commit'] = False
+        obj = super(CreatePhotoViewForm, self).save(*args, **kwargs)
+        if self.request:
+            obj.user = self.request
+        obj.save()
+        return obj
 
-#         # # self.fields['photo'].queryset.filter(user=self.instance.album.user)
-#         import pdb; pdb.set_trace()
-#         try:
-#             self.instance.album
-#         except:
-#             pass
-#         else:
-#             self.fields['photo'].queryset = self.fields['photo'].queryset.filter(
-#                 user=self.instance.album.user)
-
-#     class Meta:
-#          model = Photo.albums.through
-
-
-
-class NewPhotoForm(ModelForm):
     class Meta:
         model = Photo
-        exclude = []
+        fields = ['image',
+                  'title',
+                  'description',
+                  'published',
+                  ]
 
 
 class EditPhotoForm(ModelForm):
