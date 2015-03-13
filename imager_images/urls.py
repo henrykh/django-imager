@@ -4,13 +4,9 @@ from imager_images.views import PhotoAddView, PhotoUpdateView, PhotoDeleteView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
-                       # Examples:
                        url(r'library/',
                            'imager_images.views.library',
                            name='library'),
-                       # url(r'library/',
-                       #     login_required(LibraryView.as_view()),
-                       #     name='library'),
                        url(r'stream/', 'imager_images.views.stream',
                            name='stream'),
                        url(r'album/add/$',
@@ -34,4 +30,7 @@ urlpatterns = patterns('',
                        url(r'^album/(?P<pk>\d+)/$',
                            'imager_images.views.AlbumPhotoList',
                            name='album_photo_list')
+                       url(r'^album/loose/$',
+                           'imager_images.views.LoosePhotosList',
+                           name='loose_photos_list')
                        )

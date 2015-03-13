@@ -1,7 +1,6 @@
-from django import forms
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import PhotoUpdateViewForm
@@ -10,16 +9,28 @@ from imager_images.models import Photo, Album
 
 @login_required
 def library(request):
-    context = {'albums': request.user.albums.all()}
+    context = {'albums': request.user.albums.all(),
+               'photoall': request.user.photos.filter('?')[0],
+               'photoalb': request.user.photos.albums.filter(blank=True).filter('?')[0],
+               }
     return render(request, 'library.html', context)
 
 
 @login_required
 def AlbumPhotoList(request, pk):
-    context = {'photos': Photo.objects.filter(user=request.user).filter(albums__pk=pk),
-               'source': request.META['PATH_INFO']}
+    context = {'photos': Photo.objects
+               .filter(user=request.user)
+               .filter(albums__pk=pk),
+               'source': request.META['PATH_INFO']
+               }
     return render(request, 'albumphoto_list.html', context)
 
+
+@login_required
+def LoosePhotosList(request):
+    context = {'photos': request.user.photos.albums.filter(blank=True)
+               }
+    return render(request, 'loosephotos_list.html', context)
 
 @login_required
 def stream(request):
