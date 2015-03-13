@@ -20,8 +20,10 @@ class ProfileUpdateViewForm(ModelForm):
             emailAddress = kwargs['instance'].user.email
             kwargs.setdefault('initial', {})['email_address'] = emailAddress
 
-        self.base_fields['follows'].queryset = ImagerProfile.objects.exclude(user=kwargs['instance'].user)
-        self.base_fields['blocking'].queryset = ImagerProfile.objects.exclude(user=kwargs['instance'].user)
+        self.base_fields['follows'].queryset = ImagerProfile.objects.exclude(
+            user=kwargs['instance'].user)
+        self.base_fields['blocking'].queryset = ImagerProfile.objects.exclude(
+            user=kwargs['instance'].user)
 
         return super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
 

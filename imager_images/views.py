@@ -81,7 +81,9 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
+@login_required
 def album_create(request, *args, **kwargs):
+    import ipdb; ipdb.set_trace()
     if request.POST:
 
         form = CreateAlbumViewForm(request.POST)
@@ -122,7 +124,6 @@ def album_create(request, *args, **kwargs):
 
 #     def get_success_url(self):
 #         return reverse('images:album_update', kwargs={'pk': self.object.pk})
-
 
 class AlbumUpdate(UpdateView):
     def user_passes_test(self, request):
