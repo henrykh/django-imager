@@ -25,7 +25,7 @@ class ProfileUpdateViewForm(ModelForm):
         kwargs['commit'] = False
         # import ipdb; ipdb.set_trace()
         obj = super(ProfileUpdateViewForm, self).save(*args, **kwargs)
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         obj.user.first_name = self.cleaned_data['first_name']
         obj.user.last_name = self.cleaned_data['last_name']
         obj.user.email = self.cleaned_data['email_address']

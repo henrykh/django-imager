@@ -1,8 +1,10 @@
+from django import forms
 from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
                                   )
 from django.forms.models import inlineformset_factory
+
 
 class NewAlbumAdminForm(ModelForm):
 
@@ -39,28 +41,27 @@ class EditPhotoAdminForm(ModelForm):
         exclude = []
 
 
-AddImageFormSet = inlineformset_factory(Album,
-                                        Photo.albums.through,
-                                        can_delete=False)
-
-
 class CreateAlbumViewForm(ModelForm):
+    photos = forms.ModelMultipleChoiceField(
+        Photo, label='Photos', required=False)
+
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('user', None)
-        return super(CreateAlbumViewForm, self).__init__(*args, **kwargs)
+        super(CreateAlbumViewForm, self).__init__(*args, **kwargs)
+        user = self.initial.get('user')
+        self.fields['photos'].queryset = Photo.objects.filter(user=user)
 
     def save(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
         kwargs['commit'] = False
         obj = super(CreateAlbumViewForm, self).save(*args, **kwargs)
-        if user:
-            obj.user = user
         obj.save()
+        obj.photos.add(*self.cleaned_data['photos'])
+
         return obj
 
     class Meta:
         model = Album
-        fields = ['title', 'description', 'published']
+        fields = ['user', 'title', 'description', 'published']
+        widgets = {'user': forms.HiddenInput, }
 
 
 class CreatePhotoViewForm(ModelForm):

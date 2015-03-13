@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from imager_images.views import AlbumUpdate, AlbumDelete
+from imager_images.views import AlbumCreate, AlbumUpdate, AlbumDelete
 from imager_images.views import PhotoAddView, PhotoUpdateView, PhotoDeleteView
 from django.contrib.auth.decorators import login_required
 
@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        url(r'stream/', 'imager_images.views.stream',
                            name='stream'),
                        url(r'album/add/$',
-                           'imager_images.views.album_create',
+                           login_required(AlbumCreate.as_view()),
                            name='album_add'),
                        url(r'album/update/(?P<pk>\d+)/$',
                            login_required(AlbumUpdate.as_view()),
