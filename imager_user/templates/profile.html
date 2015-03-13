@@ -8,6 +8,7 @@
 {% block title %}Profile: {{user}}{% endblock %}
 
 {% block body %}
+    <h3>{{user}}'s Profile</h3>
     {% if user.profile.picture %}
         <div id="profilePicture" style="background-image: url({{user.profile.picture.url}})">
         </div>

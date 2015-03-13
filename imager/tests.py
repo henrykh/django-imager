@@ -1,6 +1,7 @@
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
+from imager
 
 
 class LoggedInTestCase(TestCase):
@@ -19,13 +20,23 @@ class LoggedInTestCase(TestCase):
     def test_loggedin_home(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, template_name='home.html')
-        print(response.content)
-        self.assertIn('<title>Profile: test_username</title>',
+        self.assertIn('Welcome back {}! Continue being awesome!'.format(self.username),
                       response.content)
 
     def test_loggedin_profile(self):
         response = self.client.get('/profile/')
         self.assertTemplateUsed(response, template_name='profile.html')
-        self.assertIn('<title>Profile: test_username</title>',
+        self.assertIn("{}'s Profile".format(self.username),
                       response.content)
 
+    def test_loggedin_stream(self):
+        response = self.client.get('/stream/')
+        self.assertTemplateUsed(response, template_name='stream.html')
+        self.assertIn("{}'s Stream".format(self.username),
+                      response.content)
+
+    def test_loggedin_library(self):
+        response = self.client.get('/library/')
+        self.assertTemplateUsed(response, template_name='library.html')
+        self.assertIn("{}'s Library".format(self.username),
+                      response.content)
