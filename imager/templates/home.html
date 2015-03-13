@@ -31,9 +31,15 @@
     <div id="content">
         {% block body %}
             <div id="coverPhoto" style="background-image: url({{cover_photo_url}});"></div>
-            <div id="text">
-                Welcome to Imgr! Sign up to share images and be awesome!
-            </div>
+            {% if not user.is_authenticated %}
+                <div id="text">
+                    Welcome to Imgr! Sign up to share images and be awesome!
+                </div>
+            {% else %}
+                <div id="text">
+                    Welcome to back {{user}}! Continue being awesome!
+                </div>
+            {% endif %}
         {% endblock %}
     </div>
 </body>
