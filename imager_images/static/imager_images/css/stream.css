@@ -19,3 +19,11 @@
     margin-left: 5px;
     color: white;
 }
+.photo {
+    width: 30%;
+    margin: 1.666%;
+}
+
+.photo img {
+    width: 100%;
+}

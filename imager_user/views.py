@@ -17,22 +17,22 @@ def profile_edit(request):
     return render(request, 'profile_edit.html', context)
 
 
-class ProfileEdit(UpdateView):
-    def user_passes_test(self, request):
-        if request.user.is_authenticated():
-            self.object = self.get_object()
-            return self.object.user == request.user
-        return False
+# class ProfileEdit(UpdateView):
+#     def user_passes_test(self, request):
+#         if request.user.is_authenticated():
+#             self.object = self.get_object()
+#             return self.object.user == request.user
+#         return False
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.user_passes_test(request):
-            return redirect_to_login(request.get_full_path())
-        return super(PhotoUpdateView, self).dispatch(
-            request, *args, **kwargs)
+#     def dispatch(self, request, *args, **kwargs):
+#         if not self.user_passes_test(request):
+#             return redirect_to_login(request.get_full_path())
+#         return super(ProfileEdit, self).dispatch(
+#             request, *args, **kwargs)
 
-    def get_success_url(self):
-        return self.request.GET['src']
+#     def get_success_url(self):
+#         return self.request.GET['src']
 
-    form_class = PhotoUpdateViewForm
-    model = ImagerProfile
-    template_name = 'profile_edit.html'
+#     form_class = PhotoUpdateViewForm
+#     model = ImagerProfile
+#     template_name = 'profile_edit.html'
