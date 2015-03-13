@@ -20,6 +20,9 @@ from imager_images.models import (Photo,
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.models import User
+
+
 
 
 @login_required
@@ -79,23 +82,28 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
-def album_create(request):
+def album_create(request, *args, **kwargs):
     if request.POST:
 
         form = CreateAlbumViewForm(request.POST)
         if form.is_valid():
-            import pdb; pdb.set_trace()
-            album = form.save(commit=False)
-            add_image_formset = AddImageFormSet(request.POST, instance=album)
+            kwargs['user'] = request.user
+            album = form.save(**kwargs)
+            add_image_formset = AddImageFormSet(
+                request.POST, instance=album,
+                )
 
             if add_image_formset.is_valid():
                 album.save()
-                # import pdb; pdb.set_trace()
                 add_image_formset.save()
-                return HttpResponseRedirect(reverse(''))
+                return HttpResponseRedirect(reverse(
+                    'images:albumphoto_list', kwargs={'pk': album.pk}))
     else:
         form = CreateAlbumViewForm()
-        add_image_formset = AddImageFormSet(instance=Album())
+        # import pdb; pdb.set_trace()
+        add_image_formset = AddImageFormSet(instance=Album(),
+                                            queryset=Photo.albums.through.objects.filter(
+                                                photo__user=request.user))
     return render_to_response("new_album_form.html", {
             "form": form,
             "add_image_formset": add_image_formset,
