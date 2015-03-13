@@ -29,8 +29,11 @@ urlpatterns = patterns('',
                            name='photo_delete'),
                        url(r'^album/(?P<pk>\d+)/$',
                            'imager_images.views.AlbumPhotoList',
-                           name='album_photo_list'),
-                       url(r'^album/loose/$',
+                           name='albumphoto_list'),
+                       url(r'^photos/loose/$',
                            'imager_images.views.LoosePhotosList',
-                           name='loose_photos_list')
+                           name='loosephotos_list'),
+                       url(r'^photos/all/$',
+                           'imager_images.views.AllPhotosList',
+                           name='allphotos_list')
                        )
