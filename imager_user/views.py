@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.views.generic import UpdateView
+from django.core.urlresolvers import (reverse,
+                                      reverse_lazy
+                                      )
 from imager_user.models import ImagerProfile
 from imager_user.forms import ProfileUpdateViewForm
 
@@ -13,8 +16,9 @@ def profile(request):
 
 
 @login_required
-def profile_edit(request):
-    context = {'name': request.user}
+def profile_update(request):
+    # import ipdb; ipdb.set_trace()
+    context = {'request': request}
     return render(request, 'profile_edit.html', context)
 
 
