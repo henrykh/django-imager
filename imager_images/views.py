@@ -20,8 +20,6 @@ from imager_images.models import (Photo,
 
 @login_required
 def library(request):
-    # import ipdb; ipdb.set_trace()
-
     try:
         photoNoAlb = request.user.photos.filter(albums__isnull=True).order_by('?')[0]
     except(IndexError):
