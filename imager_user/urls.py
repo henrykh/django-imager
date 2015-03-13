@@ -10,6 +10,4 @@ urlpatterns = patterns('',
                        url(r'^update/(?P<pk>\d+)/$',
                            login_required(ProfileUpdateView.as_view()),
                            name='profile_update'),
-                       # url(r'^update/$', 'imager_user.views.profile_update',
-                       #     name='profile_update')
                        )
