@@ -1,12 +1,21 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.views.generic import (CreateView,
+                                  UpdateView,
+                                  DeleteView
+                                  )
+from django.core.urlresolvers import (reverse,
+                                      reverse_lazy
+                                      )
 from django.contrib.auth.views import redirect_to_login
-from imager_images.forms import CreateAlbumViewForm, EditAlbumForm, PhotoUpdateViewForm, CreatePhotoViewForm
-from imager_images.models import Photo, Album
-from django.core.urlresolvers import reverse
-
+from imager_images.forms import (CreateAlbumViewForm,
+                                 EditAlbumForm,
+                                 PhotoUpdateViewForm,
+                                 CreatePhotoViewForm
+                                 )
+from imager_images.models import (Photo,
+                                  Album
+                                  )
 
 @login_required
 def library(request):

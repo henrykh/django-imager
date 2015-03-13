@@ -1,7 +1,7 @@
 from django.forms.models import ModelForm
-from imager_images.models import Album, Photo
-from imager_images.models import Album
-# from django.forms.models import inlineformset_factory
+from imager_images.models import (Album,
+                                  Photo
+                                  )
 
 
 class NewAlbumAdminForm(ModelForm):

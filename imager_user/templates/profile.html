@@ -18,11 +18,13 @@
     <div id="profileInfo">
         <h3>Profile Info</h3>
         <ul>
+            {% if profileID %}
             <li id="username">{{user}}<span class="privacy">{{user.profile.name_privacy}}</span></li>
             <li id="email">{{user.email}}<span class="privacy">{{user.profile.email_privacy}}</span></li>
             <li id="phone_number">{{user.profile.phone_number}}<span class="privacy">{{user.profile.phone_privacy}}</span></li>
+            <li><a href="{% url 'profile:profile_update' profileID %}">Update Your Profile</a></li>
             <li></li>
-            <li></li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}
