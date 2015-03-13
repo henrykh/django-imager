@@ -1,7 +1,7 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from models import Photo
-from views import AlbumCreate
+# from views import AlbumCreate
 
 
 @receiver(pre_save, sender=Photo)

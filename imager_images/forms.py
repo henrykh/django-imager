@@ -2,7 +2,7 @@ from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
                                   )
-
+from django.forms.models import inlineformset_factory
 
 class NewAlbumAdminForm(ModelForm):
 
@@ -39,16 +39,22 @@ class EditPhotoAdminForm(ModelForm):
         exclude = []
 
 
+AddImageFormSet = inlineformset_factory(Album,
+                                        Photo.albums.through,
+                                        can_delete=False)
+
+
 class CreateAlbumViewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('user', None)
         return super(CreateAlbumViewForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         kwargs['commit'] = False
         obj = super(CreateAlbumViewForm, self).save(*args, **kwargs)
-        if self.request:
-            obj.user = self.request
+        if user:
+            obj.user = user
         obj.save()
         return obj
 
@@ -63,7 +69,6 @@ class CreatePhotoViewForm(ModelForm):
         return super(CreatePhotoViewForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        # import pdb; pdb.set_trace();
         kwargs['commit'] = False
         obj = super(CreatePhotoViewForm, self).save(*args, **kwargs)
         if self.request:
