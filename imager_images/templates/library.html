@@ -14,18 +14,6 @@
 {% block body %}
     <div id="profileInfo">
         <ul id="gallery"> 
-            {% if photoNoAlb %}
-                <li class="thumbnail_list">
-                    {% thumbnail photoNoAlb.image "1000x1000" as thumb %}
-                        <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="Loose Photos">
-                        <img src="{{ thumb.url }}"></a>
-                    {% empty %}
-                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="albumcovers" data-title="Loose Photos">
-                        <img src="{% static 'imager_images/img/man.png' %}"></a>
-                    {% endthumbnail %}
-                    <a href="{% url 'images:loosephotos_list'%}">Loose Photos</a>
-                </li>
-            {% endif %}
             {% if photoAll %}
                 <li class="thumbnail_list">
                     {% thumbnail photoAll.image "1000x1000" as thumb %}
@@ -38,6 +26,20 @@
                     <a href="{% url 'images:allphotos_list'%}">All Photos</a>
                 </li>
             {% endif %}
+            
+            {% if photoNoAlb %}
+                <li class="thumbnail_list">
+                    {% thumbnail photoNoAlb.image "1000x1000" as thumb %}
+                        <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="Loose Photos">
+                        <img src="{{ thumb.url }}"></a>
+                    {% empty %}
+                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="albumcovers" data-title="Loose Photos">
+                        <img src="{% static 'imager_images/img/man.png' %}"></a>
+                    {% endthumbnail %}
+                    <a href="{% url 'images:loosephotos_list'%}">Loose Photos</a>
+                </li>
+            {% endif %}
+            
             {% for album in albums %}
                 <li class="thumbnail_list">
                     {% thumbnail album.cover.image "1000x1000" as thumb %}
