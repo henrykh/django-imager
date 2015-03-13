@@ -23,7 +23,7 @@
                         <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="album_photos" data-title="{{photo.description}}">
                         <img src="{% static 'imager_images/img/man.png' %}"></a>
                     {% endthumbnail %}
-                    <a href="{% url 'images:photo_update' photo.pk %}">{{photo.title}}</a>
+                    <a href="{% url 'images:photo_update' photo.pk %}?src={{source}}">{{photo.title}}</a>
                 </li>
             {% endfor %}
         </ul>
