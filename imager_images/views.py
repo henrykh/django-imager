@@ -10,9 +10,21 @@ from django.core.urlresolvers import reverse
 
 @login_required
 def library(request):
+    # import ipdb; ipdb.set_trace()
+
+    try:
+        photoNoAlb = request.user.photos.filter(albums__isnull=True).order_by('?')[0]
+    except(IndexError):
+        photoNoAlb = ''
+
+    try:
+        photoAll = request.user.photos.all().order_by('?')[0]
+    except(IndexError):
+        photoAll = ''
+
     context = {'albums': request.user.albums.all(),
-               'photoall': request.user.photos.filter('?')[0],
-               'photoalb': request.user.photos.albums.filter(blank=True).filter('?')[0],
+               'photoAll': photoAll,
+               'photoNoAlb': photoNoAlb,
                }
     return render(request, 'library.html', context)
 
@@ -29,9 +41,19 @@ def AlbumPhotoList(request, pk):
 
 @login_required
 def LoosePhotosList(request):
-    context = {'photos': request.user.photos.albums.filter(blank=True)
+    context = {'photos': request.user.photos.filter(albums__isnull=True),
+               'source': request.META['PATH_INFO']
                }
     return render(request, 'loosephotos_list.html', context)
+
+
+@login_required
+def AllPhotosList(request):
+    context = {'photos': request.user.photos.all(),
+               'source': request.META['PATH_INFO']
+               }
+    return render(request, 'allphotos_list.html', context)
+
 
 @login_required
 def stream(request):
