@@ -1,7 +1,9 @@
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
-from imager
+from imager_user.models import ImagerProfile
+from imager_images.models import Photo, Album
+
 
 
 class LoggedInTestCase(TestCase):
