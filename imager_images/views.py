@@ -35,7 +35,6 @@ def stream(request):
 class AlbumCreate(CreateView):
     template_name = "new_album_form.html"
     model = Album
-    # fields = ['title', 'description', 'published']
     form_class = CreateAlbumForm
 
     def get_form_kwargs(self):
@@ -55,9 +54,10 @@ class AlbumUpdate(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.user_passes_test(request):
             return redirect_to_login(request.get_full_path())
-        return super(PhotoUpdateView, self).dispatch(
+        return super(AlbumUpdate, self).dispatch(
             request, *args, **kwargs)
 
+    template_name = "album_form.html"
     model = Album
     form = EditAlbumForm
     field = ['title', 'description', 'published']
