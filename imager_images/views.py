@@ -11,11 +11,16 @@ from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import (CreateAlbumViewForm,
                                  EditAlbumForm,
                                  PhotoUpdateViewForm,
-                                 CreatePhotoViewForm
+                                 CreatePhotoViewForm,
+                                 AddImageFormSet
                                  )
 from imager_images.models import (Photo,
                                   Album
                                   )
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
 
 @login_required
 def library(request):
@@ -74,18 +79,42 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
-class AlbumCreate(CreateView):
-    template_name = "new_album_form.html"
-    model = Album
-    form_class = CreateAlbumViewForm
+def album_create(request):
+    if request.POST:
 
-    def get_form_kwargs(self):
-        kwargs = super(AlbumCreate, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+        form = CreateAlbumViewForm(request.POST)
+        if form.is_valid():
+            import pdb; pdb.set_trace()
+            album = form.save(commit=False)
+            add_image_formset = AddImageFormSet(request.POST, instance=album)
 
-    def get_success_url(self):
-        return reverse('images:album_update', kwargs={'pk': self.object.pk})
+            if add_image_formset.is_valid():
+                album.save()
+                # import pdb; pdb.set_trace()
+                add_image_formset.save()
+                return HttpResponseRedirect(reverse(''))
+    else:
+        form = CreateAlbumViewForm()
+        add_image_formset = AddImageFormSet(instance=Album())
+    return render_to_response("new_album_form.html", {
+            "form": form,
+            "add_image_formset": add_image_formset,
+            }, context_instance=RequestContext(request))
+
+
+
+# class AlbumCreate(CreateView):
+#     template_name = "new_album_form.html"
+#     model = Album
+#     form_class = CreateAlbumViewForm
+
+#     def get_form_kwargs(self):
+#         kwargs = super(AlbumCreate, self).get_form_kwargs()
+#         kwargs['user'] = self.request.user
+#         return kwargs
+
+#     def get_success_url(self):
+#         return reverse('images:album_update', kwargs={'pk': self.object.pk})
 
 
 class AlbumUpdate(UpdateView):

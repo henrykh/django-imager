@@ -2,7 +2,7 @@ from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
                                   )
-
+from django.forms.models import inlineformset_factory
 
 class NewAlbumAdminForm(ModelForm):
 
@@ -37,6 +37,11 @@ class EditPhotoAdminForm(ModelForm):
     class Meta:
         model = Photo
         exclude = []
+
+
+AddImageFormSet = inlineformset_factory(Album,
+                                        Photo.albums.through,
+                                        can_delete=False)
 
 
 class CreateAlbumViewForm(ModelForm):
