@@ -1,7 +1,6 @@
-from django import forms
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import CreateAlbumViewForm, EditAlbumForm, PhotoUpdateViewForm, CreatePhotoViewForm
@@ -11,17 +10,28 @@ from django.core.urlresolvers import reverse
 
 @login_required
 def library(request):
-    import ipdb; ipdb.set_trace()
-
-    context = {'albums': request.user.albums.all()}
+    context = {'albums': request.user.albums.all(),
+               'photoall': request.user.photos.filter('?')[0],
+               'photoalb': request.user.photos.albums.filter(blank=True).filter('?')[0],
+               }
     return render(request, 'library.html', context)
 
 
 @login_required
 def AlbumPhotoList(request, pk):
-    context = {'photos': Photo.objects.filter(user=request.user).filter(albums__pk=pk)}
+    context = {'photos': Photo.objects
+               .filter(user=request.user)
+               .filter(albums__pk=pk),
+               'source': request.META['PATH_INFO']
+               }
     return render(request, 'albumphoto_list.html', context)
 
+
+@login_required
+def LoosePhotosList(request):
+    context = {'photos': request.user.photos.albums.filter(blank=True)
+               }
+    return render(request, 'loosephotos_list.html', context)
 
 @login_required
 def stream(request):
@@ -118,7 +128,7 @@ class PhotoUpdateView(UpdateView):
             request, *args, **kwargs)
 
     def get_success_url(self):
-        return self.request.META['HTTP_REFERER'].split(self.request.META['HTTP_HOST'])[-1].lstrip('/')
+        return self.request.GET['src']
 
     form_class = PhotoUpdateViewForm
     model = Photo

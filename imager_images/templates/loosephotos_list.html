@@ -9,7 +9,7 @@
 <script src="{% static 'imager_images/js/lightbox.min.js' %}"></script>
 {% endblock %}
 
-{% block title %}Album: {{user}}{% endblock %}
+{% block title %}Loose Photos: {{user}}{% endblock %}
 
 {% block body %}
     <div id="profileInfo">
@@ -17,13 +17,13 @@
             {% for photo in photos %}
                 <li class="thumbnail_list">
                     {% thumbnail photo.image "1000x1000" as thumb %}
-                        <a href="{{ thumb.url }}" data-lightbox="album_photos" data-title="{{photo.description}}">
+                        <a href="{{ thumb.url }}" data-lightbox="loose_photos" data-title="{{photo.description}}">
                         <img src="{{ thumb.url }}"></a>
                     {% empty %}
-                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="album_photos" data-title="{{photo.description}}">
+                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="loose_photos" data-title="{{photo.description}}">
                         <img src="{% static 'imager_images/img/man.png' %}"></a>
                     {% endthumbnail %}
-                    <a href="{% url 'images:photo_update' photo.pk %}?src={{source}}">{{photo.title}}</a>
+                    <a href="{% url 'images:photo_update' photo.pk %}">{{photo.title}}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -31,4 +31,3 @@
     <div id="pswpstuff">
     </div>
 {% endblock %}
-
