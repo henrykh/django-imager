@@ -61,6 +61,3 @@ class Album(models.Model):
 
     def album_photos(self):
         self.photos.all()
-
-    def get_absolute_url(self):
-        return reverse('album', kwargs={'pk': self.pk})
