@@ -1,5 +1,4 @@
 import factory
-from django.core import mail
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -8,11 +7,6 @@ import os
 
 PASSWORD = 'test_password'
 
-
-# class betterfactoryImageField(factory.django.ImageField):
-#     def _make_data(self, params):
-#         size = params.get('size', 1000000)
-#         return super(betterfactoryImageField, self)._make_data(self, params)
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -83,12 +77,20 @@ class LoggedInTestCase(TestCase):
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
 
-    def test_login_redirect(self):
+    def test_login_redirect_success(self):
         UserFactory()
         response = self.client.post('/accounts/login/',
                                     {'username': 'test_username',
                                      'password': PASSWORD})
         self.assertRedirects(response, '/')
+
+    def test_login_redirect_failuse(self):
+        UserFactory()
+        response = self.client.post('/accounts/login/',
+                                    {'username': 'wrong',
+                                     'password': 'wrong'})
+        self.assertIn('Please enter a correct username and password',
+                      response.content)
 
     def test_logged_in_home(self):
         response = self.client.get('/')
@@ -139,12 +141,17 @@ class LoggedInTestCase(TestCase):
 
 
 class RegistrationTest(TestCase):
-    def test_registration(self):
+    def test_registration_success(self):
         response = self.client.post('/accounts/register/', {'username': 'username',
                                                 'password1': 'password',
                                                 'password2': 'password',
                                                 'email': 'user@test.com'})
+
         self.assertRedirects(response, '/accounts/register/complete/')
         self.assertTrue(User.objects.get(username='username'))
 
-    # def test_send_email(self):
+        response = self.client.post('/accounts/login/',
+                                    {'username': 'username',
+                                     'password': 'password'})
+
+        self.assertIn('This account is inactive.',response.content)
