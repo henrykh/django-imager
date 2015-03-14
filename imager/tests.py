@@ -83,12 +83,20 @@ class LoggedInTestCase(TestCase):
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
 
-    def test_login_redirect(self):
+    def test_login_redirect_success(self):
         UserFactory()
         response = self.client.post('/accounts/login/',
                                     {'username': 'test_username',
                                      'password': PASSWORD})
         self.assertRedirects(response, '/')
+
+    def test_login_redirect_failuse(self):
+        UserFactory()
+        response = self.client.post('/accounts/login/',
+                                    {'username': 'wrong',
+                                     'password': 'wrong'})
+        self.assertIn('Please enter a correct username and password',
+                      response.content)
 
     def test_logged_in_home(self):
         response = self.client.get('/')
