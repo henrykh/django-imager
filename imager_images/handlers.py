@@ -4,11 +4,11 @@ from models import Photo
 # from views import AlbumCreate
 
 
-@receiver(pre_save, sender=Photo)
-def set_file_size(sender, **kwargs):
-    instance = kwargs.get('instance')
-    if instance:
-        instance.file_size = instance.image.size
+# @receiver(pre_save, sender=Photo)
+# def set_file_size(sender, **kwargs):
+#     instance = kwargs.get('instance')
+#     if instance:
+#         instance.file_size = instance.image.size
 
 # @receiver(pre_save, sender=AlbumCreate)
 # def set_user(sender, **kwargs):

@@ -97,6 +97,7 @@ class AlbumCreate(CreateView):
 
 class AlbumUpdate(UpdateView):
     def user_passes_test(self, request):
+        import ipdb; ipdb.set_trace()
         if request.user.is_authenticated():
             self.object = self.get_object()
             return self.object.user == request.user

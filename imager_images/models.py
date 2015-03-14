@@ -43,6 +43,9 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         if not self.title:
             self.title = self.get_file_name()
+
+        if not self.file_size:
+            self.file_size = self.image.size
         super(Photo, self).save(*args, **kwargs)
 
 

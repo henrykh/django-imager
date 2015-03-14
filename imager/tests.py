@@ -1,43 +1,105 @@
+import factory
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo, Album
+import os
 
+PASSWORD = 'test_password'
+
+
+# class betterfactoryImageField(factory.django.ImageField):
+#     def _make_data(self, params):
+#         size = params.get('size', 1000000)
+#         return super(betterfactoryImageField, self)._make_data(self, params)
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+        django_get_or_create = ('username', )
+
+    username = 'test_username'
+    password = factory.PostGenerationMethodCall('set_password', PASSWORD)
+
+
+class ImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Photo
+
+    user = UserFactory()
+    image = factory.django.ImageField(color='blue')
+    file_size = 1000000
+    published = 'pvt'
+
+
+class LoggedOutTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_logged_out_home(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, template_name='home.html')
+        self.assertIn('Welcome to Imgr! Sign up to share images and be awesome!',
+                      response.content)
+
+    def test_logged_out_profile(self):
+        response = self.client.get('/profile/')
+        self.assertEqual(response.items()[3][1],
+                         'http://testserver/accounts/login/?next=/profile/')
+
+    def test_logged_out_stream(self):
+        response = self.client.get('/stream/')
+        self.assertEqual(response.items()[3][1],
+                         'http://testserver/accounts/login/?next=/stream/')
+
+    def test_logged_out_library(self):
+        response = self.client.get('/library/')
+        self.assertEqual(response.items()[3][1],
+                         'http://testserver/accounts/login/?next=/library/')
 
 
 class LoggedInTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.username = 'test_username'
-        self.email = 'test@test.com'
-        self.password = 'test_password'
-        self.test_user = User.objects.create_user('test_username',
-                                                  'test@test.com',
-                                                  'test_password')
-        self.client.post('/accounts/login/',
-                         {'username': self.username,
-                          'password': self.password})
+        UserFactory(username=self.username)
+        self.client.login(username=self.username, password=PASSWORD)
 
-    def test_loggedin_home(self):
+    def test_logged_in_home(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, template_name='home.html')
         self.assertIn('Welcome back {}! Continue being awesome!'.format(self.username),
                       response.content)
 
-    def test_loggedin_profile(self):
+    def test_logged_in_home_no_public_photos(self):
+        ImageFactory()
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, template_name='home.html')
+        self.assertIn('imager_images/Space_Needle002.jpg',
+                      response.content)
+
+    def test_logged_in_home_public_photos(self):
+        ImageFactory(published='pub')
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, template_name='home.html')
+        self.assertIn('imager_images/example',
+                      response.content)
+        os.system('rm -r media/imager_images/example*')
+
+    def test_logged_in_profile(self):
         response = self.client.get('/profile/')
         self.assertTemplateUsed(response, template_name='profile.html')
         self.assertIn("{}'s Profile".format(self.username),
                       response.content)
 
-    def test_loggedin_stream(self):
+    def test_logged_in_stream(self):
         response = self.client.get('/stream/')
         self.assertTemplateUsed(response, template_name='stream.html')
         self.assertIn("{}'s Stream".format(self.username),
                       response.content)
 
-    def test_loggedin_library(self):
+    def test_logged_in_library(self):
         response = self.client.get('/library/')
         self.assertTemplateUsed(response, template_name='library.html')
         self.assertIn("{}'s Library".format(self.username),
