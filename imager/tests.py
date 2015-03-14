@@ -79,10 +79,16 @@ class LoggedOutTestCase(TestCase):
 
 class LoggedInTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
         self.username = 'test_username'
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
+
+    def test_login_redirect(self):
+        UserFactory()
+        response = self.client.post('/accounts/login/',
+                                    {'username': 'test_username',
+                                     'password': PASSWORD})
+        self.assertRedirects(response, '/')
 
     def test_logged_in_home(self):
         response = self.client.get('/')
@@ -134,10 +140,11 @@ class LoggedInTestCase(TestCase):
 
 class RegistrationTest(TestCase):
     def test_registration(self):
-        self.client.post('/accounts/register/', {'username': 'username',
+        response = self.client.post('/accounts/register/', {'username': 'username',
                                                 'password1': 'password',
                                                 'password2': 'password',
                                                 'email': 'user@test.com'})
+        self.assertRedirects(response, '/accounts/register/complete/')
         self.assertTrue(User.objects.get(username='username'))
 
     # def test_send_email(self):
