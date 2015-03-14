@@ -49,6 +49,13 @@ class LoggedOutTestCase(TestCase):
         self.assertIn('<a href="/accounts/login/">', response.content)
         self.assertIn('<a href="/accounts/register/">', response.content)
 
+    def test_logged_out_login_page(self):
+        response = self.client.get('/accounts/login/')
+        self.assertIn('<a href="/accounts/register/">Register</a>!',
+                      response.content)
+        self.assertIn('<input type="submit" value="Log in" />',
+                      response.content)
+
     def test_logged_out_profile(self):
         response = self.client.get('/profile/')
         self.assertEqual(response.items()[3][1],
