@@ -142,16 +142,19 @@ class LoggedInTestCase(TestCase):
 
 class RegistrationTest(TestCase):
     def test_registration_success(self):
-        response = self.client.post('/accounts/register/', {'username': 'username',
-                                                'password1': 'password',
-                                                'password2': 'password',
-                                                'email': 'user@test.com'})
-
+        self.new_user = 'username'
+        self.new_password = 'password'
+        self.new_email = 'user@test.com'
+        response = self.client.post('/accounts/register/',
+                                    {'username': self.new_user,
+                                     'password1': self.new_password,
+                                     'password2': self.new_password,
+                                     'email': self.new_email})
         self.assertRedirects(response, '/accounts/register/complete/')
         self.assertTrue(User.objects.get(username='username'))
 
+    def test_registration_in_active(self):
         response = self.client.post('/accounts/login/',
-                                    {'username': 'username',
-                                     'password': 'password'})
-
-        self.assertIn('This account is inactive.',response.content)
+                                    {'username': self.new_user,
+                                     'password': self.new_password})
+        self.assertIn('This account is inactive.', response.content)
