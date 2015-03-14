@@ -11,7 +11,12 @@ from imager_user.forms import ProfileUpdateViewForm
 
 @login_required
 def profile(request):
-    context = {'name': request.user, 'profileID': request.user.profile.id}
+    photo_count = len(request.user.photos.all())
+    album_count = len(request.user.albums.all())
+    follower_count = len(ImagerProfile.objects.filter(follows=request.user.profile))
+    context = {'name': request.user, 'profileID': request.user.profile.id,
+               'photo_count': photo_count, "album_count": album_count,
+               "follower_count": follower_count}
     return render(request, 'profile.html', context)
 
 

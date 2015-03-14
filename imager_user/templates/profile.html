@@ -10,10 +10,25 @@
 {% block body %}
     <h3>{{user}}'s Profile</h3>
     {% if user.profile.picture %}
-        <div id="profilePicture" style="background-image: url({{user.profile.picture.url}})">
+        <div id="profilePicture">
+            <img src="{{user.profile.picture.url}}">
+            <div id="usageStats">
+                <ul>
+                    <li>You have {{photo_count}} photos,</li>
+                    <li>{{album_count}} albums,</li>
+                    <li>and {{follower_count}} followers</li>
+                </ul>
+            </div>
         </div>
     {% else %}
         <div id="profilePicture" style="background-image: url({% static 'imager_user/man.png' %})">
+            <div id="usageStats">
+                <ul>
+                    <li>You have {{photo_count}} photos,</li>
+                    <li>{{album_count}} albums</li>
+                    <li>and {{follower_count}} followers</li>
+                </ul>
+            </div>
         </div>
     {% endif %}
     <div id="profileInfo">
