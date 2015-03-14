@@ -72,6 +72,14 @@ class LoggedInTestCase(TestCase):
         self.assertIn('Welcome back {}! Continue being awesome!'.format(self.username),
                       response.content)
 
+    def test_logged_in_home_links(self):
+        response = self.client.get('/')
+        self.assertIn('<a href="/">', response.content)
+        self.assertIn('<a href="/profile/">', response.content)
+        self.assertIn('<a href="/stream/">', response.content)
+        self.assertIn('<a href="/library/">', response.content)
+        self.assertIn('<a href="/accounts/logout/?next=/">', response.content)
+
     def test_logged_in_home_no_public_photos(self):
         ImageFactory()
         response = self.client.get('/')
