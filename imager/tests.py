@@ -1,5 +1,4 @@
 import factory
-from django.core import mail
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -8,11 +7,6 @@ import os
 
 PASSWORD = 'test_password'
 
-
-# class betterfactoryImageField(factory.django.ImageField):
-#     def _make_data(self, params):
-#         size = params.get('size', 1000000)
-#         return super(betterfactoryImageField, self)._make_data(self, params)
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
