@@ -115,7 +115,8 @@ TEMPLATE_DIRS = (
     )
 
 # Email backend for development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp_email/tmp_email'
 
 # Registration settings
 ACCOUNT_ACTIVATION_DAYS = 7

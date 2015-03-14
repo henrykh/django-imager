@@ -57,3 +57,6 @@ target/
 # Sublime
 *.sublime-project
 *.sublime-workspace
+
+# Project Temp Folders
+tmp_email/
