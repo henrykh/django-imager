@@ -1,0 +1,1244 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ne",
+				"new_user	statement"
+			],
+			[
+				"new_",
+				"new_email	statement"
+			],
+			[
+				"new",
+				"new_password	statement"
+			],
+			[
+				"Image",
+				"ImageFactory"
+			],
+			[
+				"re",
+				"return	keyword"
+			],
+			[
+				"test",
+				"test_username"
+			],
+			[
+				"email",
+				"email_address"
+			],
+			[
+				"first",
+				"first_name"
+			],
+			[
+				"Name",
+				"Name"
+			],
+			[
+				"pro",
+				"profile_update	function"
+			],
+			[
+				"name",
+				"name"
+			],
+			[
+				"In",
+				"IndexError	class"
+			],
+			[
+				"phot",
+				"photoNoAlb"
+			],
+			[
+				"get",
+				"get_success_url"
+			],
+			[
+				"li",
+				"LibraryView"
+			],
+			[
+				"Photo",
+				"PhotoUpdateViewForm	import"
+			],
+			[
+				"pictu",
+				"picture_thumbnail"
+			],
+			[
+				"RE",
+				"RegistrationAdmin	class"
+			],
+			[
+				"Re",
+				"RegistrationProfile	import"
+			],
+			[
+				"R",
+				"RegistrationProfile	import"
+			],
+			[
+				"User",
+				"UserFactory	class"
+			],
+			[
+				"s",
+				"size"
+			],
+			[
+				"p",
+				"pqueue	statement"
+			],
+			[
+				"prio",
+				"prio"
+			],
+			[
+				"image",
+				"image_thumbnail"
+			],
+			[
+				"Thumb",
+				"thumbnail"
+			],
+			[
+				"de",
+				"description"
+			],
+			[
+				"sta",
+				"start_node	param"
+			],
+			[
+				"ex",
+				"expected	statement"
+			],
+			[
+				"al",
+				"albumAdmin	class"
+			],
+			[
+				"ob",
+				"object_id	param"
+			],
+			[
+				"Album",
+				"AlbumForm	class"
+			],
+			[
+				"date",
+				"date_published"
+			],
+			[
+				"Al",
+				"AlbumForm	class"
+			],
+			[
+				"Base",
+				"BaseModelFormSet	import"
+			],
+			[
+				"T",
+				"T	statement"
+			],
+			[
+				"sort",
+				"sortedArrayToBST	function"
+			],
+			[
+				"con",
+				"contains"
+			],
+			[
+				"time",
+				"timeit	function"
+			],
+			[
+				"if",
+				"ifmain	if __name__ == '__main__'"
+			],
+			[
+				"user",
+				"user1"
+			],
+			[
+				"imager",
+				"imager_user	module"
+			],
+			[
+				"pr",
+				"previous"
+			],
+			[
+				"it",
+				"itarget	statement"
+			],
+			[
+				"min",
+				"minIndexQ	statement"
+			],
+			[
+				"dit",
+				"distance	statement"
+			],
+			[
+				"dis",
+				"distance	statement"
+			],
+			[
+				"di",
+				"distance	statement"
+			],
+			[
+				"prev",
+				"previous_node	statement"
+			],
+			[
+				"neigh",
+				"neighbors"
+			],
+			[
+				"node",
+				"node1	param"
+			],
+			[
+				"distan",
+				"distance"
+			],
+			[
+				"st",
+				"start_node"
+			],
+			[
+				"path",
+				"path_idx	statement"
+			],
+			[
+				"nodes",
+				"nodes	statement"
+			],
+			[
+				"Fl",
+				"FloydWarshall	function"
+			],
+			[
+				"idxV",
+				"idxV2	statement"
+			],
+			[
+				"edge",
+				"edge"
+			],
+			[
+				"num",
+				"number_of_nodes	statement"
+			],
+			[
+				"im",
+				"imager	module"
+			],
+			[
+				"ima",
+				"imager	import"
+			],
+			[
+				"po",
+				"post_delete"
+			],
+			[
+				"prof",
+				"profileQuerySet"
+			],
+			[
+				"ad",
+				"adjacent	function"
+			],
+			[
+				"nieghbor",
+				"neighbors"
+			],
+			[
+				"w",
+				"weights"
+			],
+			[
+				"django",
+				"djangotutorialuser"
+			],
+			[
+				"Pr",
+				"Priorityq"
+			],
+			[
+				"E",
+				"Element	class"
+			],
+			[
+				"N",
+				"NGINX_CONFIG	statement"
+			],
+			[
+				"n",
+				"nginx_config_list	statement"
+			],
+			[
+				"se",
+				"select_instance	function"
+			],
+			[
+				"__",
+				"__future__	module"
+			],
+			[
+				"for",
+				"format	function"
+			],
+			[
+				"em",
+				"empty_dll	function"
+			],
+			[
+				"bi",
+				"biggest_heap	param"
+			],
+			[
+				"bigge",
+				"biggest_heap	param"
+			],
+			[
+				"forma",
+				"formatCount"
+			],
+			[
+				"com",
+				"compare_data"
+			],
+			[
+				"stack",
+				"stackedbar"
+			],
+			[
+				"Inci",
+				"incidents"
+			],
+			[
+				"inci",
+				"incidents"
+			],
+			[
+				"output",
+				"output_count	statement"
+			],
+			[
+				"out",
+				"output_prior_rate	statement"
+			],
+			[
+				"incident",
+				"incidents_per_year_prior	statement"
+			],
+			[
+				"group",
+				"groupedbar"
+			],
+			[
+				"max",
+				"max	function"
+			],
+			[
+				"date_",
+				"date_time_object"
+			],
+			[
+				"bin",
+				"bin_indicies	statement"
+			],
+			[
+				"oup",
+				"output_percentages_dict	statement"
+			],
+			[
+				"ma",
+				"max_date	statement"
+			],
+			[
+				"binn",
+				"binned_statistic	import"
+			],
+			[
+				"le",
+				"legend_y"
+			],
+			[
+				"leg",
+				"legend_x"
+			],
+			[
+				"r",
+				"rulex"
+			],
+			[
+				"incie",
+				"incident"
+			],
+			[
+				"incde",
+				"incidents"
+			],
+			[
+				"crim",
+				"crime"
+			],
+			[
+				"incide",
+				"incident_types"
+			],
+			[
+				"in",
+				"incident_types"
+			],
+			[
+				"yne",
+				"ynewvalues"
+			],
+			[
+				"y",
+				"ynewvalues"
+			],
+			[
+				"clas",
+				"classmethod	class"
+			],
+			[
+				"va",
+				"values"
+			],
+			[
+				"inc",
+				"incident_type"
+			],
+			[
+				"da",
+				"data_time_converted	statement"
+			],
+			[
+				"dat",
+				"data_list_of_lists	statement"
+			],
+			[
+				"data",
+				"data_sorted_print	statement"
+			],
+			[
+				"line",
+				"line_split	statement"
+			],
+			[
+				"seattle",
+				"seattle_emergency"
+			],
+			[
+				"sele",
+				"selected_hosts	statement"
+			],
+			[
+				"_in",
+				"_install_supervisor	function"
+			],
+			[
+				"run",
+				"run_command_on_given_server"
+			],
+			[
+				"ng",
+				"NGINX"
+			],
+			[
+				"up",
+				"update"
+			],
+			[
+				"None",
+				"None	keyword"
+			],
+			[
+				"B",
+				"B"
+			],
+			[
+				"A",
+				"A"
+			],
+			[
+				"nighb",
+				"neighbors"
+			],
+			[
+				"a",
+				"actual_path	statement"
+			],
+			[
+				"f",
+				"front	statement"
+			],
+			[
+				"l",
+				"l	statement"
+			],
+			[
+				"ispect",
+				"inspections"
+			],
+			[
+				"lis",
+				"listings	statement"
+			],
+			[
+				"d",
+				"dataType"
+			],
+			[
+				"me",
+				"metadata	statement"
+			],
+			[
+				"http_",
+				"http_server	module"
+			],
+			[
+				"read",
+				"readline	function"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "imager/tests.py",
+			"settings":
+			{
+				"buffer_size": 6332,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "imager/settings.py",
+			"settings":
+			{
+				"buffer_size": 3862,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 767,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "imager_user/tests.py",
+			"settings":
+			{
+				"buffer_size": 2902,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 313.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"li",
+				"Package Control: List Packages"
+			],
+			[
+				"file d",
+				"FileDiffs: Menu"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"git dif",
+				"Git: Diff Tool All"
+			],
+			[
+				"git diff",
+				"Git: Diff Tool All"
+			],
+			[
+				"git: d",
+				"Git: Diff Current File"
+			],
+			[
+				"Sub",
+				"SublimeHighlight: view as RTF"
+			],
+			[
+				"Sublim",
+				"SublimeHighlight: convert to RTF"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"lis",
+				"Package Control: List Packages"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: r",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 453.0
+	},
+	"console":
+	{
+		"height": 238.0,
+		"history":
+		[
+			"import py",
+			"py.test",
+			";",
+			"ls",
+			"jshint",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/chatzis/projects/django-imager",
+		"/Users/chatzis/projects/django-imager/imager",
+		"/Users/chatzis/projects/django-imager/imager/static",
+		"/Users/chatzis/projects/django-imager/imager/static/imager",
+		"/Users/chatzis/projects/django-imager/imager/templates",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration",
+		"/Users/chatzis/projects/django-imager/imager_images",
+		"/Users/chatzis/projects/django-imager/imager_images/static",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/css",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/js",
+		"/Users/chatzis/projects/django-imager/imager_images/templates",
+		"/Users/chatzis/projects/django-imager/imager_user",
+		"/Users/chatzis/projects/django-imager/imager_user/static",
+		"/Users/chatzis/projects/django-imager/imager_user/static/imager_user",
+		"/Users/chatzis/projects/django-imager/imager_user/templates"
+	],
+	"file_history":
+	[
+		"/Users/chatzis/projects/django-imager/imager_images/tests.py",
+		"/Users/chatzis/projects/django-imager/imager/views.py",
+		"/Users/chatzis/projects/django-imager/imager_images/views.py",
+		"/Users/chatzis/projects/django-imager/imager/templates/home.html",
+		"/Users/chatzis/projects/django-imager/imager_images/models.py",
+		"/Users/chatzis/projects/django-imager/imager_images/__init__.py",
+		"/Users/chatzis/projects/django-imager/imager_images/apps.py",
+		"/Users/chatzis/projects/django-imager/imager_images/handlers.py",
+		"/Users/chatzis/projects/django-imager/.git/MERGE_MSG",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/login.html",
+		"/Users/chatzis/projects/django-imager/imager/settings.py",
+		"/Users/chatzis/projects/django-imager/imager_user/templates/profile.html",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/stream.html",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/library.html",
+		"/Users/chatzis/projects/django-imager/imager_images/forms.py",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/photo_form.html",
+		"/Users/chatzis/projects/django-imager/imager_user/urls.py",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/photoadd_form.html",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/photo_confirm_delete.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/logout.html",
+		"/Users/chatzis/projects/django-imager/imager_images/urls.py",
+		"/Users/chatzis/projects/django-imager/imager/urls.py",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activation_complete.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activation_email.txt",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/registration_complete.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/registration_form.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activate.html",
+		"/Users/chatzis/projects/django-imager/imager_user/forms.py",
+		"/Users/chatzis/projects/django-imager/imager_user/tests.py",
+		"/Users/chatzis/projects/django-imager/imager_images/filters.py",
+		"/Users/chatzis/projects/django-imager/imager_user/views.py",
+		"/Users/chatzis/projects/django-imager/imager_user/models.py",
+		"/Users/chatzis/codefellows/sea-d31/day30/technical interview.txt",
+		"/Users/chatzis/projects/django-imager/imager_user/templates/profile_edit.html",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/albumphoto_list.html",
+		"/Users/chatzis/projects/django-imager/imager_user/templates/profile_form.html",
+		"/Users/chatzis/projects/django-imager/.git/COMMIT_EDITMSG",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/album_form.html",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/css/thumbnail_grid.css",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/css/stream.css",
+		"/Users/chatzis/projects/django-imager/imager_images/admin.py",
+		"/Users/chatzis/projects/django-imager/imager_images/templates/allphotos_list.html",
+		"/Users/chatzis/projects/django-imager/django-imager.sublime-project",
+		"/Users/chatzis/projects/django-imager/manage.py",
+		"/Users/chatzis/projects/django-imager/LICENSE",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/css/lightbox.css",
+		"/Users/chatzis/Library/Application Support/Sublime Text 3/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/chatzis/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/chatzis/codefellows/sea-d31/projects2.txt",
+		"/Users/chatzis/codefellows/sea-d31/day29/day29notes.txt",
+		"/Users/chatzis/projects/data-structures2/.git/MERGE_MSG",
+		"/Users/chatzis/codefellows/sea-d31/day28/day28notes.txt",
+		"/Users/chatzis/codefellows/sea-d31/day28/visualizationguestspeaker.txt",
+		"/Users/chatzis/projects/django-imager/imager_user/admin.py",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/css/library.css",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/library.css",
+		"/Users/chatzis/projects/learning-journal/templates/entry.jinja2",
+		"/Users/chatzis/projects/learning-journal/templates/edit.jinja2",
+		"/Users/chatzis/projects/learning-journal/templates/detail.jinja2",
+		"/Users/chatzis/projects/learning-journal/templates/base.jinja2",
+		"/Users/chatzis/projects/learning-journal/templates/login.jinja2",
+		"/Users/chatzis/projects/learning-journal/templates/list.jinja2",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/main.js",
+		"/Users/chatzis/projects/learning-journal/static/main.js",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/jquery-1.11.2.js",
+		"/Users/chatzis/projects/learning-journal/static/mustache.min.js",
+		"/Users/chatzis/projects/django-imager/imager_images/static/imager_images/photoswipe.pswp",
+		"/Users/chatzis/projects/django-imager/imager_user/templates/home.html",
+		"/Users/chatzis/projects/django-imager/.gitignore",
+		"/Users/chatzis/projects/data-structures2/bst.py",
+		"/Users/chatzis/projects/django-imager/imager/tests.py",
+		"/Users/chatzis/codefellows/sea-d31/day27/day27notes.txt",
+		"/Users/chatzis/projects/django-imager/requirements.txt",
+		"/Users/chatzis/projects/django-imager/static/style.css",
+		"/Users/chatzis/projects/django-imager/imager/login.html",
+		"/Users/chatzis/projects/django-imager/imager/tests.pyc",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activation_email.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activation_email_subject.txt",
+		"/Users/chatzis/projects/django-imager/imager/templates/profile.html",
+		"/Users/chatzis/projects/django-imager/imager/templates/registration/activation_email_subject.html",
+		"/Users/chatzis/Desktop/alice.txt",
+		"/Users/chatzis/codefellows/sea-d31/day26/day26notes.txt",
+		"/Users/chatzis/projects/data-structures2/bst.dot",
+		"/Users/chatzis/projects/django-imager/imager/admin.py",
+		"/Users/chatzis/projects/django-imager/imager/logout.html",
+		"/Users/chatzis/projects/learning-journal/journal.py",
+		"/Users/chatzis/projects/django-imager/imager_user/migrations/0001_initial.py",
+		"/Users/chatzis/projects/data-structures2/test_bst.py",
+		"/Users/chatzis/projects/django-imager/README.md",
+		"/Users/chatzis/projects/django-imager/imager_user/apps.py",
+		"/Users/chatzis/projects/django-imager/imager_user/handlers.py",
+		"/Users/chatzis/projects/django-imager/imager_images/filters.pyc",
+		"/Users/chatzis/projects/data-structures/test_priorityq.py",
+		"/Users/chatzis/projects/data-structures/priorityq.py",
+		"/Users/chatzis/projects/data-structures2/bst.by",
+		"/Users/chatzis/projects/data-structures2/bst",
+		"/Users/chatzis/projects/data-structures/binheap.py",
+		"/Users/chatzis/projects/data-structures/test_prio",
+		"/Users/chatzis/projects/data-structures/stack.py",
+		"/Users/chatzis/projects/data-structures/test_proper_parens.py",
+		"/Users/chatzis/projects/data-structures/proper_parens.py",
+		"/Users/chatzis/projects/data-structures/.git/MERGE_MSG",
+		"/Users/chatzis/projects/learning-journal/test_journal.py",
+		"/Users/chatzis/projects/django-imager/imager_user/__init__.py",
+		"/Users/chatzis/projects/django-imager/imager_images/migrations/0010_auto_20150306_2319.py",
+		"/Users/chatzis/projects/django-imager/imager_user/admin.pyc",
+		"/Users/chatzis/projects/data-structures/weighted_graph.py",
+		"/Users/chatzis/projects/data-structures/test_weighted_graph.py",
+		"/Users/chatzis/.virtualenvs/django-imager/lib/python2.7/site-packages/django/contrib/admin/options.py",
+		"/Users/chatzis/projects/data-structures2/.git/COMMIT_EDITMSG",
+		"/Users/chatzis/projects/data-structures2/queue.py",
+		"/Users/chatzis/projects/data-structures2/simple_graph.py",
+		"/Users/chatzis/codefellows/sea-d31/day22/day22notes.txt",
+		"/Users/chatzis/projects/data-structures/test_weighted_graph_traversal.py",
+		"/Users/chatzis/projects/django-imager/imager/ls",
+		"/Users/chatzis/projects/data-structures/fw.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/__init__.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/handlers.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/apps.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/models.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/admin.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/settings.py",
+		"/Users/chatzis/projects/django-imager/imager/imager/urls.py",
+		"/Users/chatzis/projects/django_tutorial/mysite/polls/admin.py",
+		"/Users/chatzis/projects/django_tutorial/mysite/polls/models.py",
+		"/Users/chatzis/projects/django_tutorial/mysite/polls/urls.py",
+		"/Users/chatzis/projects/django_tutorial/mysite/polls/views.py",
+		"/Users/chatzis/codefellows/sea-d31/day21/day21notes.txt"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 95.0,
+		"where_history":
+		[
+			"*.py",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"b",
+			"profile",
+			"photos.album",
+			"()\n",
+			"):\n",
+			"pdb",
+			"obj",
+			"self",
+			"pdb",
+			"thumb",
+			"nums",
+			"self.left",
+			"\",\n",
+			"thumb",
+			"size",
+			"inlines",
+			"remove",
+			"transaction",
+			"Merge",
+			"self",
+			"value",
+			"py",
+			"HOST",
+			"l.",
+			"empty_dll",
+			"__",
+			"color",
+			"type",
+			"value",
+			"type",
+			"ages",
+			"data",
+			"date",
+			"month",
+			"tool",
+			"grey",
+			"tick",
+			"axis",
+			"Crime",
+			"temperature",
+			"incident",
+			"value",
+			"date",
+			"}));",
+			"value",
+			"sele",
+			".fire",
+			".count",
+			".week",
+			"max",
+			"transition",
+			"layers",
+			"pa",
+			"data",
+			"date",
+			"chatzis",
+			"boto",
+			"pdb",
+			"edit_po",
+			"here",
+			"#",
+			"print",
+			"dict",
+			"REquestErro",
+			"\"\n",
+			"login_helper",
+			"run_query",
+			"gen_",
+			"gen",
+			"uri",
+			"cursor",
+			"INSERT",
+			"entries",
+			"client",
+			"login",
+			"POST",
+			"back",
+			"front",
+			"Queue",
+			"Element",
+			"'''\n",
+			"request",
+			"section",
+			"header",
+			"secti",
+			"henryhowes",
+			"DB_ENT",
+			"datetime",
+			"init_db",
+			"stack",
+			"value",
+			"a.",
+			"os.envi",
+			"_head",
+			"requ",
+			"cewing",
+			"auto",
+			"find",
+			"text",
+			"rad",
+			"safe_input",
+			"quit()",
+			"[u",
+			"\"]",
+			"self.tags[:]"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"leaf",
+			"key",
+			"one_dll.",
+			"one_dll",
+			"compare_data",
+			"count",
+			".fire",
+			".month",
+			"min",
+			"actual_path",
+			"tail",
+			"head",
+			"DLL",
+			"Node",
+			"chatzis",
+			"proper_parens",
+			"current_val",
+			"current.",
+			"head",
+			"(u",
+			"\")",
+			"list(self.tags)"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "imager/tests.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6332,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6262,
+								6262
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2258.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "imager/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3862,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3013,
+								3013
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1774.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": ".gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 767,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								756,
+								756
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 396.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "imager_user/tests.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2902,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1293,
+								1327
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.csslint_result_view":
+	{
+		"height": 192.0
+	},
+	"output.exec":
+	{
+		"height": 197.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 108.0
+	},
+	"project": "django-imager.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				".git",
+				".gitignore"
+			],
+			[
+				"test",
+				"imager_user/tests.py"
+			],
+			[
+				"home",
+				"imager/templates/home.html"
+			],
+			[
+				"photo",
+				"imager_images/templates/photo_form.html"
+			],
+			[
+				"views",
+				"imager_images/views.py"
+			],
+			[
+				"logout",
+				"imager/templates/registration/logout.html"
+			],
+			[
+				"login",
+				"imager/templates/registration/login.html"
+			],
+			[
+				"urls",
+				"imager_user/urls.py"
+			],
+			[
+				"forms",
+				"imager_images/forms.py"
+			],
+			[
+				"models",
+				"imager_images/models.py"
+			],
+			[
+				"library",
+				"imager_images/templates/library.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/projects/data-structures2/data-structures2.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 307.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
