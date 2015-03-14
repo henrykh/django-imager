@@ -76,6 +76,9 @@ class LoggedInTestCase(TestCase):
         self.username = 'test_username'
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
+        self.new_user = 'username'
+        self.new_password = 'password'
+        self.new_email = 'user@test.com'
 
     def test_login_redirect_success(self):
         UserFactory()
@@ -141,10 +144,12 @@ class LoggedInTestCase(TestCase):
 
 
 class RegistrationTest(TestCase):
-    def test_registration_success(self):
+    def setUp(self):
         self.new_user = 'username'
         self.new_password = 'password'
         self.new_email = 'user@test.com'
+
+    def test_registration_success(self):
         response = self.client.post('/accounts/register/',
                                     {'username': self.new_user,
                                      'password1': self.new_password,
@@ -154,6 +159,22 @@ class RegistrationTest(TestCase):
         self.assertTrue(User.objects.get(username='username'))
 
     def test_registration_in_active(self):
+        response = self.client.post('/accounts/register/',
+                                    {'username': self.new_user,
+                                     'password1': self.new_password,
+                                     'password2': self.new_password,
+                                     'email': self.new_email})
+        response = self.client.post('/accounts/login/',
+                                    {'username': self.new_user,
+                                     'password': self.new_password})
+        self.assertIn('This account is inactive.', response.content)
+
+    def test_registration_activte(self):
+        response = self.client.post('/accounts/register/',
+                                    {'username': self.new_user,
+                                     'password1': self.new_password,
+                                     'password2': self.new_password,
+                                     'email': self.new_email})
         response = self.client.post('/accounts/login/',
                                     {'username': self.new_user,
                                      'password': self.new_password})
