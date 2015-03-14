@@ -1,9 +1,9 @@
 import factory
+from django.core import mail
 from django.test import Client
 from django.test import TestCase
 from django.contrib.auth.models import User
-from imager_user.models import ImagerProfile
-from imager_images.models import Photo, Album
+from imager_images.models import Photo
 import os
 
 PASSWORD = 'test_password'
@@ -130,3 +130,14 @@ class LoggedInTestCase(TestCase):
         self.assertTemplateUsed(response, template_name='library.html')
         self.assertIn("{}'s Library".format(self.username),
                       response.content)
+
+
+class RegistrationTest(TestCase):
+    def test_registration(self):
+        self.client.post('/accounts/register/', {'username': 'username',
+                                                'password1': 'password',
+                                                'password2': 'password',
+                                                'email': 'user@test.com'})
+        self.assertTrue(User.objects.get(username='username'))
+
+    # def test_send_email(self):
