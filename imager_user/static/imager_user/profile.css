@@ -9,8 +9,12 @@
 
 #profileInfo {
     width: 50%;
-    background-color: green;
     float: right;
+}
+
+#profileInfo li{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 10px;
 }
 
 #profileInfo .privacy {
@@ -19,4 +23,5 @@
 
 ul {
     list-style: none;
+    padding-left: 0
 }
