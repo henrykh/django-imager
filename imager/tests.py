@@ -174,6 +174,12 @@ class RegistrationTest(TestCase):
     def test_registration_success(self):
         response = self.registration()
         self.assertRedirects(response, '/accounts/register/complete/')
+
+        response = self.client.get('/accounts/register/complete/')
+        self.assertIn('Registration Complete', response.content)
+
+    def test_registration_user_exists(self):
+        self.registration()
         self.assertTrue(User.objects.get(username='username'))
 
     def test_registration_in_active(self):
