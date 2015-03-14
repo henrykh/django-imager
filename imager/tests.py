@@ -1,11 +1,20 @@
 import factory
 from django.test import Client
 from django.test import TestCase
+from django.core import mail
+from django.test.utils import override_settings
+from django.core.mail.backends.base import BaseEmailBackend
 from django.contrib.auth.models import User
 from imager_images.models import Photo
 import os
 
 PASSWORD = 'test_password'
+
+
+class TestEmailBackend(BaseEmailBackend):
+    def send_messages(self, messages):
+        mail.outbox.extend(messages)
+        return len(messages)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -76,6 +85,9 @@ class LoggedInTestCase(TestCase):
         self.username = 'test_username'
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
+        self.new_user = 'username'
+        self.new_password = 'password'
+        self.new_email = 'user@test.com'
 
     def test_login_redirect_success(self):
         UserFactory()
@@ -140,18 +152,43 @@ class LoggedInTestCase(TestCase):
                       response.content)
 
 
+@override_settings(EMAIL_BACKEND='imager.tests.TestEmailBackend')
 class RegistrationTest(TestCase):
-    def test_registration_success(self):
-        response = self.client.post('/accounts/register/', {'username': 'username',
-                                                'password1': 'password',
-                                                'password2': 'password',
-                                                'email': 'user@test.com'})
+    def setUp(self):
+        self.new_user = 'username'
+        self.new_password = 'password'
+        self.new_email = 'user@test.com'
 
+    def registration(self):
+        return self.client.post('/accounts/register/',
+                                {'username': self.new_user,
+                                 'password1': self.new_password,
+                                 'password2': self.new_password,
+                                 'email': self.new_email})
+
+    def login_after_registration(self):
+        return self.client.post('/accounts/login/',
+                                {'username': self.new_user,
+                                 'password': self.new_password})
+
+    def test_registration_success(self):
+        response = self.registration()
         self.assertRedirects(response, '/accounts/register/complete/')
+
+        response = self.client.get('/accounts/register/complete/')
+        self.assertIn('Registration Complete', response.content)
+
+    def test_registration_user_exists(self):
+        self.registration()
         self.assertTrue(User.objects.get(username='username'))
 
-        response = self.client.post('/accounts/login/',
-                                    {'username': 'username',
-                                     'password': 'password'})
+    def test_registration_in_active(self):
+        response = self.registration()
+        response = self.login_after_registration()
+        self.assertIn('This account is inactive.', response.content)
 
-        self.assertIn('This account is inactive.',response.content)
+    def test_registration_activate(self):
+        response = self.registration()
+        self.client.get(mail.outbox[0].body.lstrip('http://testserver'))
+        response = self.login_after_registration()
+        self.assertIn('This account is inactive.', response.content)
