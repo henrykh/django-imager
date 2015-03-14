@@ -43,6 +43,12 @@ class LoggedOutTestCase(TestCase):
         self.assertIn('Welcome to Imgr! Sign up to share images and be awesome!',
                       response.content)
 
+    def test_logged_out_home_links(self):
+        response = self.client.get('/')
+        self.assertIn('<a href="/">', response.content)
+        self.assertIn('<a href="/accounts/login/">', response.content)
+        self.assertIn('<a href="/accounts/register/">', response.content)
+
     def test_logged_out_profile(self):
         response = self.client.get('/profile/')
         self.assertEqual(response.items()[3][1],
