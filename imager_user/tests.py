@@ -158,24 +158,24 @@ class ProfilePageTestCase(TestCase):
         self.image2 = ImageFactory()
         self.image3 = ImageFactory()
 
-        self.image1.user = self.u1
         self.image1.image = factory.django.ImageField(filename='example1.jpg',
                                                       color='blue')
+        self.image1.user = self.u1
 
-        self.image2.user = self.u2
         self.image2.image = factory.django.ImageField(filename='example2.jpg',
                                                       color='blue')
+        self.image2.user = self.u1
 
-        self.image3.user = self.u2
         self.image3.image = factory.django.ImageField(filename='example3.jpg',
                                                       color='blue')
+        self.image3.user = self.u1
 
         self.album1 = Album(title='album1')
         self.album1.user = self.u1
         self.album2 = Album(title='album2')
-        self.album2.user = self.u2
+        self.album2.user = self.u1
         self.album3 = Album(title='album3')
-        self.album3.user = self.u2
+        self.album3.user = self.u1
 
         self.album1.save()
         self.album2.save()
@@ -185,11 +185,14 @@ class ProfilePageTestCase(TestCase):
         self.image2.albums.add(self.album2)
         self.image2.albums.add(self.album2)
 
+        self.p1.picture = self.image1.image
+        self.p1.user = self.u1
+        self.p2.user = self.u2
+
         self.client = Client()
 
     def test_profile_page_links(self):
-        self.client.login(username=self.u1.username,
-                          password=PASSWORD)
+        self.client.login(username=self.u1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<a href="/">', response.content)
         self.assertIn('<a href="/profile/">', response.content)
@@ -199,17 +202,35 @@ class ProfilePageTestCase(TestCase):
         self.assertIn('href="/profile/update/', response.content)
 
     def test_profile_page_no_profile_image(self):
-        self.client.login(username=self.u1.username,
-                          password=PASSWORD)
+        self.client.login(username=self.u2.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<img src="/static/imager_user/man.png">',
                       response.content)
 
     def test_profile_page_profile_image(self):
-        self.p1.picture = self.image1.image
-        self.p1.user = self.u1
-        self.client.login(username=self.u1.username,
-                          password=PASSWORD)
+        self.client.login(username=self.u1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<img src="/static/imager_user/man.png">',
                       response.content)
+
+    def test_profile_page_no_albums(self):
+        self.client.login(username=self.u2.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        self.assertIn('<li>0 albums,</li>', response.content)
+
+    def test_profile_page_albums(self):
+        self.client.login(username=self.u1.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        self.assertIn('<li>3 albums,</li>', response.content)
+
+    def test_profile_page_no_photos(self):
+        self.client.login(username=self.u2.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        print(response.content)
+        self.assertIn('<li>You have 0 photos,</li>', response.content)
+
+    def test_profile_page_photos(self):
+        self.client.login(username=self.u1.username, password=PASSWORD)
+        # import ipdb; ipdb.set_trace()
+        response = self.client.get('/profile/')
+        self.assertIn('<li>You have 3 photos,</li>', response.content)
