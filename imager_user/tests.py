@@ -226,11 +226,19 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_no_photos(self):
         self.client.login(username=self.u2.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        print(response.content)
         self.assertIn('<li>You have 0 photos,</li>', response.content)
 
     def test_profile_page_photos(self):
         self.client.login(username=self.u1.username, password=PASSWORD)
-        # import ipdb; ipdb.set_trace()
         response = self.client.get('/profile/')
         self.assertIn('<li>You have 3 photos,</li>', response.content)
+
+    def test_profile_page_no_followers(self):
+        self.client.login(username=self.u2.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        self.assertIn('<li>and 1 followers</li>', response.content)
+
+    def test_profile_page_followers(self):
+        self.client.login(username=self.u1.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        self.assertIn('<li>and 0 followers</li>', response.content)
