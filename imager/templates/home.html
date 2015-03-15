@@ -31,7 +31,6 @@
     </div>
     <div id="content">
         {% block body %}
-            <div id="coverPhoto" style="background-image: url({{cover_photo_url}});"></div>
             {% if not user.is_authenticated %}
                 <div id="text">
                     Welcome to Imgr! Sign up to share images and be awesome!
@@ -41,6 +40,7 @@
                     Welcome back {{user}}! Continue being awesome!
                 </div>
             {% endif %}
+            <div id="coverPhoto" style="background-image: url({{cover_photo_url}});"></div>
         {% endblock %}
     </div>
 </body>

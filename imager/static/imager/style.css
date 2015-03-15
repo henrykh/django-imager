@@ -50,9 +50,14 @@ nav li a {
     margin: auto
 }
 
+#text {
+    width: 50%;
+    margin: 0 auto 2em;
+}
 
 #coverPhoto {
-    max-width: 100%;
+    width: 50%;
+    margin: 0 auto;
     height: 32em;
     background-size:contain;
     background-repeat:no-repeat
