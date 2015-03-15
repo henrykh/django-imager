@@ -82,6 +82,7 @@ class LoggedOutTestCase(TestCase):
 
 class LoggedInTestCase(TestCase):
     def setUp(self):
+        self.client = Client()
         self.username = 'test_username'
         UserFactory(username=self.username)
         self.client.login(username=self.username, password=PASSWORD)
@@ -155,6 +156,7 @@ class LoggedInTestCase(TestCase):
 @override_settings(EMAIL_BACKEND='imager.tests.TestEmailBackend')
 class RegistrationTest(TestCase):
     def setUp(self):
+        self.client = Client()
         self.new_user = 'username'
         self.new_password = 'password'
         self.new_email = 'user@test.com'

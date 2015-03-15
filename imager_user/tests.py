@@ -1,8 +1,11 @@
 import factory
 from django.test import TestCase
+from django.test import Client
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo, Album
+
+PASSWORD = 'test_password'
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -11,14 +14,13 @@ class UserFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('username',
                                 'first_name',
                                 'last_name',
-                                'email',
-                                'password')
+                                'email')
 
     username = 'john'
     first_name = 'john',
     last_name = 'doe',
     email = 'john@doe.com',
-    password = 'secret'
+    password = factory.PostGenerationMethodCall('set_password', PASSWORD)
 
 
 class ImageFactory(factory.django.DjangoModelFactory):
@@ -112,8 +114,7 @@ class ProfilePageTestCase(TestCase):
         user1 = {'username': 'johndoe',
                  'first_name': 'john',
                  'last_name': 'doe',
-                 'email': 'john@doe.com',
-                 'password': 'secret'}
+                 'email': 'john@doe.com'}
 
         profile1 = {'user': 'self.u1',
                     'picture_privacy': 'False',
@@ -127,10 +128,9 @@ class ProfilePageTestCase(TestCase):
         user2 = {'username': 'janedoe',
                  'first_name': 'jane',
                  'last_name': 'doe',
-                 'email': 'jane@doe.com',
-                 'password': 'secret'}
+                 'email': 'jane@doe.com'}
 
-        profile2 = {'user': 'self.u2'
+        profile2 = {'user': 'self.u2',
                     'picture_privacy': 'False',
                     'phone_number': '+19712796535',
                     'phone_privacy': 'True',
@@ -154,20 +154,45 @@ class ProfilePageTestCase(TestCase):
 
         self.u1.profile.follow(self.u2.profile)
 
-        self.image1 = ImageFactory(filename='example1.jpg')
-        self.image2 = ImageFactory(filename='example2.jpg')
-        self.image3 = ImageFactory(filename='example3.jpg')
+        self.image1 = ImageFactory()
+        self.image2 = ImageFactory()
+        self.image3 = ImageFactory()
 
         self.image1.user = self.u1
+        self.image1.image = factory.django.ImageField(filename='example1.jpg',
+                                                     color='blue')
+
         self.image2.user = self.u2
-        self.image3.user = self.u3
+        self.image2.image = factory.django.ImageField(filename='example2.jpg',
+                                                     color='blue')
 
-        self.album1 = Album()
-        self.album2 = Album()
-        self.album3 = Album()
+        self.image3.user = self.u2
+        self.image3.image = factory.django.ImageField(filename='example3.jpg',
+                                                     color='blue')
 
-    def test_setup(self):
-        # import ipdb; ipdb.set_trace()
+        self.album1 = Album(title='album1')
+        self.album1.user = self.u1
+        self.album2 = Album(title='album2')
+        self.album2.user = self.u2
+        self.album3 = Album(title='album3')
+        self.album3.user = self.u2
 
-        for item in self.u1:
-            print(item)
+        self.album1.save()
+        self.album2.save()
+        self.album3.save()
+
+        self.image1.albums.add(self.album1)
+        self.image2.albums.add(self.album2)
+        self.image2.albums.add(self.album2)
+
+        self.client = Client()
+        self.client.login(username=user1['username'], password=PASSWORD)
+
+    def test_profile_page_links(self):
+        response = self.client.get('/')
+        self.assertIn('<a href="/">', response.content)
+        self.assertIn('<a href="/profile/">', response.content)
+        self.assertIn('<a href="/stream/">', response.content)
+        self.assertIn('<a href="/library/">', response.content)
+        self.assertIn('<a href="/accounts/logout/?next=/">', response.content)
+        
