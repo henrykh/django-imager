@@ -2,7 +2,7 @@ import factory
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
-from imager_images.models import Photo
+from imager_images.models import Photo, Album
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -114,7 +114,9 @@ class ProfilePageTestCase(TestCase):
                  'last_name': 'doe',
                  'email': 'john@doe.com',
                  'password': 'secret'}
-        profile1 = {'picture_privacy': 'False',
+
+        profile1 = {'user': 'self.u1',
+                    'picture_privacy': 'False',
                     'phone_number': '+12066819318',
                     'phone_privacy': 'True',
                     'birthday': '1999-01-01',
@@ -127,7 +129,9 @@ class ProfilePageTestCase(TestCase):
                  'last_name': 'doe',
                  'email': 'jane@doe.com',
                  'password': 'secret'}
-        profile2 = {'picture_privacy': 'False',
+
+        profile2 = {'user': 'self.u2'
+                    'picture_privacy': 'False',
                     'phone_number': '+19712796535',
                     'phone_privacy': 'True',
                     'birthday': '1999-10-31',
@@ -148,6 +152,19 @@ class ProfilePageTestCase(TestCase):
             self.p1.key = profile1[key]
             self.p2.key = profile2[key]
 
+        self.u1.profile.follow(self.u2.profile)
+
+        self.image1 = ImageFactory(filename='example1.jpg')
+        self.image2 = ImageFactory(filename='example2.jpg')
+        self.image3 = ImageFactory(filename='example3.jpg')
+
+        self.image1.user = self.u1
+        self.image2.user = self.u2
+        self.image3.user = self.u3
+
+        self.album1 = Album()
+        self.album2 = Album()
+        self.album3 = Album()
 
     def test_setup(self):
         # import ipdb; ipdb.set_trace()
