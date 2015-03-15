@@ -186,9 +186,10 @@ class ProfilePageTestCase(TestCase):
         self.image2.albums.add(self.album2)
 
         self.client = Client()
-        self.login = self.client.login(username=user1['username'], password=PASSWORD)        # import ipdb; ipdb.set_trace()
 
     def test_profile_page_links(self):
+        self.client.login(username=self.u1.username,
+                          password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<a href="/">', response.content)
         self.assertIn('<a href="/profile/">', response.content)
@@ -198,6 +199,17 @@ class ProfilePageTestCase(TestCase):
         self.assertIn('href="/profile/update/', response.content)
 
     def test_profile_page_no_profile_image(self):
+        self.client.login(username=self.u1.username,
+                          password=PASSWORD)
+        response = self.client.get('/profile/')
+        self.assertIn('<img src="/static/imager_user/man.png">',
+                      response.content)
+
+    def test_profile_page_profile_image(self):
+        self.p1.picture = self.image1.image
+        self.p1.user = self.u1
+        self.client.login(username=self.u1.username,
+                          password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<img src="/static/imager_user/man.png">',
                       response.content)
