@@ -2,14 +2,33 @@ import factory
 from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
+from imager_images.models import Photo
 
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
-        django_get_or_create = ('username', )
+        django_get_or_create = ('username',
+                                'first_name',
+                                'last_name',
+                                'email',
+                                'password')
 
     username = 'john'
+    first_name = 'john',
+    last_name = 'doe',
+    email = 'john@doe.com',
+    password = 'secret'
+
+
+class ImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Photo
+
+    user = UserFactory()
+    image = factory.django.ImageField(color='blue')
+    file_size = 1000000
+    published = 'pvt'
 
 
 class ImagerProfileTestCase(TestCase):
@@ -85,3 +104,53 @@ class FollowingTestCase(TestCase):
         self.assertNotIn(self.jane.profile, self.john.profile.following())
         self.jane.profile.unblock(self.john.profile)
         self.assertIn(self.jane.profile, self.john.profile.following())
+
+
+class ProfilePageTestCase(TestCase):
+    def setUp(self):
+
+        user1 = {'username': 'johndoe',
+                 'first_name': 'john',
+                 'last_name': 'doe',
+                 'email': 'john@doe.com',
+                 'password': 'secret'}
+        profile1 = {'picture_privacy': 'False',
+                    'phone_number': '+12066819318',
+                    'phone_privacy': 'True',
+                    'birthday': '1999-01-01',
+                    'birthday_privacy': 'True',
+                    'email_privacy': 'True',
+                    'name_privacy': 'False'}
+
+        user2 = {'username': 'janedoe',
+                 'first_name': 'jane',
+                 'last_name': 'doe',
+                 'email': 'jane@doe.com',
+                 'password': 'secret'}
+        profile2 = {'picture_privacy': 'False',
+                    'phone_number': '+19712796535',
+                    'phone_privacy': 'True',
+                    'birthday': '1999-10-31',
+                    'birthday_privacy': 'True',
+                    'email_privacy': 'True',
+                    'name_privacy': 'False'}
+
+        self.u1 = UserFactory(username=user1['username'])
+        self.u2 = UserFactory(username=user2['username'])
+        self.p1 = ImagerProfile()
+        self.p2 = ImagerProfile()
+
+        for key in user1:
+            self.u1.key = user1[key]
+            self.u2.key = user1[key]
+
+        for key in profile1:
+            self.p1.key = profile1[key]
+            self.p2.key = profile2[key]
+
+
+    def test_setup(self):
+        # import ipdb; ipdb.set_trace()
+
+        for item in self.u1:
+            print(item)
