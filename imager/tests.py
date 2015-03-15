@@ -94,7 +94,7 @@ class LoggedInTestCase(TestCase):
         response = self.client.post('/accounts/login/',
                                     {'username': 'test_username',
                                      'password': PASSWORD})
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, 'profile/')
 
     def test_login_redirect_failuse(self):
         UserFactory()
