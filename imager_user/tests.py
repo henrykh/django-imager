@@ -160,15 +160,15 @@ class ProfilePageTestCase(TestCase):
 
         self.image1.user = self.u1
         self.image1.image = factory.django.ImageField(filename='example1.jpg',
-                                                     color='blue')
+                                                      color='blue')
 
         self.image2.user = self.u2
         self.image2.image = factory.django.ImageField(filename='example2.jpg',
-                                                     color='blue')
+                                                      color='blue')
 
         self.image3.user = self.u2
         self.image3.image = factory.django.ImageField(filename='example3.jpg',
-                                                     color='blue')
+                                                      color='blue')
 
         self.album1 = Album(title='album1')
         self.album1.user = self.u1
@@ -186,13 +186,18 @@ class ProfilePageTestCase(TestCase):
         self.image2.albums.add(self.album2)
 
         self.client = Client()
-        self.client.login(username=user1['username'], password=PASSWORD)
+        self.login = self.client.login(username=user1['username'], password=PASSWORD)        # import ipdb; ipdb.set_trace()
 
     def test_profile_page_links(self):
-        response = self.client.get('/')
+        response = self.client.get('/profile/')
         self.assertIn('<a href="/">', response.content)
         self.assertIn('<a href="/profile/">', response.content)
         self.assertIn('<a href="/stream/">', response.content)
         self.assertIn('<a href="/library/">', response.content)
         self.assertIn('<a href="/accounts/logout/?next=/">', response.content)
-        
+        self.assertIn('href="/profile/update/', response.content)
+
+    def test_profile_page_no_profile_image(self):
+        response = self.client.get('/profile/')
+        self.assertIn('<img src="/static/imager_user/man.png">',
+                      response.content)
