@@ -172,6 +172,9 @@ class ProfilePageTestCase(TestCase):
         self.user1.profile.picture = self.image1.image
         self.client = Client()
 
+    def tearDown(self):
+        os.system('rm -r media/imager_images/example*')
+
     def test_profile_page_links(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
@@ -191,7 +194,8 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_profile_image(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/static/imager_user/man.png">',
+        import ipdb; ipdb.set_trace()
+        self.assertIn('<img src="/static/imager_user/.png">',
                       response.content)
 
     def test_profile_page_no_albums(self):

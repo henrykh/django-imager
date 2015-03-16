@@ -90,6 +90,9 @@ class LoggedInTestCase(TestCase):
         self.new_password = 'password'
         self.new_email = 'user@test.com'
 
+    def tearDown(self):
+        os.system('rm -r media/imager_images/example*')
+
     def test_login_redirect_success(self):
         UserFactory()
         response = self.client.post('/accounts/login/',
@@ -132,7 +135,6 @@ class LoggedInTestCase(TestCase):
         self.assertTemplateUsed(response, template_name='home.html')
         self.assertIn('imager_images/example',
                       response.content)
-        os.system('rm -r media/imager_images/example*')
 
     def test_logged_in_profile(self):
         response = self.client.get('/profile/')
