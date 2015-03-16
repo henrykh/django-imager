@@ -8,6 +8,7 @@ import os
 import glob
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
+PASSWORD = 'test_password'
 
 
 def clean_up():
@@ -18,9 +19,23 @@ def clean_up():
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
-        django_get_or_create = ('username', )
+        django_get_or_create = ('username',)
 
     username = 'john'
+    first_name = 'john'
+    last_name = 'doe'
+    email = 'john@doe.com'
+    password = factory.PostGenerationMethodCall('set_password', PASSWORD)
+
+
+class ImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Photo
+
+    user = UserFactory()
+    image = factory.django.ImageField(color='blue')
+    file_size = 1000000
+    published = 'pvt'
 
 
 class PhotoTestCase(TestCase):
@@ -148,3 +163,11 @@ class AlbumTestCase(TestCase):
         the_album = Album.objects.all()[0]
         self.assertEquals(the_album.cover, photo1)
         clean_up()
+
+
+class LibraryTestCase(TestCase):
+    def setup(self):
+        pass
+
+    def tearDown(self):
+        pass
