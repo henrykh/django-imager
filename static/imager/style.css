@@ -1,24 +1,63 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style: none;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    margin-bottom: 3em;
+    display: block;
+    height: 8em;
+    background-color: #2800D7;
+    color: white;
+}
 
 #headerTitle {
     float: left;
+    margin-left: 2%;
+}
+
+#headerTitle a {
+    color: white;
 }
 
 
 nav {
     float: right;
     text-decoration: none;
-}
-
-nav ul {
-    list-style: none;
+    margin-right: 2%;
 }
 
 nav li {
     display: inline-block;
+    margin-left: 1em;
+}
+
+nav li a {
+    color: white;
+}
+
+#content {
+    max-width: 90%;
+
+    margin: auto
+}
+
+#text {
+    width: 50%;
+    margin: 0 auto 2em;
 }
 
 #coverPhoto {
-    max-width: 100%;
+    width: 50%;
+    margin: 0 auto;
     height: 32em;
     background-size:contain;
     background-repeat:no-repeat

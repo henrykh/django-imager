@@ -176,16 +176,8 @@ class LibraryTestCase(TestCase):
         self.user1.profile.birthday_privacy = True
         self.user1.profile.email_privacy = True
         self.user1.profile.name_privacy = True
+        self.user1.profile.picture = THE_FILE
         self.user1.profile.save()
-
-        self.user2.profile.picture_privacy = False
-        self.user2.profile.phone_number = '+19712796535'
-        self.user2.profile.phone_privacy = False
-        self.user2.profile.birthday = '1999-10-31'
-        self.user2.profile.birthday_privacy = False
-        self.user2.profile.email_privacy = False
-        self.user2.profile.name_privacy = False
-        self.user2.profile.save()
 
         self.user1.profile.follow(self.user2.profile)
 
@@ -219,17 +211,21 @@ class LibraryTestCase(TestCase):
         photo2.albums.add(album2)
         photo2.albums.add(album2)
 
-        self.user1.profile.picture = photo1.image
+        self.client.login(username=self.user1.username, password=PASSWORD)
 
     def tearDown(self):
-        for file in glob.glob("media/imager_images/example*.jpg"):
+        for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_cover_thumbnails(self):
-        self.client.login(username=self.user1.username, password=PASSWORD)
+    def test_album_cover_thumbnails(self):
         response = self.client.get('/library/')
-        # import ipdb; ipdb.set_trace()
+        print(response.content)
 
         # self.assertIn(
         #     '<li id="username">Username: {}<span class="privacy"></span></li>'
         #     .format(self.user1.username), response.content)
+
+    def test_album_titles(self):
+        import ipdb; ipdb.set_trace()
+        response = self.client.get('/library/')
+        print(response.content)
