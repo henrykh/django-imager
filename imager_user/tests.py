@@ -127,6 +127,7 @@ class ProfilePageTestCase(TestCase):
         self.user1.profile.birthday_privacy = True
         self.user1.profile.email_privacy = True
         self.user1.profile.name_privacy = True
+        self.user1.profile.picture = THE_FILE
         self.user1.profile.save()
 
         self.user2.profile.picture_privacy = False
@@ -168,10 +169,8 @@ class ProfilePageTestCase(TestCase):
         photo2.albums.add(album2)
         photo2.albums.add(album2)
 
-        self.user1.profile.picture = THE_FILE
-
     def tearDown(self):
-        for file in glob.glob("media/imager_images/test*.png"):
+        for file in glob.glob("media/imager_user/test*"):
             os.remove(file)
 
     def test_profile_page_links(self):
@@ -193,7 +192,7 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_profile_image(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/media/imager_images/test.png">',
+        self.assertIn('<img src="/media/imager_user/test',
                       response.content)
 
     def test_profile_page_no_albums(self):
