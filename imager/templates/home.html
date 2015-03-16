@@ -19,7 +19,7 @@
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
                     <li><a href="{% url 'registration_register' %}">Join</a></li>
                 {% else %}
-                    <li><a href="{% url 'profile:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'profile:profile' %}">{{user}}</a></li>
                     <li><a href="{% url 'images:stream' %}">Stream</a></li>
                     <li><a href="{% url 'images:library' %}">Library</a></li>
                     <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>

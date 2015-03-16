@@ -227,7 +227,6 @@ class ProfilePageTestCase(TestCase):
     def test_profile_info_true(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        import ipdb; ipdb.set_trace()
         self.assertIn(
             '<li id="username">Username: {}<span class="privacy"></span></li>'
             .format(self.user1.username), response.content)
