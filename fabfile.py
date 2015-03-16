@@ -126,11 +126,19 @@ def install_nginx():
 
 
 def install_supervisor():
-    run_command_on_selected_server(_install_supervisor)
+    run_command_on_selected_server(_install_gunicorn)
 
 
-def _install_supervisor():
-    sudo("apt-get install supervisor")
+def _install_gunicorn():
+    sudo("apt-get install gunicorn")
+
+
+def run_app():
+    run_command_on_selected_server(_run_app)
+
+
+def _run_app():
+    sudo('gunicorn imager:wsgi')
 
 
 def _configure_nginx():
