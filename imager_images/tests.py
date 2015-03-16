@@ -6,6 +6,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
 import os
 import glob
+from sorl.thumbnail import get_thumbnail
+
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
@@ -199,11 +201,11 @@ class LibraryTestCase(TestCase):
         photo2.user = self.user1
         photo2.save()
 
-        photo3 = PhotoFactory(published='pub')
-        photo3.user = self.user2
+        photo3 = PhotoFactory()
+        photo3.user = self.user1
         photo3.save()
 
-        photo4 = PhotoFactory()
+        photo4 = PhotoFactory(published='pub')
         photo4.user = self.user2
         photo4.save()
 
@@ -223,7 +225,10 @@ class LibraryTestCase(TestCase):
 
         photo1.albums.add(album1)
         photo2.albums.add(album2)
-        photo2.albums.add(album2)
+
+        self.thumb1 = get_thumbnail(album1.cover.image, '1000x1000')
+        self.thumb2 = get_thumbnail(album2.cover.image, '1000x1000')
+        self.thumb3 = get_thumbnail(album2.cover.image, '1000x1000')
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -234,10 +239,10 @@ class LibraryTestCase(TestCase):
     def test_album_cover_thumbnails_no_cover(self):
         response = self.client.get('/library/')
         print(response.content)
-        # import ipdb; ipdb.set_trace()
-        self.assertIn(
-            '<li id="username">Username: {}<span class="privacy"></span></li>'
-            .format(self.user1.username), response.content)
+        import ipdb; ipdb.set_trace()
+        # self.assertIn(
+        #     '<li id="username">Username: {}<span class="privacy"></span></li>'
+        #     .format(self.user1.username), response.content)
 
     def test_album_titles(self):
         response = self.client.get('/library/')

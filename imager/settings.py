@@ -140,3 +140,8 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.logging.LoggingPanel',
     'debug_toolbar.panels.redirects.RedirectsPanel',
 )
+
+# Password hasher for development
+if DEBUG:
+    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
+                        )
