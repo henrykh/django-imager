@@ -1,5 +1,5 @@
 import factory
-from django.test import TestCase
+from django.test import TestCase, Client
 from imager_images.models import Album, Photo
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -9,11 +9,6 @@ import glob
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
-
-
-def clean_up():
-    for file in glob.glob("media/imager_images/test*.png"):
-        os.remove(file)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -43,6 +38,10 @@ class PhotoTestCase(TestCase):
     def setUp(self):
         UserFactory()
 
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*.png"):
+            os.remove(file)
+
     def test_photo_has_user(self):
         user_john = User.objects.get(username='john')
         photo1 = Photo()
@@ -50,7 +49,6 @@ class PhotoTestCase(TestCase):
         photo1.image = THE_FILE
         photo1.save()
         self.assertEquals(Photo.objects.all()[0].user, user_john)
-        clean_up()
 
     def test_photo_metadata(self):
         user_john = User.objects.get(username='john')
@@ -67,7 +65,6 @@ class PhotoTestCase(TestCase):
         self.assertEquals(the_photo.published, "pvt")
         self.assertEquals(the_photo.date_uploaded, datetime.date.today())
         self.assertEquals(the_photo.date_modified, datetime.date.today())
-        clean_up()
 
 
 class AlbumTestCase(TestCase):
@@ -82,7 +79,6 @@ class AlbumTestCase(TestCase):
         album1.user = user_john
         album1.save()
         self.assertEqual(Album.objects.all()[0].user, user_john)
-        clean_up()
 
     def test_photo_in_album(self):
         user_john = User.objects.get(username='john')
@@ -95,7 +91,6 @@ class AlbumTestCase(TestCase):
         photo1.save()
         photo1.albums.add(album1)
         self.assertIn(photo1, album1.photos.all())
-        clean_up()
 
     def test_photos_in_album(self):
         user_john = User.objects.get(username='john')
@@ -114,7 +109,6 @@ class AlbumTestCase(TestCase):
         photo2.albums.add(album1)
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo2, album1.photos.all())
-        clean_up()
 
     def test_photo_in_multiple_albums(self):
         user_john = User.objects.get(username='john')
@@ -132,7 +126,6 @@ class AlbumTestCase(TestCase):
         photo1.albums.add(album2)
         self.assertIn(photo1, album1.photos.all())
         self.assertIn(photo1, album2.photos.all())
-        clean_up()
 
     def test_album_metadata(self):
         user_john = User.objects.get(username='john')
@@ -148,7 +141,6 @@ class AlbumTestCase(TestCase):
         self.assertEquals(the_album.published, "pvt")
         self.assertEquals(the_album.date_uploaded, datetime.date.today())
         self.assertEquals(the_album.date_modified, datetime.date.today())
-        clean_up()
 
     def test_album_cover(self):
         user_john = User.objects.get(username='john')
@@ -162,12 +154,62 @@ class AlbumTestCase(TestCase):
         album1.save()
         the_album = Album.objects.all()[0]
         self.assertEquals(the_album.cover, photo1)
-        clean_up()
 
 
 class LibraryTestCase(TestCase):
     def setup(self):
-        pass
+        self.user1 = UserFactory()
+        self.user2 = UserFactory(username='janedoe')
+
+        self.user2.first_name = 'jane'
+        self.user2.last_name = 'doe'
+        self.user2.email = 'jane@doe.com'
+
+        self.user1.profile.save()
+        self.user1.profile.picture_privacy = True
+        self.user1.profile.phone_number = '+12066819318'
+        self.user1.profile.phone_privacy = True
+        self.user1.profile.birthday = '1999-01-01'
+        self.user1.profile.birthday_privacy = True
+        self.user1.profile.email_privacy = True
+        self.user1.profile.name_privacy = True
+
+        self.user1.profile.follow(self.user2.profile)
+
+        image1 = ImageFactory()
+        image2 = ImageFactory()
+        image3 = ImageFactory()
+
+        image1.image = factory.django.ImageField(filename='example1.jpg',
+                                                 color='blue')
+        image1.user = self.user1
+
+        image2.image = factory.django.ImageField(filename='example2.jpg',
+                                                 color='blue')
+        image2.user = self.user1
+
+        image3.image = factory.django.ImageField(filename='example3.jpg',
+                                                 color='blue')
+        image3.user = self.user1
+
+        album1 = Album(title='album1')
+        album1.user = self.user1
+        album2 = Album(title='album2')
+        album2.user = self.user1
+        album3 = Album(title='album3')
+        album3.user = self.user1
+
+        album1.save()
+        album2.save()
+        album3.save()
+
+        image1.albums.add(album1)
+        image2.albums.add(album2)
+        image2.albums.add(album2)
+
+        self.user1.profile.picture = image1.image
+        self.client = Client()
 
     def tearDown(self):
-        pass
+        for file in glob.glob("media/imager_images/example*.jpg"):
+            os.remove(file)

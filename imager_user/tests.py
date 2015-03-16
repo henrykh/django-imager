@@ -1,10 +1,11 @@
 import factory
-from django.test import TestCase
-from django.test import Client
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo, Album
 import os
+import glob
+
 
 PASSWORD = 'test_password'
 
@@ -135,42 +136,43 @@ class ProfilePageTestCase(TestCase):
 
         self.user1.profile.follow(self.user2.profile)
 
-        self.image1 = ImageFactory()
-        self.image2 = ImageFactory()
-        self.image3 = ImageFactory()
+        image1 = ImageFactory()
+        image2 = ImageFactory()
+        image3 = ImageFactory()
 
-        self.image1.image = factory.django.ImageField(filename='example1.jpg',
-                                                      color='blue')
-        self.image1.user = self.user1
+        image1.image = factory.django.ImageField(filename='example1.jpg',
+                                                 color='blue')
+        image1.user = self.user1
 
-        self.image2.image = factory.django.ImageField(filename='example2.jpg',
-                                                      color='blue')
-        self.image2.user = self.user1
+        image2.image = factory.django.ImageField(filename='example2.jpg',
+                                                 color='blue')
+        image2.user = self.user1
 
-        self.image3.image = factory.django.ImageField(filename='example3.jpg',
-                                                      color='blue')
-        self.image3.user = self.user1
+        image3.image = factory.django.ImageField(filename='example3.jpg',
+                                                 color='blue')
+        image3.user = self.user1
 
-        self.album1 = Album(title='album1')
-        self.album1.user = self.user1
-        self.album2 = Album(title='album2')
-        self.album2.user = self.user1
-        self.album3 = Album(title='album3')
-        self.album3.user = self.user1
+        album1 = Album(title='album1')
+        album1.user = self.user1
+        album2 = Album(title='album2')
+        album2.user = self.user1
+        album3 = Album(title='album3')
+        album3.user = self.user1
 
-        self.album1.save()
-        self.album2.save()
-        self.album3.save()
+        album1.save()
+        album2.save()
+        album3.save()
 
-        self.image1.albums.add(self.album1)
-        self.image2.albums.add(self.album2)
-        self.image2.albums.add(self.album2)
+        image1.albums.add(album1)
+        image2.albums.add(album2)
+        image2.albums.add(album2)
 
-        self.user1.profile.picture = self.image1.image
+        self.user1.profile.picture = image1.image
         self.client = Client()
 
     def tearDown(self):
-        os.system('rm -r media/imager_images/example*')
+        for file in glob.glob("media/imager_images/example*.jpg"):
+            os.remove(file)
 
     def test_profile_page_links(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
@@ -191,7 +193,6 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_profile_image(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        import ipdb; ipdb.set_trace()
         self.assertIn('<img src="/static/imager_user/.png">',
                       response.content)
 
