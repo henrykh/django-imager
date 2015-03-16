@@ -155,9 +155,9 @@ class ProfilePageTestCase(TestCase):
                                                  color='blue')
         photo3.user = self.user1
 
-        photo1.image
-        photo2.image
-        photo3.image
+        photo1.save()
+        photo2.save()
+        photo3.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1

@@ -23,7 +23,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.PostGenerationMethodCall('set_password', PASSWORD)
 
 
-class ImageFactory(factory.django.DjangoModelFactory):
+class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
 
@@ -176,21 +176,25 @@ class LibraryTestCase(TestCase):
 
         self.user1.profile.follow(self.user2.profile)
 
-        image1 = ImageFactory()
-        image2 = ImageFactory()
-        image3 = ImageFactory()
+        photo1 = PhotoFactory()
+        photo2 = PhotoFactory()
+        photo3 = PhotoFactory()
 
-        image1.image = factory.django.ImageField(filename='example1.jpg',
+        photo1.image = factory.django.ImageField(filename='example1.jpg',
                                                  color='blue')
-        image1.user = self.user1
+        photo1.user = self.user1
 
-        image2.image = factory.django.ImageField(filename='example2.jpg',
+        photo2.image = factory.django.ImageField(filename='example2.jpg',
                                                  color='blue')
-        image2.user = self.user1
+        photo2.user = self.user1
 
-        image3.image = factory.django.ImageField(filename='example3.jpg',
+        photo3.image = factory.django.ImageField(filename='example3.jpg',
                                                  color='blue')
-        image3.user = self.user1
+        photo3.user = self.user1
+
+        photo1.image.save()
+        photo2.image.save()
+        photo3.image.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -203,14 +207,13 @@ class LibraryTestCase(TestCase):
         album2.save()
         album3.save()
 
-        image1.albums.add(album1)
-        image2.albums.add(album2)
-        image2.albums.add(album2)
+        photo1.albums.add(album1)
+        photo2.albums.add(album2)
+        photo2.albums.add(album2)
 
-        album1.cover = image1
-        album2.cover = image2
+        album1.cover = photo1
+        album2.cover = photo2
 
-        self.user1.profile.picture = image1.image
         self.client = Client()
 
     def tearDown(self):
@@ -219,3 +222,4 @@ class LibraryTestCase(TestCase):
 
     def test_cover_thumbnails(self):
         # print(response.content)
+        pass
