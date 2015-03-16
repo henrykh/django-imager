@@ -20,9 +20,6 @@
                     {% thumbnail photoAll.image "1000x1000" as thumb %}
                         <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="All Photos">
                         <img src="{{ thumb.url }}"></a>
-                    {% empty %}
-                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="albumcovers" data-title="All Photos">
-                        <img src="{% static 'imager_images/img/man.png' %}"></a>
                     {% endthumbnail %}
                     <a href="{% url 'images:allphotos_list'%}">All Photos</a>
                 </li>
@@ -33,9 +30,6 @@
                     {% thumbnail photoNoAlb.image "1000x1000" as thumb %}
                         <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="Loose Photos">
                         <img src="{{ thumb.url }}"></a>
-                    {% empty %}
-                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="albumcovers" data-title="Loose Photos">
-                        <img src="{% static 'imager_images/img/man.png' %}"></a>
                     {% endthumbnail %}
                     <a href="{% url 'images:loosephotos_list'%}">Loose Photos</a>
                 </li>
@@ -47,8 +41,10 @@
                         <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="{{album.description}}">
                         <img src="{{ thumb.url }}"></a>
                     {% empty %}
-                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="albumcovers" data-title="{{album.description}}">
-                        <img src="{% static 'imager_images/img/man.png' %}"></a>
+                        {% thumbnail default.image "1000x1000" as thumb_default %}
+                        <a href="{{ thumb_default.url }}" data-lightbox="albumcovers" data-title="{{album.description}}">
+                        <img src="{{ thumb_default.url }}"></a>
+                        {% endthumbnail %}
                     {% endthumbnail %}
                     <a href="{% url 'images:albumphoto_list' album.pk %}">{{album.title}}</a>
                 </li>

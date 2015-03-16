@@ -29,6 +29,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
     user = UserFactory()
     image = THE_FILE
+    title = factory.Sequence(lambda n: 'test{0}'.format(n))
     file_size = 1000000
     published = 'pvt'
 
@@ -175,63 +176,85 @@ class LibraryTestCase(TestCase):
         self.user1.profile.birthday_privacy = True
         self.user1.profile.email_privacy = True
         self.user1.profile.name_privacy = True
+        self.user1.profile.picture = THE_FILE
         self.user1.profile.save()
 
-        self.user2.profile.picture_privacy = False
-        self.user2.profile.phone_number = '+19712796535'
-        self.user2.profile.phone_privacy = False
-        self.user2.profile.birthday = '1999-10-31'
-        self.user2.profile.birthday_privacy = False
-        self.user2.profile.email_privacy = False
-        self.user2.profile.name_privacy = False
+        self.user2.profile.picture_privacy = True
+        self.user2.profile.phone_number = '+12066819318'
+        self.user2.profile.phone_privacy = True
+        self.user2.profile.birthday = '1999-01-01'
+        self.user2.profile.birthday_privacy = True
+        self.user2.profile.email_privacy = True
+        self.user2.profile.name_privacy = True
+        self.user2.profile.picture = THE_FILE
         self.user2.profile.save()
 
         self.user1.profile.follow(self.user2.profile)
 
-        photo1 = PhotoFactory()
-        photo2 = PhotoFactory()
-        photo3 = PhotoFactory()
-
-        # photo1.image = factory.django.ImageField(filename='example1.jpg',
-        #                                          color='blue')
+        photo1 = PhotoFactory(published='pub')
         photo1.user = self.user1
+        photo1.save()
 
-        # photo2.image = factory.django.ImageField(filename='example2.jpg',
-        #                                          color='blue')
+        photo2 = PhotoFactory()
         photo2.user = self.user1
+        photo2.save()
 
-        # photo3.image = factory.django.ImageField(filename='example3.jpg',
-        #                                          color='blue')
-        photo3.user = self.user1
+        photo3 = PhotoFactory(published='pub')
+        photo3.user = self.user2
+        photo3.save()
+
+        photo4 = PhotoFactory()
+        photo4.user = self.user2
+        photo4.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
+        album1.cover = photo1
+        album1.save()
+
         album2 = Album(title='album2')
         album2.user = self.user1
+        album2.cover = photo2
+        album2.save()
+
         album3 = Album(title='album3')
         album3.user = self.user1
-
-        album1.save()
-        album2.save()
         album3.save()
 
         photo1.albums.add(album1)
         photo2.albums.add(album2)
         photo2.albums.add(album2)
 
-        self.user1.profile.picture = photo1.image
-
-        album1.cover = photo1
-        album2.cover = photo2
+        self.client.login(username=self.user1.username, password=PASSWORD)
 
     def tearDown(self):
-        for file in glob.glob("media/imager_images/example*.jpg"):
+        for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_cover_thumbnails(self):
-        # import ipdb; ipdb.set_trace()
-        self.client.login(username=self.user1.username, password=PASSWORD)
+    def test_album_cover_thumbnails_no_cover(self):
         response = self.client.get('/library/')
-        # self.assertIn(
-        #     '<li id="username">Username: {}<span class="privacy"></span></li>'
-        #     .format(self.user1.username), response.content)
+        print(response.content)
+        # import ipdb; ipdb.set_trace()
+        self.assertIn(
+            '<li id="username">Username: {}<span class="privacy"></span></li>'
+            .format(self.user1.username), response.content)
+
+    def test_album_titles(self):
+        response = self.client.get('/library/')
+        for item in self.user1.albums.all():
+            self.assertIn('{}</a>'
+                          .format(item.title), response.content)
+        self.assertIn('All Photos</a>'
+                      .format(item.id), response.content)
+        self.assertIn('Loose Photos</a>'
+                      .format(item.title), response.content)
+
+    def test_album_links(self):
+        response = self.client.get('/library/')
+        for item in self.user1.albums.all():
+            self.assertIn('<a href="/album/{}/">'
+                          .format(item.id), response.content)
+        self.assertIn('<a href="/photos/loose/">'
+                      .format(item.id), response.content)
+        self.assertIn('<a href="/photos/all/">'
+                      .format(item.id), response.content)
