@@ -179,9 +179,19 @@ class LibraryTestCase(TestCase):
         self.user1.profile.picture = THE_FILE
         self.user1.profile.save()
 
+        self.user2.profile.picture_privacy = True
+        self.user2.profile.phone_number = '+12066819318'
+        self.user2.profile.phone_privacy = True
+        self.user2.profile.birthday = '1999-01-01'
+        self.user2.profile.birthday_privacy = True
+        self.user2.profile.email_privacy = True
+        self.user2.profile.name_privacy = True
+        self.user2.profile.picture = THE_FILE
+        self.user2.profile.save()
+
         self.user1.profile.follow(self.user2.profile)
 
-        photo1 = PhotoFactory()
+        photo1 = PhotoFactory(published='pub')
         photo1.user = self.user1
         photo1.save()
 
@@ -189,9 +199,13 @@ class LibraryTestCase(TestCase):
         photo2.user = self.user1
         photo2.save()
 
-        photo3 = PhotoFactory()
-        photo3.user = self.user1
+        photo3 = PhotoFactory(published='pub')
+        photo3.user = self.user2
         photo3.save()
+
+        photo4 = PhotoFactory()
+        photo4.user = self.user2
+        photo4.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -217,13 +231,13 @@ class LibraryTestCase(TestCase):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_album_cover_thumbnails(self):
+    def test_album_cover_thumbnails_no_cover(self):
         response = self.client.get('/library/')
         print(response.content)
-
-        # self.assertIn(
-        #     '<li id="username">Username: {}<span class="privacy"></span></li>'
-        #     .format(self.user1.username), response.content)
+        # import ipdb; ipdb.set_trace()
+        self.assertIn(
+            '<li id="username">Username: {}<span class="privacy"></span></li>'
+            .format(self.user1.username), response.content)
 
     def test_album_titles(self):
         response = self.client.get('/library/')
