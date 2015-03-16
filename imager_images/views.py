@@ -17,13 +17,6 @@ from imager_images.forms import (CreateAlbumViewForm,
 from imager_images.models import (Photo,
                                   Album
                                   )
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.contrib.auth.models import User
-
-
-
 
 
 @login_required
@@ -38,9 +31,12 @@ def library(request):
     except(IndexError):
         photoAll = ''
 
+    default_cover = Photo()
+    default_cover.image = 'imager_images/img/man.png'
     context = {'albums': request.user.albums.all(),
                'photoAll': photoAll,
                'photoNoAlb': photoNoAlb,
+               'default': default_cover
                }
     return render(request, 'library.html', context)
 
