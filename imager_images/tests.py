@@ -223,12 +223,25 @@ class LibraryTestCase(TestCase):
         album3.user = self.user1
         album3.save()
 
+        album4 = Album(title='album4')
+        album4.user = self.user2
+        album4.cover = photo4
+        album4.save()
+
         photo1.albums.add(album1)
         photo2.albums.add(album2)
+        photo4.albums.add(album4)
 
-        self.thumb1 = get_thumbnail(album1.cover.image, '1000x1000')
-        self.thumb2 = get_thumbnail(album2.cover.image, '1000x1000')
-        self.thumb3 = get_thumbnail(album2.cover.image, '1000x1000')
+        thumb1 = get_thumbnail(album1.cover.image, '1000x1000')
+        thumb2 = get_thumbnail(album2.cover.image, '1000x1000')
+        thumb3 = get_thumbnail(album4.cover.image, '1000x1000')
+
+        self.thumb_user1 = []
+        self.thumb_user1.append(thumb1.url)
+        self.thumb_user1.append(thumb2.url)
+
+        self.thumb_user2 = []
+        self.thumb_user2.append(thumb3.url)
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -236,13 +249,24 @@ class LibraryTestCase(TestCase):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_album_cover_thumbnails_no_cover(self):
+    def test_album_cover_thumbnails_all_photos(self):
         response = self.client.get('/library/')
-        print(response.content)
-        import ipdb; ipdb.set_trace()
-        # self.assertIn(
-        #     '<li id="username">Username: {}<span class="privacy"></span></li>'
-        #     .format(self.user1.username), response.content)
+        all_photos = []
+
+        for item in self.thumb_user1:
+            all_photos.append(
+                '<a href="{}" data-lightbox="albumcovers" data-title="All Photos">'
+                .format(item))
+
+        for item in all_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
 
     def test_album_titles(self):
         response = self.client.get('/library/')
