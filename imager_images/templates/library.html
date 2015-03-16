@@ -41,10 +41,8 @@
                         <a href="{{ thumb.url }}" data-lightbox="albumcovers" data-title="{{album.description}}">
                         <img src="{{ thumb.url }}"></a>
                     {% empty %}
-                        {% thumbnail default.image "1000x1000" as thumb_default %}
-                        <a href="{{ thumb_default.url }}" data-lightbox="albumcovers" data-title="{{album.description}}">
-                        <img src="{{ thumb_default.url }}"></a>
-                        {% endthumbnail %}
+                        <a href="{{ default.image.url }}" data-lightbox="albumcovers" data-title="{{album.description}}">
+                        <img src="{{ default.image.url }}"></a>
                     {% endthumbnail %}
                     <a href="{% url 'images:albumphoto_list' album.pk %}">{{album.title}}</a>
                 </li>

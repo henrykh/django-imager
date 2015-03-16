@@ -12,7 +12,6 @@ from imager_images.forms import (CreateAlbumViewForm,
                                  EditAlbumForm,
                                  PhotoUpdateViewForm,
                                  CreatePhotoViewForm,
-                                 # AddImageFormSet
                                  )
 from imager_images.models import (Photo,
                                   Album
@@ -38,6 +37,7 @@ def library(request):
                'photoNoAlb': photoNoAlb,
                'default': default_cover
                }
+
     return render(request, 'library.html', context)
 
 
