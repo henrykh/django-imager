@@ -209,10 +209,13 @@ class LibraryTestCase(TestCase):
 
         album1.cover = image1
         album2.cover = image2
-        
+
         self.user1.profile.picture = image1.image
         self.client = Client()
 
     def tearDown(self):
         for file in glob.glob("media/imager_images/example*.jpg"):
             os.remove(file)
+
+    def test_cover_thumbnails(self):
+        # print(response.content)
