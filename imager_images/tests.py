@@ -158,12 +158,9 @@ class AlbumTestCase(TestCase):
 
 class LibraryTestCase(TestCase):
     def setup(self):
-        self.user1 = UserFactory()
-        self.user2 = UserFactory(username='janedoe')
+        self.client = Client()
 
-        self.user2.first_name = 'jane'
-        self.user2.last_name = 'doe'
-        self.user2.email = 'jane@doe.com'
+        self.user1 = UserFactory(username='johndoe')
 
         self.user1.profile.save()
         self.user1.profile.picture_privacy = True
@@ -173,8 +170,6 @@ class LibraryTestCase(TestCase):
         self.user1.profile.birthday_privacy = True
         self.user1.profile.email_privacy = True
         self.user1.profile.name_privacy = True
-
-        self.user1.profile.follow(self.user2.profile)
 
         photo1 = PhotoFactory()
         photo2 = PhotoFactory()
@@ -214,12 +209,15 @@ class LibraryTestCase(TestCase):
         album1.cover = photo1
         album2.cover = photo2
 
-        self.client = Client()
-
     def tearDown(self):
         for file in glob.glob("media/imager_images/example*.jpg"):
             os.remove(file)
 
     def test_cover_thumbnails(self):
-        # print(response.content)
-        pass
+        import ipdb; ipdb.set_trace()
+        self.client.login(username=self.user1.username, password=PASSWORD)
+        response = self.client.get('/library/')
+        print(response.content)
+        # self.assertIn(
+        #     '<li id="username">Username: {}<span class="privacy"></span></li>'
+        #     .format(self.user1.username), response.content)
