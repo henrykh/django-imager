@@ -28,7 +28,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
         model = Photo
 
     user = UserFactory()
-    image = factory.django.ImageField(color='blue')
+    image = THE_FILE
     file_size = 1000000
     published = 'pvt'
 
@@ -142,28 +142,26 @@ class ProfilePageTestCase(TestCase):
 
         photo1 = PhotoFactory()
         photo1.user = self.user1
-        photo1.image = THE_FILE
         photo1.save()
 
         photo2 = PhotoFactory()
         photo2.user = self.user1
-        photo2.image = THE_FILE
         photo2.save()
 
         photo3 = PhotoFactory()
         photo3.user = self.user1
-        photo3.image = THE_FILE
         photo3.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
+        album1.save()
+
         album2 = Album(title='album2')
         album2.user = self.user1
+        album2.save()
+
         album3 = Album(title='album3')
         album3.user = self.user1
-
-        album1.save()
-        album2.save()
         album3.save()
 
         photo1.albums.add(album1)
@@ -195,7 +193,7 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_profile_image(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/static/imager_images/test">',
+        self.assertIn('<img src="/media/imager_images/test.png">',
                       response.content)
 
     def test_profile_page_no_albums(self):

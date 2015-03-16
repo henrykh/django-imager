@@ -28,7 +28,7 @@ class PhotoFactory(factory.django.DjangoModelFactory):
         model = Photo
 
     user = UserFactory()
-    image = factory.django.ImageField(color='blue')
+    image = THE_FILE
     file_size = 1000000
     published = 'pvt'
 
