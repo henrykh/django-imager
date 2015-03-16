@@ -207,6 +207,9 @@ class LibraryTestCase(TestCase):
         image2.albums.add(album2)
         image2.albums.add(album2)
 
+        album1.cover = image1
+        album2.cover = image2
+        
         self.user1.profile.picture = image1.image
         self.client = Client()
 
