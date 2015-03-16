@@ -170,7 +170,9 @@ class ProfilePageTestCase(TestCase):
         photo2.albums.add(album2)
 
     def tearDown(self):
-        for file in glob.glob("media/imager_user/test*"):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
+        for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
     def test_profile_page_links(self):

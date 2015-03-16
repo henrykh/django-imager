@@ -4,10 +4,14 @@ from django.test import TestCase
 from django.core import mail
 from django.test.utils import override_settings
 from django.core.mail.backends.base import BaseEmailBackend
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from imager_images.models import Photo
 import os
+import glob
 
+
+THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
 
 
@@ -31,7 +35,7 @@ class ImageFactory(factory.django.DjangoModelFactory):
         model = Photo
 
     user = UserFactory()
-    image = factory.django.ImageField(color='blue')
+    image = THE_FILE
     file_size = 1000000
     published = 'pvt'
 
@@ -91,7 +95,8 @@ class LoggedInTestCase(TestCase):
         self.new_email = 'user@test.com'
 
     def tearDown(self):
-        os.system('rm -r media/imager_images/example*')
+        for file in glob.glob("media/imager_user/test*"):
+            os.remove(file)
 
     def test_login_redirect_success(self):
         UserFactory()
@@ -133,7 +138,7 @@ class LoggedInTestCase(TestCase):
         ImageFactory(published='pub')
         response = self.client.get('/')
         self.assertTemplateUsed(response, template_name='home.html')
-        self.assertIn('imager_images/example',
+        self.assertIn('imager_images/test',
                       response.content)
 
     def test_logged_in_profile(self):

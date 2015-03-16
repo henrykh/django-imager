@@ -226,6 +226,18 @@ class LibraryTestCase(TestCase):
         #     .format(self.user1.username), response.content)
 
     def test_album_titles(self):
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         response = self.client.get('/library/')
+        self.user1.albums.all()[0].id
         print(response.content)
+
+    def test_album_links(self):
+        response = self.client.get('/library/')
+        self.user1.albums.all()[0].id
+        for item in self.user1.albums.all():
+            self.assertIn('<a href="/album/{}/">'
+                          .format(item.id), response.content)
+        self.assertIn('<a href="/photos/loose/">'
+                      .format(item.id), response.content)
+        self.assertIn('<a href="/photos/all/">'
+                      .format(item.id), response.content)
