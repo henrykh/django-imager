@@ -11,15 +11,12 @@ PASSWORD = 'test_password'
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
-        django_get_or_create = ('username',
-                                'first_name',
-                                'last_name',
-                                'email')
+        django_get_or_create = ('username',)
 
     username = 'john'
-    first_name = 'john',
-    last_name = 'doe',
-    email = 'john@doe.com',
+    first_name = 'john'
+    last_name = 'doe'
+    email = 'john@doe.com'
     password = factory.PostGenerationMethodCall('set_password', PASSWORD)
 
 
@@ -110,49 +107,36 @@ class FollowingTestCase(TestCase):
 
 class ProfilePageTestCase(TestCase):
     def setUp(self):
+        self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
 
-        user1 = {'username': 'johndoe',
-                 'first_name': 'john',
-                 'last_name': 'doe',
-                 'email': 'john@doe.com'}
+        self.user1.first_name = 'john'
+        self.user1.last_name = 'doe'
+        self.user1.email = 'john@doe.com'
 
-        profile1 = {'user': 'self.u1',
-                    'picture_privacy': 'False',
-                    'phone_number': '+12066819318',
-                    'phone_privacy': 'True',
-                    'birthday': '1999-01-01',
-                    'birthday_privacy': 'True',
-                    'email_privacy': 'True',
-                    'name_privacy': 'False'}
+        self.user2.first_name = 'jane'
+        self.user2.last_name = 'doe'
+        self.user2.email = 'jane@doe.com'
 
-        user2 = {'username': 'janedoe',
-                 'first_name': 'jane',
-                 'last_name': 'doe',
-                 'email': 'jane@doe.com'}
+        self.user1.profile.save()
+        self.user1.profile.picture_privacy = True
+        self.user1.profile.phone_number = '+12066819318'
+        self.user1.profile.phone_privacy = True
+        self.user1.profile.birthday = '1999-01-01'
+        self.user1.profile.birthday_privacy = True
+        self.user1.profile.email_privacy = True
+        self.user1.profile.name_privacy = True
 
-        profile2 = {'user': 'self.u2',
-                    'picture_privacy': 'False',
-                    'phone_number': '+19712796535',
-                    'phone_privacy': 'True',
-                    'birthday': '1999-10-31',
-                    'birthday_privacy': 'True',
-                    'email_privacy': 'True',
-                    'name_privacy': 'False'}
+        self.user2.profile.save()
+        self.user2.profile.picture_privacy = True
+        self.user2.profile.phone_number = '+19712796535'
+        self.user2.profile.phone_privacy = False
+        self.user2.profile.birthday = '1999-10-31'
+        self.user2.profile.birthday_privacy = False
+        self.user2.profile.email_privacy = False
+        self.user2.profile.name_privacy = False
 
-        self.u1 = UserFactory(username=user1['username'])
-        self.u2 = UserFactory(username=user2['username'])
-        self.p1 = ImagerProfile()
-        self.p2 = ImagerProfile()
-
-        for key in user1:
-            self.u1.key = user1[key]
-            self.u2.key = user1[key]
-
-        for key in profile1:
-            self.p1.key = profile1[key]
-            self.p2.key = profile2[key]
-
-        self.u1.profile.follow(self.u2.profile)
+        self.user1.profile.follow(self.user2.profile)
 
         self.image1 = ImageFactory()
         self.image2 = ImageFactory()
@@ -160,22 +144,22 @@ class ProfilePageTestCase(TestCase):
 
         self.image1.image = factory.django.ImageField(filename='example1.jpg',
                                                       color='blue')
-        self.image1.user = self.u1
+        self.image1.user = self.user1
 
         self.image2.image = factory.django.ImageField(filename='example2.jpg',
                                                       color='blue')
-        self.image2.user = self.u1
+        self.image2.user = self.user1
 
         self.image3.image = factory.django.ImageField(filename='example3.jpg',
                                                       color='blue')
-        self.image3.user = self.u1
+        self.image3.user = self.user1
 
         self.album1 = Album(title='album1')
-        self.album1.user = self.u1
+        self.album1.user = self.user1
         self.album2 = Album(title='album2')
-        self.album2.user = self.u1
+        self.album2.user = self.user1
         self.album3 = Album(title='album3')
-        self.album3.user = self.u1
+        self.album3.user = self.user1
 
         self.album1.save()
         self.album2.save()
@@ -185,14 +169,11 @@ class ProfilePageTestCase(TestCase):
         self.image2.albums.add(self.album2)
         self.image2.albums.add(self.album2)
 
-        self.p1.picture = self.image1.image
-        self.p1.user = self.u1
-        self.p2.user = self.u2
-
+        self.user1.profile.picture = self.image1.image
         self.client = Client()
 
     def test_profile_page_links(self):
-        self.client.login(username=self.u1.username, password=PASSWORD)
+        self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<a href="/">', response.content)
         self.assertIn('<a href="/profile/">', response.content)
@@ -202,43 +183,63 @@ class ProfilePageTestCase(TestCase):
         self.assertIn('href="/profile/update/', response.content)
 
     def test_profile_page_no_profile_image(self):
-        self.client.login(username=self.u2.username, password=PASSWORD)
+        self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<img src="/static/imager_user/man.png">',
                       response.content)
 
     def test_profile_page_profile_image(self):
-        self.client.login(username=self.u1.username, password=PASSWORD)
+        self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<img src="/static/imager_user/man.png">',
                       response.content)
 
     def test_profile_page_no_albums(self):
-        self.client.login(username=self.u2.username, password=PASSWORD)
+        self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>0 albums,</li>', response.content)
 
     def test_profile_page_albums(self):
-        self.client.login(username=self.u1.username, password=PASSWORD)
+        self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>3 albums,</li>', response.content)
 
     def test_profile_page_no_photos(self):
-        self.client.login(username=self.u2.username, password=PASSWORD)
+        self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>You have 0 photos,</li>', response.content)
 
     def test_profile_page_photos(self):
-        self.client.login(username=self.u1.username, password=PASSWORD)
+        self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>You have 3 photos,</li>', response.content)
 
     def test_profile_page_no_followers(self):
-        self.client.login(username=self.u2.username, password=PASSWORD)
+        self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>and 1 followers</li>', response.content)
 
     def test_profile_page_followers(self):
-        self.client.login(username=self.u1.username, password=PASSWORD)
+        self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
         self.assertIn('<li>and 0 followers</li>', response.content)
+
+    def test_profile_info_true(self):
+        self.client.login(username=self.user1.username, password=PASSWORD)
+        response = self.client.get('/profile/')
+        import ipdb; ipdb.set_trace()
+        self.assertIn(
+            '<li id="username">Username: {}<span class="privacy"></span></li>'
+            .format(self.user1.username), response.content)
+        self.assertIn(
+            '<li id="first_name">First Name: {}<span class="privacy">True</span></li>'
+            .format(self.user1.first_name), response.content)
+        self.assertIn(
+            '<li id="last_name">Last Name: {}<span class="privacy">True</span></li>'
+            .format(self.user1.last_name), response.content)
+        self.assertIn(
+            '<li id="email">Email: {}<span class="privacy">True</span></li>'
+            .format(self.user1.email), response.content)
+        self.assertIn(
+            '<li id="phone_number">Phone: {}<span class="privacy">True</span></li>'
+            .format(self.user1.profile.phone_number), response.content)
