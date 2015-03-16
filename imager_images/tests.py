@@ -157,12 +157,17 @@ class AlbumTestCase(TestCase):
 
 
 class LibraryTestCase(TestCase):
-    def setup(self):
+    def setUp(self):
         self.client = Client()
 
         self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
 
-        self.user1.profile.save()
+        self.user2.first_name = 'jane'
+        self.user2.last_name = 'doe'
+        self.user2.email = 'jane@doe.com'
+        self.user2.save()
+
         self.user1.profile.picture_privacy = True
         self.user1.profile.phone_number = '+12066819318'
         self.user1.profile.phone_privacy = True
@@ -170,26 +175,34 @@ class LibraryTestCase(TestCase):
         self.user1.profile.birthday_privacy = True
         self.user1.profile.email_privacy = True
         self.user1.profile.name_privacy = True
+        self.user1.profile.save()
+
+        self.user2.profile.picture_privacy = False
+        self.user2.profile.phone_number = '+19712796535'
+        self.user2.profile.phone_privacy = False
+        self.user2.profile.birthday = '1999-10-31'
+        self.user2.profile.birthday_privacy = False
+        self.user2.profile.email_privacy = False
+        self.user2.profile.name_privacy = False
+        self.user2.profile.save()
+
+        self.user1.profile.follow(self.user2.profile)
 
         photo1 = PhotoFactory()
         photo2 = PhotoFactory()
         photo3 = PhotoFactory()
 
-        photo1.image = factory.django.ImageField(filename='example1.jpg',
-                                                 color='blue')
+        # photo1.image = factory.django.ImageField(filename='example1.jpg',
+        #                                          color='blue')
         photo1.user = self.user1
 
-        photo2.image = factory.django.ImageField(filename='example2.jpg',
-                                                 color='blue')
+        # photo2.image = factory.django.ImageField(filename='example2.jpg',
+        #                                          color='blue')
         photo2.user = self.user1
 
-        photo3.image = factory.django.ImageField(filename='example3.jpg',
-                                                 color='blue')
+        # photo3.image = factory.django.ImageField(filename='example3.jpg',
+        #                                          color='blue')
         photo3.user = self.user1
-
-        photo1.image.save()
-        photo2.image.save()
-        photo3.image.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -206,6 +219,8 @@ class LibraryTestCase(TestCase):
         photo2.albums.add(album2)
         photo2.albums.add(album2)
 
+        self.user1.profile.picture = photo1.image
+
         album1.cover = photo1
         album2.cover = photo2
 
@@ -214,10 +229,9 @@ class LibraryTestCase(TestCase):
             os.remove(file)
 
     def test_cover_thumbnails(self):
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/library/')
-        print(response.content)
         # self.assertIn(
         #     '<li id="username">Username: {}<span class="privacy"></span></li>'
         #     .format(self.user1.username), response.content)

@@ -1,12 +1,13 @@
 import factory
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo, Album
 import os
 import glob
 
-
+THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
 
 
@@ -140,24 +141,19 @@ class ProfilePageTestCase(TestCase):
         self.user1.profile.follow(self.user2.profile)
 
         photo1 = PhotoFactory()
-        photo2 = PhotoFactory()
-        photo3 = PhotoFactory()
-
-        photo1.image = factory.django.ImageField(filename='example1.jpg',
-                                                 color='blue')
         photo1.user = self.user1
+        photo1.image = THE_FILE
+        photo1.save()
 
-        photo2.image = factory.django.ImageField(filename='example2.jpg',
-                                                 color='blue')
+        photo2 = PhotoFactory()
         photo2.user = self.user1
+        photo2.image = THE_FILE
+        photo2.save()
 
-        photo3.image = factory.django.ImageField(filename='example3.jpg',
-                                                 color='blue')
+        photo3 = PhotoFactory()
         photo3.user = self.user1
-
-        # photo1.save()
-        # photo2.save()
-        # photo3.save()
+        photo3.image = THE_FILE
+        photo3.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -174,10 +170,10 @@ class ProfilePageTestCase(TestCase):
         photo2.albums.add(album2)
         photo2.albums.add(album2)
 
-        self.user1.profile.picture = photo1.image
+        self.user1.profile.picture = THE_FILE
 
     def tearDown(self):
-        for file in glob.glob("media/imager_images/example*.jpg"):
+        for file in glob.glob("media/imager_images/test*.png"):
             os.remove(file)
 
     def test_profile_page_links(self):
@@ -199,7 +195,7 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_profile_image(self):
         self.client.login(username=self.user1.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/static/imager_images/example.jpg">',
+        self.assertIn('<img src="/static/imager_images/test">',
                       response.content)
 
     def test_profile_page_no_albums(self):
