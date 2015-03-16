@@ -4,6 +4,7 @@ from django.test import Client
 from django.contrib.auth.models import User
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo, Album
+import os
 
 PASSWORD = 'test_password'
 
@@ -107,12 +108,8 @@ class FollowingTestCase(TestCase):
 
 class ProfilePageTestCase(TestCase):
     def setUp(self):
-        self.user1 = UserFactory(username='johndoe')
+        self.user1 = UserFactory()
         self.user2 = UserFactory(username='janedoe')
-
-        self.user1.first_name = 'john'
-        self.user1.last_name = 'doe'
-        self.user1.email = 'john@doe.com'
 
         self.user2.first_name = 'jane'
         self.user2.last_name = 'doe'
@@ -188,7 +185,7 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_no_profile_image(self):
         self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/static/imager_user/man.png">',
+        self.assertIn('<img src="/static/imager_images/example.jpg">',
                       response.content)
 
     def test_profile_page_profile_image(self):
