@@ -205,9 +205,13 @@ class LibraryTestCase(TestCase):
         photo3.user = self.user1
         photo3.save()
 
-        photo4 = PhotoFactory(published='pub')
-        photo4.user = self.user2
+        photo4 = PhotoFactory()
+        photo4.user = self.user1
         photo4.save()
+
+        photo5 = PhotoFactory(published='pub')
+        photo5.user = self.user2
+        photo5.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -223,25 +227,25 @@ class LibraryTestCase(TestCase):
         album3.user = self.user1
         album3.save()
 
-        album4 = Album(title='album4')
-        album4.user = self.user2
-        album4.cover = photo4
-        album4.save()
+        album5 = Album(title='album4')
+        album5.user = self.user2
+        album5.cover = photo5
+        album5.save()
 
         photo1.albums.add(album1)
         photo2.albums.add(album2)
-        photo4.albums.add(album4)
+        photo5.albums.add(album5)
 
-        thumb1 = get_thumbnail(album1.cover.image, '1000x1000')
-        thumb2 = get_thumbnail(album2.cover.image, '1000x1000')
-        thumb3 = get_thumbnail(album4.cover.image, '1000x1000')
+        thumb1 = get_thumbnail(photo1.image, '1000x1000')
+        thumb2 = get_thumbnail(photo2.image, '1000x1000')
+        thumb3 = get_thumbnail(photo3.image, '1000x1000')
+        thumb4 = get_thumbnail(photo4.image, '1000x1000')
+        thumb5 = get_thumbnail(photo5.image, '1000x1000')
 
-        self.thumb_user1 = []
-        self.thumb_user1.append(thumb1.url)
-        self.thumb_user1.append(thumb2.url)
+        self.thumb_user1_all = [thumb1.url, thumb2.url, thumb3.url, thumb4.url]
+        self.thumb_user1_loose = [thumb3.url, thumb4.url]
 
-        self.thumb_user2 = []
-        self.thumb_user2.append(thumb3.url)
+        self.thumb_user2_all = [thumb5.url]
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -253,9 +257,28 @@ class LibraryTestCase(TestCase):
         response = self.client.get('/library/')
         all_photos = []
 
-        for item in self.thumb_user1:
+        for item in self.thumb_user1_all:
             all_photos.append(
                 '<a href="{}" data-lightbox="albumcovers" data-title="All Photos">'
+                .format(item))
+
+        for item in all_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
+
+    def test_album_cover_thumbnails_loose_photos(self):
+        response = self.client.get('/library/')
+        all_photos = []
+
+        for item in self.thumb_user1_loose:
+            all_photos.append(
+                '<a href="{}" data-lightbox="albumcovers" data-title="Loose Photos">'
                 .format(item))
 
         for item in all_photos:
