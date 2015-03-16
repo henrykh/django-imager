@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 from django.conf import settings
-import phonenumber_field.modelfields
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('picture', models.ImageField(upload_to=b'imager_user', blank=True)),
                 ('picture_privacy', models.BooleanField(default=True)),
-                ('phone_number', phonenumber_field.modelfields.PhoneNumberField(max_length=128, blank=True)),
+                ('phone_number', models.CharField(blank=True, max_length=32, validators=[django.core.validators.RegexValidator(regex=b'^\\+?1?\\d{9,15}$', message=b"Number must be in the format: '+999999999'. Up to 15 digits")])),
                 ('phone_privacy', models.BooleanField(default=True)),
                 ('birthday', models.DateField(null=True, blank=True)),
                 ('birthday_privacy', models.BooleanField(default=True)),

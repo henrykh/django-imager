@@ -36,6 +36,7 @@
             {% endif %}
             <li id="email">Email: {{user.email}}<span class="privacy">{{user.profile.email_privacy}}</span></li>
             <li id="phone_number">Phone: {{user.profile.phone_number}}<span class="privacy">{{user.profile.phone_privacy}}</span></li>
+            <li id="birthday">Birthday: {{user.profile.birthday}}<span class="privacy">{{user.profile.birthday_privacy}}</span></li>
             <li id="updateLink"><a href="{% url 'profile:profile_update' profileID %}">Update Your Profile</a></li>
             {% endif %}
         </ul>

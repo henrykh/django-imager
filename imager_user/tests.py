@@ -128,7 +128,7 @@ class ProfilePageTestCase(TestCase):
         self.user1.profile.name_privacy = True
 
         self.user2.profile.save()
-        self.user2.profile.picture_privacy = True
+        self.user2.profile.picture_privacy = False
         self.user2.profile.phone_number = '+19712796535'
         self.user2.profile.phone_privacy = False
         self.user2.profile.birthday = '1999-10-31'
@@ -243,3 +243,6 @@ class ProfilePageTestCase(TestCase):
         self.assertIn(
             '<li id="phone_number">Phone: {}<span class="privacy">True</span></li>'
             .format(self.user1.profile.phone_number), response.content)
+        self.assertIn(
+            '<li id="birthday">Birthday: {}<span class="privacy">True</span></li>'
+            .format('Jan. 01, 1999'), response.content)
