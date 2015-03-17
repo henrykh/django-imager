@@ -409,3 +409,48 @@ class StreamTestCase(TestCase):
             b = response.content.index(owner[i], start)
             self.assertLess(a, b)
             start = b + len(owner[i])
+
+
+class AlbumUpdateTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user1 = UserFactory(username='johndoe')
+
+        photo1 = PhotoFactory(published='pub')
+        photo1.user = self.user1
+        photo1.title = 'Old Title'
+        photo1.description = 'Old Description'
+        photo1.date_published = '2015-03-17'
+        photo1.save()
+
+        album1 = Album(title='album1')
+        album1.user = self.user1
+        album1.save()
+
+        album2 = Album(title='album2')
+        album2.user = self.user1
+        album2.save()
+
+        Album(title='album3')
+
+        photo1.albums.add(album1)
+
+        self.client.login(username=self.user1.username, password=PASSWORD)
+
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
+
+    def test_intial_values_user_albums_not_selected(self):
+        photo1_id = self.user1.photos.all()[0].id
+
+        album2_id = self.user1.albums.all()[1].id
+        album2_title = self.user1.albums.all()[1].title
+
+        # import ipdb; ipdb.set_trace()
+        response = self.client.get('/photo/update/{}/'.format(photo1_id))
+
+        self.assertIn(
+            '<option value="{}" selected="selected">{}</option>'
+            .format(album2_id, album2_title), response.content)
