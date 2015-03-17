@@ -9,6 +9,6 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "imager.settings")
-
-from configurations.wsgi.get_wsgi_application import get_wsgi_application
+os.environ.setdefault("DJANGO_CONFIGURATION", "Dev")
+from configurations.wsgi import get_wsgi_application
 application = get_wsgi_application()
