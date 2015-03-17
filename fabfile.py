@@ -168,5 +168,5 @@ def _deploy():
     rsync_project(
         remote_dir="/home/ubuntu",
         local_dir="../django-imager/",
-        exclude=['.git/', '*.pyc', 'media/'])
+        exclude=['.git/', '*.pyc', 'media/', 'tests.py'])
     # sudo('supervisorctl restart bookapp')
