@@ -15,12 +15,6 @@ THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
 
 
-class TestEmailBackend(BaseEmailBackend):
-    def send_messages(self, messages):
-        mail.outbox.extend(messages)
-        return len(messages)
-
-
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -160,7 +154,6 @@ class LoggedInTestCase(TestCase):
                       response.content)
 
 
-@override_settings(EMAIL_BACKEND='imager.tests.TestEmailBackend')
 class RegistrationTest(TestCase):
     def setUp(self):
         self.client = Client()
