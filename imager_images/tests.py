@@ -324,7 +324,7 @@ class StreamTestCase(TestCase):
 
         self.user1.profile.follow(self.user2.profile)
 
-        photo1 = PhotoFactory()
+        photo1 = PhotoFactory(published='pub')
         photo1.user = self.user1
         photo1.save()
 
@@ -367,9 +367,15 @@ class StreamTestCase(TestCase):
             os.remove(file)
 
     def test_user_photo(self):
-        response = self.client.get('/library/')
+        response = self.client.get('/stream/')
 
         for item in self.thumb_user1:
+            self.assertIn('<img src="{}"></a>'.format(item), response.content)
+
+    def test_followed_user_photos_pub_shd(self):
+        response = self.client.get('/stream/')
+
+        for item in self.thumb_user2_pub_shd:
             self.assertIn('<img src="{}"></a>'.format(item), response.content)
 
 
