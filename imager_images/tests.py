@@ -490,3 +490,13 @@ class AlbumUpdateTestCase(TestCase):
         self.assertIn(
             '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
             .format(photo_title), response.content)
+
+    def test_intial_values_photo_description(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_description = self.user1.photos.all()[0].description
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
+            .format(photo_description), response.content)
