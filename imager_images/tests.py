@@ -311,8 +311,9 @@ class LibraryTestCase(TestCase):
 
     def test_album_cover_thumbnails_album_no_photos(self):
         response = self.client.get('/library/')
-        test = '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'.format(self.user1.albums.filter(title='album4')[0].description)
-        self.assertIn(test, response.content)
+        self.assertIn(
+            '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'
+            .format(self.user1.albums.filter(title='album4')[0].description), response.content)
 
     def test_album_cover_thumbnails_album_no_cover(self):
         response = self.client.get('/library/')
@@ -322,10 +323,8 @@ class LibraryTestCase(TestCase):
             print(item)
             album_photos.append('<a href="{}" data-lightbox="albumcovers" data-title="{}">'
                                 .format(item,
-                                        self.user1.albums.filter(title='album3')[0].description))
-
-        import ipdb; ipdb.set_trace()
-        
+                                        self.user1.albums.filter(
+                                            title='album3')[0].description))
 
         for item in album_photos:
             try:
