@@ -409,3 +409,30 @@ class StreamTestCase(TestCase):
             b = response.content.index(owner[i], start)
             self.assertLess(a, b)
             start = b + len(owner[i])
+
+
+class AlbumUpdateTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user1 = UserFactory(username='johndoe')
+
+        photo1 = PhotoFactory(published='pub')
+        photo1.user = self.user1
+        photo1.title = 'Old Title'
+        photo1.description = 'Old Description'
+        photo1.date_published = '2015-03-17'
+        photo1.save()
+
+        album1 = Album(title='album1')
+        album1.user = self.user1
+        album1.save()
+
+        album2 = Album(title='album2')
+        album2.save()
+
+        self.client.login(username=self.user1.username, password=PASSWORD)
+
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
