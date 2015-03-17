@@ -500,3 +500,13 @@ class AlbumUpdateTestCase(TestCase):
         self.assertIn(
             '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
             .format(photo_description), response.content)
+
+    def test_intial_values_photo_date_published(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_date_published = self.user1.photos.all()[0].date_published
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
+            .format(photo_date_published), response.content)
