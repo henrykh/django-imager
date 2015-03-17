@@ -384,6 +384,12 @@ class StreamTestCase(TestCase):
         for item in self.thumb_user2_pvt:
             self.assertNotIn('<img src="{}"></a>'.format(item), response.content)
 
+    def test_unfollowed_user_photos(self):
+        response = self.client.get('/stream/')
+
+        for item in self.thumb_user3:
+            self.assertNotIn('<img src="{}"></a>'.format(item), response.content)
+
 
     # def test_followed_user_photos_pub_shd(self):
     #     response = self.client.get('/library/')
