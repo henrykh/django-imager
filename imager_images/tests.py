@@ -418,7 +418,7 @@ class AlbumUpdateTestCase(TestCase):
         self.user1 = UserFactory(username='johndoe')
         self.user2 = UserFactory(username='janedoe')
 
-        photo1 = PhotoFactory(published='pub')
+        photo1 = PhotoFactory()
         photo1.user = self.user1
         photo1.title = 'Old Title'
         photo1.description = 'Old Description'
@@ -510,3 +510,18 @@ class AlbumUpdateTestCase(TestCase):
         self.assertIn(
             '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
             .format(photo_date_published), response.content)
+
+    def test_intial_values_photo_published_choices(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="pvt" selected="selected">Private</option>',
+            response.content)
+        self.assertIn(
+            '<option value="shd">Shared</option>',
+            response.content)
+        self.assertIn(
+            '<option value="pub">Public</option>',
+            response.content)
