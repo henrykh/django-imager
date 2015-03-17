@@ -228,6 +228,7 @@ class LibraryTestCase(TestCase):
         album2.save()
 
         album3 = Album(title='album3')
+        album3.description = 'album3'
         album3.user = self.user1
         album3.save()
 
@@ -243,7 +244,10 @@ class LibraryTestCase(TestCase):
 
         photo1.albums.add(album1)
         photo2.albums.add(album2)
+
+        photo2.albums.add(album3)
         photo3.albums.add(album3)
+
         photo6.albums.add(album6)
 
         thumb1 = get_thumbnail(photo1.image, '1000x1000')
@@ -257,6 +261,7 @@ class LibraryTestCase(TestCase):
                                 thumb3.url, thumb4.url,
                                 thumb5.url]
         self.thumb_user1_loose = [thumb4.url, thumb5.url]
+        self.thumb_user1_no_cover_album = [thumb2.url, thumb3.url]
 
         self.thumb_user2_all = [thumb6.url]
 
@@ -287,14 +292,14 @@ class LibraryTestCase(TestCase):
 
     def test_album_cover_thumbnails_loose_photos(self):
         response = self.client.get('/library/')
-        all_photos = []
+        loose_photos = []
 
         for item in self.thumb_user1_loose:
-            all_photos.append(
+            loose_photos.append(
                 '<a href="{}" data-lightbox="albumcovers" data-title="Loose Photos">'
                 .format(item))
 
-        for item in all_photos:
+        for item in loose_photos:
             try:
                 assert item in response.content
             except AssertionError:
@@ -308,6 +313,29 @@ class LibraryTestCase(TestCase):
         response = self.client.get('/library/')
         test = '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'.format(self.user1.albums.filter(title='album4')[0].description)
         self.assertIn(test, response.content)
+
+    def test_album_cover_thumbnails_album_no_cover(self):
+        response = self.client.get('/library/')
+        album_photos = []
+        print(response.content)
+        for item in self.thumb_user1_no_cover_album:
+            print(item)
+            album_photos.append('<a href="{}" data-lightbox="albumcovers" data-title="{}">'
+                                .format(item,
+                                        self.user1.albums.filter(title='album3')[0].description))
+
+        import ipdb; ipdb.set_trace()
+        
+
+        for item in album_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
 
     def test_album_titles(self):
         response = self.client.get('/library/')

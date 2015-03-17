@@ -21,7 +21,10 @@ USER_NAME = os.environ.get('USER')
 SECRET_KEY = 'i4jz)*^p(o@s32p1)wdq@yonk$d+pdx_b0t%b4(7vn4hztdwrf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if USER_NAME == 'ubuntu':
+    DEBUG = False
+else:
+    DEBUG = True
 
 TEMPLATE_DEBUG = True
 
