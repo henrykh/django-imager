@@ -147,6 +147,15 @@ def _configure_nginx():
     sudo('/etc/init.d/nginx restart')
 
 
+def _configure_upstart():
+    sudo('mv djangoimager.conf /etc/init/djangoimager.conf')
+    # sudo('service djangoimger start')
+
+
+def configure_upstart():
+    run_command_on_selected_server(_configure_upstart)
+
+
 def configure_nginx():
     run_command_on_selected_server(_configure_nginx)
 
