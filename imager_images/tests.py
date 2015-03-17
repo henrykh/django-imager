@@ -356,7 +356,8 @@ class StreamTestCase(TestCase):
         thumb6 = get_thumbnail(photo5.image, '1000x1000')
 
         self.thumb_user1 = [thumb1.url]
-        self.thumb_user2 = [thumb2.url, thumb3.url, thumb4.url]
+        self.thumb_user2_pub_shd = [thumb2.url, thumb3.url]
+        self.thumb_user2_pvt = [thumb4.url]
         self.thumb_user3 = [thumb5.url, thumb6.url]
 
         self.client.login(username=self.user1.username, password=PASSWORD)
@@ -367,33 +368,21 @@ class StreamTestCase(TestCase):
 
     def test_user_photo(self):
         response = self.client.get('/library/')
-        all_photos = []
 
         for item in self.thumb_user1:
-            all_photos.append(
-                '<img src="{}"></a>'
-                .format(item))
+            self.assertIn('<img src="{}"></a>'.format(item), response.content)
 
-        for item in all_photos:
-            try:
-                assert item in response.content
-            except AssertionError:
-                continue
-            else:
-                break
-        else:
-            self.assertTrue(False)
 
     # def test_followed_user_photos_pub_shd(self):
     #     response = self.client.get('/library/')
-    #     loose_photos = []
+    #     shared_public_photos = []
 
-    #     for item in self.thumb_user1_loose:
-    #         loose_photos.append(
-    #             '<a href="{}" data-lightbox="albumcovers" data-title="Loose Photos">'
+    #     for item in self.thumb_user2_pub_shd:
+    #         shared_public_photos.append(
+    #             '<img src="{}"></a>'
     #             .format(item))
 
-    #     for item in loose_photos:
+    #     for item in shared_public_photos:
     #         try:
     #             assert item in response.content
     #         except AssertionError:
