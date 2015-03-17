@@ -10,6 +10,7 @@ import time
 
 env.hosts = ['localhost', ]
 env.aws_region = 'us-west-2'
+env.key_filename = '~/.ssh/codefellows.pem'
 
 
 def host_type():
@@ -138,7 +139,7 @@ def run_app():
 
 
 def _run_app():
-    sudo('gunicorn imager:wsgi')
+    sudo('gunicorn /home/ubuntu/django-imager imager:wsgi')
 
 
 def _configure_nginx():
@@ -158,5 +159,8 @@ def deploy():
 
 
 def _deploy():
-    rsync_project(remote_dir="/home/ubuntu", local_dir="bookapp/")
-    sudo('supervisorctl restart bookapp')
+    rsync_project(
+        remote_dir="/home/ubuntu",
+        local_dir="django-imager/",
+        exclude=['.git/', '*.pyc', 'media/'])
+    # sudo('supervisorctl restart bookapp')
