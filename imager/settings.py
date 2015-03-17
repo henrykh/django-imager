@@ -58,7 +58,6 @@ class Base(Configuration):
         'imager_images',
         'sorl.thumbnail',
         'registration',
-        'debug_toolbar',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -145,6 +144,8 @@ class Dev(Base):
         'debug_toolbar.panels.logging.LoggingPanel',
         'debug_toolbar.panels.redirects.RedirectsPanel',
     )
+
+    Base.INSTALLED_APPS += ('debug_toolbar', )
 
     # Password hasher for development
     PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
