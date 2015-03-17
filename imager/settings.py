@@ -145,7 +145,7 @@ class Dev(Base):
         'debug_toolbar.panels.redirects.RedirectsPanel',
     )
 
-    Base.INSTALLED_APPS += 'debug_toolbar'
+    Base.INSTALLED_APPS += ('debug_toolbar', )
 
     # Password hasher for development
     PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
