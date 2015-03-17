@@ -416,6 +416,7 @@ class AlbumUpdateTestCase(TestCase):
         self.client = Client()
 
         self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
 
         photo1 = PhotoFactory(published='pub')
         photo1.user = self.user1
@@ -432,7 +433,9 @@ class AlbumUpdateTestCase(TestCase):
         album2.user = self.user1
         album2.save()
 
-        Album(title='album3')
+        album3 = Album(title='album3')
+        album3.user = self.user2
+        album3.save()
 
         photo1.albums.add(album1)
 
@@ -443,14 +446,37 @@ class AlbumUpdateTestCase(TestCase):
             os.remove(file)
 
     def test_intial_values_user_albums_not_selected(self):
-        photo1_id = self.user1.photos.all()[0].id
+        photo_id = self.user1.photos.all()[0].id
 
-        album2_id = self.user1.albums.all()[1].id
-        album2_title = self.user1.albums.all()[1].title
+        album_id = self.user1.albums.filter(title='album2').all()[0].id
+        album_title = self.user1.albums.filter(title='album2').all()[0].title
 
-        # import ipdb; ipdb.set_trace()
-        response = self.client.get('/photo/update/{}/'.format(photo1_id))
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_user_albums_selected(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = self.user1.albums.filter(title='album1').all()[0].id
+        album_title = self.user1.albums.filter(title='album1').all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
 
         self.assertIn(
             '<option value="{}" selected="selected">{}</option>'
-            .format(album2_id, album2_title), response.content)
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_non_user_albums_not_choice(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = Album.objects.get(title='album3').id
+        album_title = Album.objects.get(title='album3').title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertNotIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
