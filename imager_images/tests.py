@@ -429,10 +429,28 @@ class AlbumUpdateTestCase(TestCase):
         album1.save()
 
         album2 = Album(title='album2')
+        album2.user = self.user1
         album2.save()
+
+        Album(title='album3')
+
+        photo1.albums.add(album1)
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
     def tearDown(self):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
+
+    def test_intial_values_user_albums_not_selected(self):
+        photo1_id = self.user1.photos.all()[0].id
+
+        album2_id = self.user1.albums.all()[1].id
+        album2_title = self.user1.albums.all()[1].title
+
+        # import ipdb; ipdb.set_trace()
+        response = self.client.get('/photo/update/{}/'.format(photo1_id))
+
+        self.assertIn(
+            '<option value="{}" selected="selected">{}</option>'
+            .format(album2_id, album2_title), response.content)
