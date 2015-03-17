@@ -29,6 +29,7 @@ else:
     DEBUG = True
     TEMPLATE_DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 SITE_ID = 1

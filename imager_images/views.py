@@ -37,7 +37,7 @@ def library(request):
                'photoNoAlb': photoNoAlb,
                'default': default_cover
                }
-
+    # import ipdb; ipdb.set_trace()
     return render(request, 'library.html', context)
 
 
