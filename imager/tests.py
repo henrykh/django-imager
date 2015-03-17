@@ -2,8 +2,6 @@ import factory
 from django.test import Client
 from django.test import TestCase
 from django.core import mail
-from django.test.utils import override_settings
-from django.core.mail.backends.base import BaseEmailBackend
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from imager_images.models import Photo
