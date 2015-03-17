@@ -209,9 +209,13 @@ class LibraryTestCase(TestCase):
         photo4.user = self.user1
         photo4.save()
 
-        photo5 = PhotoFactory(published='pub')
-        photo5.user = self.user2
+        photo5 = PhotoFactory()
+        photo5.user = self.user1
         photo5.save()
+
+        photo6 = PhotoFactory(published='pub')
+        photo6.user = self.user2
+        photo6.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -227,25 +231,34 @@ class LibraryTestCase(TestCase):
         album3.user = self.user1
         album3.save()
 
-        album5 = Album(title='album4')
-        album5.user = self.user2
-        album5.cover = photo5
-        album5.save()
+        album4 = Album(title='album4')
+        album4.description = 'album4'
+        album4.user = self.user1
+        album4.save()
+
+        album6 = Album(title='album6')
+        album6.user = self.user2
+        album6.cover = photo6
+        album6.save()
 
         photo1.albums.add(album1)
         photo2.albums.add(album2)
-        photo5.albums.add(album5)
+        photo3.albums.add(album3)
+        photo6.albums.add(album6)
 
         thumb1 = get_thumbnail(photo1.image, '1000x1000')
         thumb2 = get_thumbnail(photo2.image, '1000x1000')
         thumb3 = get_thumbnail(photo3.image, '1000x1000')
         thumb4 = get_thumbnail(photo4.image, '1000x1000')
         thumb5 = get_thumbnail(photo5.image, '1000x1000')
+        thumb6 = get_thumbnail(photo5.image, '1000x1000')
 
-        self.thumb_user1_all = [thumb1.url, thumb2.url, thumb3.url, thumb4.url]
-        self.thumb_user1_loose = [thumb3.url, thumb4.url]
+        self.thumb_user1_all = [thumb1.url, thumb2.url,
+                                thumb3.url, thumb4.url,
+                                thumb5.url]
+        self.thumb_user1_loose = [thumb4.url, thumb5.url]
 
-        self.thumb_user2_all = [thumb5.url]
+        self.thumb_user2_all = [thumb6.url]
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -290,6 +303,11 @@ class LibraryTestCase(TestCase):
                 break
         else:
             self.assertTrue(False)
+
+    def test_album_cover_thumbnails_album_no_photos(self):
+        response = self.client.get('/library/')
+        test = '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'.format(self.user1.albums.filter(title='album4')[0].description)
+        self.assertIn(test, response.content)
 
     def test_album_titles(self):
         response = self.client.get('/library/')
