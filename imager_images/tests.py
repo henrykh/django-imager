@@ -390,6 +390,14 @@ class StreamTestCase(TestCase):
         for item in self.thumb_user3:
             self.assertNotIn('<img src="{}"></a>'.format(item), response.content)
 
+    def test_order_of_stream(self):
+        response = self.client.get('/stream/')
+        thumbs = self.thumb_user1 + self.thumb_user2_pub_shd
+
+        for i in xrange(len(thumbs)-1):
+            self.assertLess(response.content.index(thumbs[i]),
+                            response.content.index(thumbs[i+1]))
+
 
     # def test_followed_user_photos_pub_shd(self):
     #     response = self.client.get('/library/')
