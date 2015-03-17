@@ -22,9 +22,12 @@ USER_NAME = os.environ.get('USER')
 SECRET_KEY = 'i4jz)*^p(o@s32p1)wdq@yonk$d+pdx_b0t%b4(7vn4hztdwrf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
+if USER_NAME == 'ubuntu':
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+else:
+    DEBUG = True
+    TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -71,7 +74,7 @@ WSGI_APPLICATION = 'imager.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-     default='postgres:///' + os.path.join(BASE_DIR, ''))
+     default='postgres://postgres:@localhost:5432/imager')
     }
 
 # Internationalization
