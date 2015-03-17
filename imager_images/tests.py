@@ -164,36 +164,8 @@ class LibraryTestCase(TestCase):
         self.client = Client()
 
         self.user1 = UserFactory(username='johndoe')
-        self.user2 = UserFactory(username='janedoe')
 
-        self.user2.first_name = 'jane'
-        self.user2.last_name = 'doe'
-        self.user2.email = 'jane@doe.com'
-        self.user2.save()
-
-        self.user1.profile.picture_privacy = True
-        self.user1.profile.phone_number = '+12066819318'
-        self.user1.profile.phone_privacy = True
-        self.user1.profile.birthday = '1999-01-01'
-        self.user1.profile.birthday_privacy = True
-        self.user1.profile.email_privacy = True
-        self.user1.profile.name_privacy = True
-        self.user1.profile.picture = THE_FILE
-        self.user1.profile.save()
-
-        self.user2.profile.picture_privacy = True
-        self.user2.profile.phone_number = '+12066819318'
-        self.user2.profile.phone_privacy = True
-        self.user2.profile.birthday = '1999-01-01'
-        self.user2.profile.birthday_privacy = True
-        self.user2.profile.email_privacy = True
-        self.user2.profile.name_privacy = True
-        self.user2.profile.picture = THE_FILE
-        self.user2.profile.save()
-
-        self.user1.profile.follow(self.user2.profile)
-
-        photo1 = PhotoFactory(published='pub')
+        photo1 = PhotoFactory()
         photo1.user = self.user1
         photo1.save()
 
@@ -212,10 +184,6 @@ class LibraryTestCase(TestCase):
         photo5 = PhotoFactory()
         photo5.user = self.user1
         photo5.save()
-
-        photo6 = PhotoFactory(published='pub')
-        photo6.user = self.user2
-        photo6.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -237,33 +205,23 @@ class LibraryTestCase(TestCase):
         album4.user = self.user1
         album4.save()
 
-        album6 = Album(title='album6')
-        album6.user = self.user2
-        album6.cover = photo6
-        album6.save()
-
         photo1.albums.add(album1)
         photo2.albums.add(album2)
 
         photo2.albums.add(album3)
         photo3.albums.add(album3)
 
-        photo6.albums.add(album6)
-
         thumb1 = get_thumbnail(photo1.image, '1000x1000')
         thumb2 = get_thumbnail(photo2.image, '1000x1000')
         thumb3 = get_thumbnail(photo3.image, '1000x1000')
         thumb4 = get_thumbnail(photo4.image, '1000x1000')
         thumb5 = get_thumbnail(photo5.image, '1000x1000')
-        thumb6 = get_thumbnail(photo5.image, '1000x1000')
 
         self.thumb_user1_all = [thumb1.url, thumb2.url,
                                 thumb3.url, thumb4.url,
                                 thumb5.url]
         self.thumb_user1_loose = [thumb4.url, thumb5.url]
         self.thumb_user1_no_cover_album = [thumb2.url, thumb3.url]
-
-        self.thumb_user2_all = [thumb6.url]
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -318,9 +276,8 @@ class LibraryTestCase(TestCase):
     def test_album_cover_thumbnails_album_no_cover(self):
         response = self.client.get('/library/')
         album_photos = []
-        print(response.content)
+
         for item in self.thumb_user1_no_cover_album:
-            print(item)
             album_photos.append('<a href="{}" data-lightbox="albumcovers" data-title="{}">'
                                 .format(item,
                                         self.user1.albums.filter(
@@ -355,3 +312,140 @@ class LibraryTestCase(TestCase):
                       .format(item.id), response.content)
         self.assertIn('<a href="/photos/all/">'
                       .format(item.id), response.content)
+
+
+class StreamTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
+        self.user3 = UserFactory(username='samdoe')
+
+        self.user1.profile.follow(self.user2.profile)
+
+        photo1 = PhotoFactory()
+        photo1.user = self.user1
+        photo1.save()
+
+        photo2 = PhotoFactory(published='pub')
+        photo2.user = self.user2
+        photo2.save()
+
+        photo3 = PhotoFactory(published='shd')
+        photo3.user = self.user2
+        photo3.save()
+
+        photo4 = PhotoFactory()
+        photo4.user = self.user2
+        photo4.save()
+
+        photo5 = PhotoFactory(published='pub')
+        photo5.user = self.user3
+        photo5.save()
+
+        photo6 = PhotoFactory(published='shd')
+        photo6.user = self.user3
+        photo6.save()
+
+        thumb1 = get_thumbnail(photo1.image, '1000x1000')
+        thumb2 = get_thumbnail(photo2.image, '1000x1000')
+        thumb3 = get_thumbnail(photo3.image, '1000x1000')
+        thumb4 = get_thumbnail(photo4.image, '1000x1000')
+        thumb5 = get_thumbnail(photo5.image, '1000x1000')
+        thumb6 = get_thumbnail(photo5.image, '1000x1000')
+
+        self.thumb_user1 = [thumb1.url]
+        self.thumb_user2 = [thumb2.url, thumb3.url, thumb4.url]
+        self.thumb_user3 = [thumb5.url, thumb6.url]
+
+        self.client.login(username=self.user1.username, password=PASSWORD)
+
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
+
+    def test_user_photo(self):
+        response = self.client.get('/library/')
+        all_photos = []
+
+        for item in self.thumb_user1:
+            all_photos.append(
+                '<img src="{}"></a>'
+                .format(item))
+
+        for item in all_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
+
+    # def test_followed_user_photos_pub_shd(self):
+    #     response = self.client.get('/library/')
+    #     loose_photos = []
+
+    #     for item in self.thumb_user1_loose:
+    #         loose_photos.append(
+    #             '<a href="{}" data-lightbox="albumcovers" data-title="Loose Photos">'
+    #             .format(item))
+
+    #     for item in loose_photos:
+    #         try:
+    #             assert item in response.content
+    #         except AssertionError:
+    #             continue
+    #         else:
+    #             break
+    #     else:
+    #         self.assertTrue(False)
+
+    # def test_album_cover_thumbnails_album_no_photos(self):
+    #     response = self.client.get('/library/')
+    #     self.assertIn(
+    #         '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'
+    #         .format(self.user1.albums.filter(title='album4')[0].description), response.content)
+
+    # def test_album_cover_thumbnails_album_no_cover(self):
+    #     response = self.client.get('/library/')
+    #     album_photos = []
+
+    #     for item in self.thumb_user1_no_cover_album:
+    #         album_photos.append('<a href="{}" data-lightbox="albumcovers" data-title="{}">'
+    #                             .format(item,
+    #                                     self.user1.albums.filter(
+    #                                         title='album3')[0].description))
+
+    #     for item in album_photos:
+    #         try:
+    #             assert item in response.content
+    #         except AssertionError:
+    #             continue
+    #         else:
+    #             break
+    #     else:
+    #         self.assertTrue(False)
+
+    # def test_album_titles(self):
+    #     response = self.client.get('/library/')
+    #     for item in self.user1.albums.all():
+    #         self.assertIn('{}</a>'
+    #                       .format(item.title), response.content)
+    #     self.assertIn('All Photos</a>'
+    #                   .format(item.id), response.content)
+    #     self.assertIn('Loose Photos</a>'
+    #                   .format(item.title), response.content)
+
+    # def test_album_links(self):
+    #     response = self.client.get('/library/')
+    #     for item in self.user1.albums.all():
+    #         self.assertIn('<a href="/album/{}/">'
+    #                       .format(item.id), response.content)
+    #     self.assertIn('<a href="/photos/loose/">'
+    #                   .format(item.id), response.content)
+    #     self.assertIn('<a href="/photos/all/">'
+    #                   .format(item.id), response.content)
+
