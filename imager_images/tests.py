@@ -398,69 +398,14 @@ class StreamTestCase(TestCase):
             self.assertLess(response.content.index(thumbs[i]),
                             response.content.index(thumbs[i+1]))
 
+    def test_owner_photo_credit(self):
+        response = self.client.get('/stream/')
+        owner = [self.user1.username, self.user2.username, self.user2.username]
+        thumbs = self.thumb_user1 + self.thumb_user2_pub_shd
 
-    # def test_followed_user_photos_pub_shd(self):
-    #     response = self.client.get('/library/')
-    #     shared_public_photos = []
-
-    #     for item in self.thumb_user2_pub_shd:
-    #         shared_public_photos.append(
-    #             '<img src="{}"></a>'
-    #             .format(item))
-
-    #     for item in shared_public_photos:
-    #         try:
-    #             assert item in response.content
-    #         except AssertionError:
-    #             continue
-    #         else:
-    #             break
-    #     else:
-    #         self.assertTrue(False)
-
-    # def test_album_cover_thumbnails_album_no_photos(self):
-    #     response = self.client.get('/library/')
-    #     self.assertIn(
-    #         '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'
-    #         .format(self.user1.albums.filter(title='album4')[0].description), response.content)
-
-    # def test_album_cover_thumbnails_album_no_cover(self):
-    #     response = self.client.get('/library/')
-    #     album_photos = []
-
-    #     for item in self.thumb_user1_no_cover_album:
-    #         album_photos.append('<a href="{}" data-lightbox="albumcovers" data-title="{}">'
-    #                             .format(item,
-    #                                     self.user1.albums.filter(
-    #                                         title='album3')[0].description))
-
-    #     for item in album_photos:
-    #         try:
-    #             assert item in response.content
-    #         except AssertionError:
-    #             continue
-    #         else:
-    #             break
-    #     else:
-    #         self.assertTrue(False)
-
-    # def test_album_titles(self):
-    #     response = self.client.get('/library/')
-    #     for item in self.user1.albums.all():
-    #         self.assertIn('{}</a>'
-    #                       .format(item.title), response.content)
-    #     self.assertIn('All Photos</a>'
-    #                   .format(item.id), response.content)
-    #     self.assertIn('Loose Photos</a>'
-    #                   .format(item.title), response.content)
-
-    # def test_album_links(self):
-    #     response = self.client.get('/library/')
-    #     for item in self.user1.albums.all():
-    #         self.assertIn('<a href="/album/{}/">'
-    #                       .format(item.id), response.content)
-    #     self.assertIn('<a href="/photos/loose/">'
-    #                   .format(item.id), response.content)
-    #     self.assertIn('<a href="/photos/all/">'
-    #                   .format(item.id), response.content)
-
+        start = response.content.index('photoStream')
+        for i in xrange(len(thumbs)-1):
+            a = response.content.index(thumbs[i], start)
+            b = response.content.index(owner[i], start)
+            self.assertLess(a, b)
+            start = b + len(owner[i])
