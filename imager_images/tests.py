@@ -480,3 +480,13 @@ class AlbumUpdateTestCase(TestCase):
         self.assertNotIn(
             '<option value="{}">{}</option>'
             .format(album_id, album_title), response.content)
+
+    def test_intial_values_photo_title(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_title = self.user1.photos.all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
+            .format(photo_title), response.content)
