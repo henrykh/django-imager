@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'imager.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-     default='postgres://postgres:@localhost:5432/imager')
+     default='postgres://'+USER_NAME+':@localhost:5432/django_imager')
     }
 
 # Internationalization
