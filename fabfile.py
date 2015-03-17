@@ -139,13 +139,10 @@ def run_app():
 
 
 def _run_app():
-    sudo('gunicorn /home/ubuntu/django-imager imager:wsgi')
+    sudo('gunicorn gunicorn -b 127.0.0.1:8000 -w 4 -D imager.wsgi')
 
 
 def _configure_nginx():
-    sudo('mv bookapp/simple_nginx_config simple_nginx_config')
-    sudo('mv bookapp/supervisord.conf supervisord.conf')
-    sudo('mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.orig')
     sudo('mv simple_nginx_config /etc/nginx/sites-available/default')
     sudo('/etc/init.d/nginx restart')
 
@@ -161,6 +158,6 @@ def deploy():
 def _deploy():
     rsync_project(
         remote_dir="/home/ubuntu",
-        local_dir="django-imager/",
+        local_dir="../django-imager/",
         exclude=['.git/', '*.pyc', 'media/'])
     # sudo('supervisorctl restart bookapp')
