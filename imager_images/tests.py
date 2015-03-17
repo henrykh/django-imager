@@ -6,6 +6,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
 import os
 import glob
+from sorl.thumbnail import get_thumbnail
+
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
@@ -199,13 +201,21 @@ class LibraryTestCase(TestCase):
         photo2.user = self.user1
         photo2.save()
 
-        photo3 = PhotoFactory(published='pub')
-        photo3.user = self.user2
+        photo3 = PhotoFactory()
+        photo3.user = self.user1
         photo3.save()
 
         photo4 = PhotoFactory()
-        photo4.user = self.user2
+        photo4.user = self.user1
         photo4.save()
+
+        photo5 = PhotoFactory()
+        photo5.user = self.user1
+        photo5.save()
+
+        photo6 = PhotoFactory(published='pub')
+        photo6.user = self.user2
+        photo6.save()
 
         album1 = Album(title='album1')
         album1.user = self.user1
@@ -221,9 +231,34 @@ class LibraryTestCase(TestCase):
         album3.user = self.user1
         album3.save()
 
+        album4 = Album(title='album4')
+        album4.description = 'album4'
+        album4.user = self.user1
+        album4.save()
+
+        album6 = Album(title='album6')
+        album6.user = self.user2
+        album6.cover = photo6
+        album6.save()
+
         photo1.albums.add(album1)
         photo2.albums.add(album2)
-        photo2.albums.add(album2)
+        photo3.albums.add(album3)
+        photo6.albums.add(album6)
+
+        thumb1 = get_thumbnail(photo1.image, '1000x1000')
+        thumb2 = get_thumbnail(photo2.image, '1000x1000')
+        thumb3 = get_thumbnail(photo3.image, '1000x1000')
+        thumb4 = get_thumbnail(photo4.image, '1000x1000')
+        thumb5 = get_thumbnail(photo5.image, '1000x1000')
+        thumb6 = get_thumbnail(photo5.image, '1000x1000')
+
+        self.thumb_user1_all = [thumb1.url, thumb2.url,
+                                thumb3.url, thumb4.url,
+                                thumb5.url]
+        self.thumb_user1_loose = [thumb4.url, thumb5.url]
+
+        self.thumb_user2_all = [thumb6.url]
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -231,13 +266,48 @@ class LibraryTestCase(TestCase):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_album_cover_thumbnails_no_cover(self):
+    def test_album_cover_thumbnails_all_photos(self):
         response = self.client.get('/library/')
-        print(response.content)
-        # import ipdb; ipdb.set_trace()
-        self.assertIn(
-            '<li id="username">Username: {}<span class="privacy"></span></li>'
-            .format(self.user1.username), response.content)
+        all_photos = []
+
+        for item in self.thumb_user1_all:
+            all_photos.append(
+                '<a href="{}" data-lightbox="albumcovers" data-title="All Photos">'
+                .format(item))
+
+        for item in all_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
+
+    def test_album_cover_thumbnails_loose_photos(self):
+        response = self.client.get('/library/')
+        all_photos = []
+
+        for item in self.thumb_user1_loose:
+            all_photos.append(
+                '<a href="{}" data-lightbox="albumcovers" data-title="Loose Photos">'
+                .format(item))
+
+        for item in all_photos:
+            try:
+                assert item in response.content
+            except AssertionError:
+                continue
+            else:
+                break
+        else:
+            self.assertTrue(False)
+
+    def test_album_cover_thumbnails_album_no_photos(self):
+        response = self.client.get('/library/')
+        test = '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'.format(self.user1.albums.filter(title='album4')[0].description)
+        self.assertIn(test, response.content)
 
     def test_album_titles(self):
         response = self.client.get('/library/')
