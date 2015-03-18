@@ -539,7 +539,7 @@ class AlbumUpdateTestCase(TestCase):
 
         photo1 = PhotoFactory()
         photo1.user = self.user1
-        photo1.title = 'phot01'
+        photo1.title = 'photo1'
         photo1.save()
 
         photo2 = PhotoFactory()
@@ -577,6 +577,18 @@ class AlbumUpdateTestCase(TestCase):
 
         self.assertIn(
             '<option value="{}">{}</option>'
+            .format(photo_id, photo_title), response.content)
+
+    def test_intial_values_album_cover_choice_selected(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo_id = self.user1.photos.filter(title='photo1').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo1').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        self.assertIn(
+            '<option value="{}" selected="selected">{}</option>'
             .format(photo_id, photo_title), response.content)
 
     # def test_intial_values_album_cover_choice_selected(self):
