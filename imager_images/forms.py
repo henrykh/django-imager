@@ -60,7 +60,7 @@ class AlbumUpdateViewForm(ModelForm):
         super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
         # import ipdb; ipdb.set_trace()
         self.fields['photos'].queryset = Photo.objects.filter(
-            user=self.instance.user)
+            user=self.instance.user).exclude(albums=self.instance)
         self.fields['cover'].queryset = self.instance.photos.all()
 
     def save(self, *args, **kwargs):
