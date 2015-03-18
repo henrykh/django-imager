@@ -108,8 +108,6 @@ class Base(Configuration):
         os.path.join(BASE_DIR, "imager/templates/"),
         )
 
-    # Email backend for development
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
     # Registration settings
     ACCOUNT_ACTIVATION_DAYS = 7
@@ -126,11 +124,18 @@ class Dev(Base):
     # Password hasher for development
     PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
                         )
+    # Email backend for development
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 class Prod(Base):
     DEBUG = False
     TEMPLATE_DEBUG = False
 
-    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
-                        )
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 25
+    EMAIL_HOST_USER = 'djangoimagerapp@gmail.com'
+    EMAIL_HOST_PASSWORD = 'superpowerful'
+    EMAIL_USE_TLS = True
+
+    DEFAULT_FROM_EMAIL = 'djangoimagerapp@gmail.com'
