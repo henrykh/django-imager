@@ -539,22 +539,20 @@ class AlbumUpdateTestCase(TestCase):
 
         photo1 = PhotoFactory()
         photo1.user = self.user1
-        photo1.title = 'Old Title'
-        photo1.description = 'Old Description'
-        photo1.date_published = '2015-03-17'
+        photo1.title = 'phot01'
         photo1.save()
 
-        album1 = Album(title='album1')
+        photo2 = PhotoFactory()
+        photo2.user = self.user1
+        photo2.title = 'photo2'
+        photo2.save()
+
+        album1 = Album(title='Old Title')
+        album1.description = 'Old Description'
+        album1.cover = photo1
+        album1.date_published = '2015-03-17'
         album1.user = self.user1
         album1.save()
-
-        album2 = Album(title='album2')
-        album2.user = self.user1
-        album2.save()
-
-        album3 = Album(title='album3')
-        album3.user = self.user2
-        album3.save()
 
         photo1.albums.add(album1)
 
