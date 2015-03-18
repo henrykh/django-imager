@@ -628,17 +628,17 @@ class AlbumUpdateTestCase(TestCase):
             '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
             .format(album_date_published), response.content)
 
-    # def test_intial_values_photo_published_choices(self):
-    #     photo_id = self.user1.photos.all()[0].id
+    def test_intial_values_album_published_choices(self):
+        album_id = self.user1.albums.all()[0].id
 
-    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
+        response = self.client.get('/album/update/{}/'.format(album_id))
 
-    #     self.assertIn(
-    #         '<option value="pvt" selected="selected">Private</option>',
-    #         response.content)
-    #     self.assertIn(
-    #         '<option value="shd">Shared</option>',
-    #         response.content)
-    #     self.assertIn(
-    #         '<option value="pub">Public</option>',
-    #         response.content)
+        self.assertIn(
+            '<option value="pvt" selected="selected">Private</option>',
+            response.content)
+        self.assertIn(
+            '<option value="shd">Shared</option>',
+            response.content)
+        self.assertIn(
+            '<option value="pub">Public</option>',
+            response.content)
