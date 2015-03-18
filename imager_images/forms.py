@@ -1,4 +1,5 @@
 from django import forms
+import datetime
 from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
@@ -66,6 +67,12 @@ class AlbumUpdateViewForm(ModelForm):
     def save(self, *args, **kwargs):
         kwargs['commit'] = False
         obj = super(AlbumUpdateViewForm, self).save(*args, **kwargs)
+
+        if (obj.published == u'pub' or obj.published == u'shd') and not obj.date_published:
+            obj.date_published = datetime.datetime.utcnow()
+        else:
+            obj.date_published = None
+
         obj.save()
         obj.photos.add(*self.cleaned_data['photos'])
 
@@ -103,16 +110,26 @@ class PhotoAddViewForm(ModelForm):
 class PhotoUpdateViewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
-        # import ipdb; ipdb.set_trace()
         self.fields['albums'].queryset = self.instance.user.albums.all()
+
+    def save(self, *args, **kwargs):
+        kwargs['commit'] = False
+
+        obj = super(PhotoUpdateViewForm, self).save(*args, **kwargs)
+        if (obj.published == u'pub' or obj.published == u'shd') and not obj.date_published:
+            obj.date_published = datetime.datetime.utcnow()
+        else:
+            obj.date_published = None
+
+        obj.save()
 
     class Meta:
         model = Photo
 
         fields = ('albums',
                   'title',
-                  'description',
                   'date_published',
+                  'description',
                   'published',
                   )
 
