@@ -562,83 +562,83 @@ class AlbumUpdateTestCase(TestCase):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    def test_intial_values_user_albums_not_selected(self):
-        photo_id = self.user1.photos.all()[0].id
+    # def test_intial_values_user_albums_not_selected(self):
+    #     photo_id = self.user1.photos.all()[0].id
 
-        album_id = self.user1.albums.filter(title='album2').all()[0].id
-        album_title = self.user1.albums.filter(title='album2').all()[0].title
+    #     album_id = self.user1.albums.filter(title='album2').all()[0].id
+    #     album_title = self.user1.albums.filter(title='album2').all()[0].title
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertIn(
-            '<option value="{}">{}</option>'
-            .format(album_id, album_title), response.content)
+    #     self.assertIn(
+    #         '<option value="{}">{}</option>'
+    #         .format(album_id, album_title), response.content)
 
-    def test_intial_values_user_albums_selected(self):
-        photo_id = self.user1.photos.all()[0].id
+    # def test_intial_values_user_albums_selected(self):
+    #     photo_id = self.user1.photos.all()[0].id
 
-        album_id = self.user1.albums.filter(title='album1').all()[0].id
-        album_title = self.user1.albums.filter(title='album1').all()[0].title
+    #     album_id = self.user1.albums.filter(title='album1').all()[0].id
+    #     album_title = self.user1.albums.filter(title='album1').all()[0].title
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertIn(
-            '<option value="{}" selected="selected">{}</option>'
-            .format(album_id, album_title), response.content)
+    #     self.assertIn(
+    #         '<option value="{}" selected="selected">{}</option>'
+    #         .format(album_id, album_title), response.content)
 
-    def test_intial_values_non_user_albums_not_choice(self):
-        photo_id = self.user1.photos.all()[0].id
+    # def test_intial_values_non_user_albums_not_choice(self):
+    #     photo_id = self.user1.photos.all()[0].id
 
-        album_id = Album.objects.get(title='album3').id
-        album_title = Album.objects.get(title='album3').title
+    #     album_id = Album.objects.get(title='album3').id
+    #     album_title = Album.objects.get(title='album3').title
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertNotIn(
-            '<option value="{}">{}</option>'
-            .format(album_id, album_title), response.content)
+    #     self.assertNotIn(
+    #         '<option value="{}">{}</option>'
+    #         .format(album_id, album_title), response.content)
 
-    def test_intial_values_photo_title(self):
-        photo_id = self.user1.photos.all()[0].id
-        photo_title = self.user1.photos.all()[0].title
+    def test_intial_values_album_title(self):
+        album_id = self.user1.albums.all()[0].id
+        album_title = self.user1.albums.all()[0].title
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+        response = self.client.get('/album/update/{}/'.format(album_id))
 
         self.assertIn(
             '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
-            .format(photo_title), response.content)
+            .format(album_title), response.content)
 
-    def test_intial_values_photo_description(self):
-        photo_id = self.user1.photos.all()[0].id
-        photo_description = self.user1.photos.all()[0].description
+    # def test_intial_values_photo_description(self):
+    #     photo_id = self.user1.photos.all()[0].id
+    #     photo_description = self.user1.photos.all()[0].description
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertIn(
-            '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
-            .format(photo_description), response.content)
+    #     self.assertIn(
+    #         '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
+    #         .format(photo_description), response.content)
 
-    def test_intial_values_photo_date_published(self):
-        photo_id = self.user1.photos.all()[0].id
-        photo_date_published = self.user1.photos.all()[0].date_published
+    # def test_intial_values_photo_date_published(self):
+    #     photo_id = self.user1.photos.all()[0].id
+    #     photo_date_published = self.user1.photos.all()[0].date_published
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertIn(
-            '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
-            .format(photo_date_published), response.content)
+    #     self.assertIn(
+    #         '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
+    #         .format(photo_date_published), response.content)
 
-    def test_intial_values_photo_published_choices(self):
-        photo_id = self.user1.photos.all()[0].id
+    # def test_intial_values_photo_published_choices(self):
+    #     photo_id = self.user1.photos.all()[0].id
 
-        response = self.client.get('/photo/update/{}/'.format(photo_id))
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
 
-        self.assertIn(
-            '<option value="pvt" selected="selected">Private</option>',
-            response.content)
-        self.assertIn(
-            '<option value="shd">Shared</option>',
-            response.content)
-        self.assertIn(
-            '<option value="pub">Public</option>',
-            response.content)
+    #     self.assertIn(
+    #         '<option value="pvt" selected="selected">Private</option>',
+    #         response.content)
+    #     self.assertIn(
+    #         '<option value="shd">Shared</option>',
+    #         response.content)
+    #     self.assertIn(
+    #         '<option value="pub">Public</option>',
+    #         response.content)
