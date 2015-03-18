@@ -3,21 +3,9 @@ from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
                                   )
-from django.forms.models import inlineformset_factory
 
 
 class NewAlbumAdminForm(ModelForm):
-
-    class Meta:
-        model = Album
-        exclude = []
-
-
-class EditAlbumForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(EditAlbumForm, self).__init__(*args, **kwargs)
-        self.fields['cover'].queryset = self.instance.photos.all()
-        # self.fields['photos'].queryset = self.instance.user.photos.all()
 
     class Meta:
         model = Album
@@ -41,18 +29,18 @@ class EditPhotoAdminForm(ModelForm):
         exclude = []
 
 
-class CreateAlbumViewForm(ModelForm):
+class AlbumAddViewForm(ModelForm):
     photos = forms.ModelMultipleChoiceField(
         Photo, label='Photos', required=False)
 
     def __init__(self, *args, **kwargs):
-        super(CreateAlbumViewForm, self).__init__(*args, **kwargs)
+        super(AlbumAddViewForm, self).__init__(*args, **kwargs)
         user = self.initial.get('user')
         self.fields['photos'].queryset = Photo.objects.filter(user=user)
 
     def save(self, *args, **kwargs):
         kwargs['commit'] = False
-        obj = super(CreateAlbumViewForm, self).save(*args, **kwargs)
+        obj = super(AlbumAddViewForm, self).save(*args, **kwargs)
         obj.save()
         obj.photos.add(*self.cleaned_data['photos'])
 
@@ -64,14 +52,40 @@ class CreateAlbumViewForm(ModelForm):
         widgets = {'user': forms.HiddenInput, }
 
 
-class CreatePhotoViewForm(ModelForm):
+class AlbumUpdateViewForm(ModelForm):
+    photos = forms.ModelMultipleChoiceField(
+        Photo, label='Photos', required=False)
+
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('user', None)
-        return super(CreatePhotoViewForm, self).__init__(*args, **kwargs)
+        super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
+        # import ipdb; ipdb.set_trace()
+        self.fields['photos'].queryset = Photo.objects.filter(
+            user=self.instance.user).exclude(albums=self.instance)
+        self.fields['cover'].queryset = self.instance.photos.all()
 
     def save(self, *args, **kwargs):
         kwargs['commit'] = False
-        obj = super(CreatePhotoViewForm, self).save(*args, **kwargs)
+        obj = super(AlbumUpdateViewForm, self).save(*args, **kwargs)
+        obj.save()
+        obj.photos.add(*self.cleaned_data['photos'])
+
+    class Meta:
+        model = Album
+        fields = ('title',
+                  'description',
+                  'cover',
+                  'date_published',
+                  'published')
+
+
+class PhotoAddViewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('user', None)
+        return super(PhotoAddViewForm, self).__init__(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        kwargs['commit'] = False
+        obj = super(PhotoAddViewForm, self).save(*args, **kwargs)
         if self.request:
             obj.user = self.request
         obj.save()

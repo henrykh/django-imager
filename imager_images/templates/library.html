@@ -11,10 +11,14 @@
 {% endblock %}
 
 {% block title %}Library: {{user}}{% endblock %}
-
+<li id="updateLink"><a href="{% url 'profile:profile_update' profileID %}">Update Your Profile</a></li>
 {% block body %}
     <div id="profileInfo">
         <h3>{{user}}'s Library</h3>
+        <ul> 
+            <li id="newPhotoLink"><a href="{% url 'images:photo_add' %}">Add a Photo</a></li>
+            <li id="newAlbumLink"><a href="{% url 'images:album_add' %}">Add an Album</a></li>
+        </ul>
         <ul id="gallery"> 
             {% if photoAll %}
                 <li class="thumbnail_list">

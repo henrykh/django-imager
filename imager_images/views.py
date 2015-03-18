@@ -8,10 +8,10 @@ from django.core.urlresolvers import (reverse,
                                       reverse_lazy
                                       )
 from django.contrib.auth.views import redirect_to_login
-from imager_images.forms import (CreateAlbumViewForm,
-                                 EditAlbumForm,
+from imager_images.forms import (AlbumAddViewForm,
+                                 AlbumUpdateViewForm,
                                  PhotoUpdateViewForm,
-                                 CreatePhotoViewForm,
+                                 PhotoAddViewForm,
                                  )
 from imager_images.models import (Photo,
                                   Album
@@ -37,7 +37,6 @@ def library(request):
                'photoNoAlb': photoNoAlb,
                'default': default_cover
                }
-    # import ipdb; ipdb.set_trace()
     return render(request, 'library.html', context)
 
 
@@ -77,13 +76,13 @@ def stream(request):
     return render(request, 'stream.html', context)
 
 
-class AlbumCreate(CreateView):
+class AlbumAddView(CreateView):
     template_name = "new_album_form.html"
     model = Album
-    form_class = CreateAlbumViewForm
+    form_class = AlbumAddViewForm
 
     def get_initial(self):
-        initial = super(AlbumCreate, self).get_initial()
+        initial = super(AlbumAddView, self).get_initial()
         initial['user'] = self.request.user
         return initial
 
@@ -91,27 +90,14 @@ class AlbumCreate(CreateView):
         return reverse('images:album_update', kwargs={'pk': self.object.pk})
 
 
-class AlbumUpdate(UpdateView):
-    def user_passes_test(self, request):
-        import ipdb; ipdb.set_trace()
-        if request.user.is_authenticated():
-            self.object = self.get_object()
-            return self.object.user == request.user
-        return False
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.user_passes_test(request):
-            return redirect_to_login(request.get_full_path())
-        return super(AlbumUpdate, self).dispatch(
-            request, *args, **kwargs)
-
+class AlbumUpdateView(UpdateView):
     template_name = "album_form.html"
     model = Album
-    form = EditAlbumForm
-    field = ['title', 'description', 'published']
+    form_class = AlbumUpdateViewForm
 
+    def get_success_url(self):
+        return reverse('images:library')
 
-class AlbumDelete(DeleteView):
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
@@ -121,16 +107,30 @@ class AlbumDelete(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if not self.user_passes_test(request):
             return redirect_to_login(request.get_full_path())
-        return super(PhotoUpdateView, self).dispatch(
+        return super(AlbumUpdateView, self).dispatch(
             request, *args, **kwargs)
 
+
+class AlbumDeleteView(DeleteView):
     model = Album
+
+    def user_passes_test(self, request):
+        if request.user.is_authenticated():
+            self.object = self.get_object()
+            return self.object.user == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return redirect_to_login(request.get_full_path())
+        return super(AlbumDeleteView, self).dispatch(
+            request, *args, **kwargs)
 
 
 class PhotoAddView(CreateView):
     template_name = "new_photo_form.html"
     model = Photo
-    form_class = CreatePhotoViewForm
+    form_class = PhotoAddViewForm
 
     def get_form_kwargs(self):
         kwargs = super(PhotoAddView, self).get_form_kwargs()

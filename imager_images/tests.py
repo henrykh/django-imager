@@ -271,7 +271,8 @@ class LibraryTestCase(TestCase):
         response = self.client.get('/library/')
         self.assertIn(
             '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'
-            .format(self.user1.albums.filter(title='album4')[0].description), response.content)
+            .format(self.user1.albums.filter(
+                title='album4')[0].description), response.content)
 
     def test_album_cover_thumbnails_album_no_cover(self):
         response = self.client.get('/library/')
@@ -400,7 +401,9 @@ class StreamTestCase(TestCase):
 
     def test_owner_photo_credit(self):
         response = self.client.get('/stream/')
-        owner = [self.user1.username, self.user2.username, self.user2.username]
+        owner = [self.user1.username,
+                 self.user2.username,
+                 self.user2.username]
         thumbs = self.thumb_user1 + self.thumb_user2_pub_shd
 
         start = response.content.index('photoStream')
@@ -411,13 +414,14 @@ class StreamTestCase(TestCase):
             start = b + len(owner[i])
 
 
-class AlbumUpdateTestCase(TestCase):
+class PhotoUpdateTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
         self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
 
-        photo1 = PhotoFactory(published='pub')
+        photo1 = PhotoFactory()
         photo1.user = self.user1
         photo1.title = 'Old Title'
         photo1.description = 'Old Description'
@@ -432,7 +436,9 @@ class AlbumUpdateTestCase(TestCase):
         album2.user = self.user1
         album2.save()
 
-        Album(title='album3')
+        album3 = Album(title='album3')
+        album3.user = self.user2
+        album3.save()
 
         photo1.albums.add(album1)
 
@@ -443,14 +449,273 @@ class AlbumUpdateTestCase(TestCase):
             os.remove(file)
 
     def test_intial_values_user_albums_not_selected(self):
-        photo1_id = self.user1.photos.all()[0].id
+        photo_id = self.user1.photos.all()[0].id
 
-        album2_id = self.user1.albums.all()[1].id
-        album2_title = self.user1.albums.all()[1].title
+        album_id = self.user1.albums.filter(title='album2').all()[0].id
+        album_title = self.user1.albums.filter(title='album2').all()[0].title
 
-        # import ipdb; ipdb.set_trace()
-        response = self.client.get('/photo/update/{}/'.format(photo1_id))
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_user_albums_selected(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = self.user1.albums.filter(title='album1').all()[0].id
+        album_title = self.user1.albums.filter(title='album1').all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
 
         self.assertIn(
             '<option value="{}" selected="selected">{}</option>'
-            .format(album2_id, album2_title), response.content)
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_non_user_albums_not_choice(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = Album.objects.get(title='album3').id
+        album_title = Album.objects.get(title='album3').title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertNotIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_photo_title(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_title = self.user1.photos.all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
+            .format(photo_title), response.content)
+
+    def test_intial_values_photo_description(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_description = self.user1.photos.all()[0].description
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
+            .format(photo_description), response.content)
+
+    def test_intial_values_photo_date_published(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_date_published = self.user1.photos.all()[0].date_published
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
+            .format(photo_date_published), response.content)
+
+    def test_intial_values_photo_published_choices(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="pvt" selected="selected">Private</option>',
+            response.content)
+        self.assertIn(
+            '<option value="shd">Shared</option>',
+            response.content)
+        self.assertIn(
+            '<option value="pub">Public</option>',
+            response.content)
+
+
+class AlbumUpdateTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
+
+        photo1 = PhotoFactory()
+        photo1.user = self.user1
+        photo1.title = 'photo1'
+        photo1.save()
+
+        photo2 = PhotoFactory()
+        photo2.user = self.user1
+        photo2.title = 'photo2'
+        photo2.save()
+
+        photo3 = PhotoFactory()
+        photo3.user = self.user1
+        photo3.title = 'photo3'
+        photo3.save()
+
+        photo4 = PhotoFactory()
+        photo4.user = self.user2
+        photo4.title = 'photo4'
+        photo4.save()
+
+        album1 = Album(title='Old Title')
+        album1.description = 'Old Description'
+        album1.cover = photo1
+        album1.date_published = '2015-03-17'
+        album1.user = self.user1
+        album1.save()
+
+        photo1.albums.add(album1)
+        photo2.albums.add(album1)
+
+        self.client.login(username=self.user1.username, password=PASSWORD)
+
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
+
+    def test_intial_values_album_cover_choice_not_selected(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo_id = self.user1.photos.filter(title='photo2').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo2').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        end = response.content.index('Published:')
+        self.assertTrue(response.content.index(
+                        '<option value="{}">{}</option>'
+                        .format(photo_id, photo_title), 0, end))
+
+    def test_intial_values_album_cover_choice_selected(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo_id = self.user1.photos.filter(title='photo1').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo1').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        end = response.content.index('Published:')
+        self.assertTrue(response.content.index(
+                        '<option value="{}" selected="selected">{}</option>'
+                        .format(photo_id, photo_title), 0, end))
+
+    def test_intial_values_album_cover_non_album_photo_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo_id = self.user1.photos.filter(title='photo3').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo3').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        end = response.content.index('Published:')
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo_id, photo_title), 0, end)
+
+    def test_intial_values_album_cover_non_user_photo_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo_id = Photo.objects.get(title='photo4').id
+        photo_title = Photo.objects.get(title='photo4').title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        end = response.content.index('Published:')
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo_id, photo_title), 0, end)
+
+    def test_intial_values_album_title(self):
+        album_id = self.user1.albums.all()[0].id
+        album_title = self.user1.albums.all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        self.assertIn(
+            '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
+            .format(album_title), response.content)
+
+    def test_intial_values_album_description(self):
+        album_id = self.user1.albums.all()[0].id
+        album_description = self.user1.albums.all()[0].description
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        self.assertIn(
+            '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
+            .format(album_description), response.content)
+
+    def test_intial_values_album_date_published(self):
+        album_id = self.user1.albums.all()[0].id
+        album_date_published = self.user1.albums.all()[0].date_published
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        self.assertIn(
+            '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
+            .format(album_date_published), response.content)
+
+    def test_intial_values_album_published_choices(self):
+        album_id = self.user1.albums.all()[0].id
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        self.assertIn(
+            '<option value="pvt" selected="selected">Private</option>',
+            response.content)
+        self.assertIn(
+            '<option value="shd">Shared</option>',
+            response.content)
+        self.assertIn(
+            '<option value="pub">Public</option>',
+            response.content)
+
+    def test_intial_values_album_photos_not_in_album_choices(self):
+        album_id = self.user1.albums.all()[0].id
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        beg = response.content.index('Published:')
+
+        photo3_id = self.user1.photos.filter(title='photo3').all()[0].id
+        photo3_title = self.user1.photos.filter(title='photo3').all()[0].title
+
+        self.assertTrue(response.content.index(
+                        '<option value="{}">{}</option>'
+                        .format(photo3_id, photo3_title), beg))
+
+    def test_intial_values_album_photos_photo_in_album_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo1_id = self.user1.photos.filter(title='photo1').all()[0].id
+        photo1_title = self.user1.photos.filter(title='photo1').all()[0].title
+
+        photo2_id = self.user1.photos.filter(title='photo2').all()[0].id
+        photo2_title = self.user1.photos.filter(title='photo2').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        beg = response.content.index('Published:')
+
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo1_id, photo1_title), beg)
+
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo2_id, photo2_title), beg)
+
+    def test_intial_values_album_photos_non_user_photo_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo4_id = self.user2.photos.filter(title='photo4').all()[0].id
+        photo4_title = self.user2.photos.filter(title='photo4').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        beg = response.content.index('Published:')
+
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo4_id, photo4_title), beg)
