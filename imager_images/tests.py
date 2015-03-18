@@ -684,7 +684,7 @@ class AlbumUpdateTestCase(TestCase):
                         '<option value="{}">{}</option>'
                         .format(photo3_id, photo3_title), beg))
 
-    def test_intial_values_album_photo_in_album_not_choice(self):
+    def test_intial_values_album_photos_photo_in_album_not_choice(self):
         album_id = self.user1.albums.all()[0].id
 
         photo1_id = self.user1.photos.filter(title='photo1').all()[0].id
@@ -705,3 +705,17 @@ class AlbumUpdateTestCase(TestCase):
             response.content.index(
                 '<option value="{}">{}</option>'
                 .format(photo2_id, photo2_title), beg)
+
+    def test_intial_values_album_photos_non_user_photo_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo4_id = self.user2.photos.filter(title='photo4').all()[0].id
+        photo4_title = self.user2.photos.filter(title='photo4').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        beg = response.content.index('Published:')
+
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo4_id, photo4_title), beg)
