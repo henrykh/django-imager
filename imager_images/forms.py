@@ -53,8 +53,14 @@ class AlbumAddViewForm(ModelForm):
 
 
 class AlbumUpdateViewForm(ModelForm):
+    photos = forms.ModelMultipleChoiceField(
+        Photo, label='Photos', required=False)
+
     def __init__(self, *args, **kwargs):
-        super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)        # import ipdb; ipdb.set_trace()
+        super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
+        # import ipdb; ipdb.set_trace()
+        self.fields['photos'].queryset = Photo.objects.filter(
+            user=self.instance.user)
 
         qs = self.fields['cover'].queryset
         qs = qs.filter(album=self.instance)

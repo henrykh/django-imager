@@ -95,6 +95,9 @@ class AlbumUpdateView(UpdateView):
     model = Album
     form_class = AlbumUpdateViewForm
 
+    def get_success_url(self):
+        return reverse('images:library')
+
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
