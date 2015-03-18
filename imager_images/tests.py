@@ -669,3 +669,23 @@ class AlbumUpdateTestCase(TestCase):
         self.assertIn(
             '<option value="pub">Public</option>',
             response.content)
+
+    def test_intial_values_album_photo_choices(self):
+        album_id = self.user1.albums.all()[0].id
+
+        photo1_id = self.user1.photos.filter(title='photo1').all()[0].id
+        photo1_title = self.user1.photos.filter(title='photo1').all()[0].title
+
+        photo2_id = self.user1.photos.filter(title='photo2').all()[0].id
+        photo2_title = self.user1.photos.filter(title='photo2').all()[0].title
+
+        response = self.client.get('/album/update/{}/'.format(album_id))
+
+        beg = response.content.index('Published:')
+        self.assertTrue(response.content.index(
+                        '<option value="{}">{}</option>'
+                        .format(photo1_id, photo1_title), beg))
+
+        self.assertTrue(response.content.index(
+                        '<option value="{}">{}</option>'
+                        .format(photo2_id, photo2_title), beg))
