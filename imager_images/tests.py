@@ -271,7 +271,8 @@ class LibraryTestCase(TestCase):
         response = self.client.get('/library/')
         self.assertIn(
             '<a href="/media/imager_images/img/man.png" data-lightbox="albumcovers" data-title="{}">'
-            .format(self.user1.albums.filter(title='album4')[0].description), response.content)
+            .format(self.user1.albums.filter(
+                title='album4')[0].description), response.content)
 
     def test_album_cover_thumbnails_album_no_cover(self):
         response = self.client.get('/library/')
@@ -400,7 +401,9 @@ class StreamTestCase(TestCase):
 
     def test_owner_photo_credit(self):
         response = self.client.get('/stream/')
-        owner = [self.user1.username, self.user2.username, self.user2.username]
+        owner = [self.user1.username,
+                 self.user2.username,
+                 self.user2.username]
         thumbs = self.thumb_user1 + self.thumb_user2_pub_shd
 
         start = response.content.index('photoStream')
@@ -409,6 +412,122 @@ class StreamTestCase(TestCase):
             b = response.content.index(owner[i], start)
             self.assertLess(a, b)
             start = b + len(owner[i])
+
+
+class PhotoUpdateTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.user1 = UserFactory(username='johndoe')
+        self.user2 = UserFactory(username='janedoe')
+
+        photo1 = PhotoFactory()
+        photo1.user = self.user1
+        photo1.title = 'Old Title'
+        photo1.description = 'Old Description'
+        photo1.date_published = '2015-03-17'
+        photo1.save()
+
+        album1 = Album(title='album1')
+        album1.user = self.user1
+        album1.save()
+
+        album2 = Album(title='album2')
+        album2.user = self.user1
+        album2.save()
+
+        album3 = Album(title='album3')
+        album3.user = self.user2
+        album3.save()
+
+        photo1.albums.add(album1)
+
+        self.client.login(username=self.user1.username, password=PASSWORD)
+
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*"):
+            os.remove(file)
+
+    def test_intial_values_user_albums_not_selected(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = self.user1.albums.filter(title='album2').all()[0].id
+        album_title = self.user1.albums.filter(title='album2').all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_user_albums_selected(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = self.user1.albums.filter(title='album1').all()[0].id
+        album_title = self.user1.albums.filter(title='album1').all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="{}" selected="selected">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_non_user_albums_not_choice(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        album_id = Album.objects.get(title='album3').id
+        album_title = Album.objects.get(title='album3').title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertNotIn(
+            '<option value="{}">{}</option>'
+            .format(album_id, album_title), response.content)
+
+    def test_intial_values_photo_title(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_title = self.user1.photos.all()[0].title
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_title" maxlength="127" name="title" type="text" value="{}" />'
+            .format(photo_title), response.content)
+
+    def test_intial_values_photo_description(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_description = self.user1.photos.all()[0].description
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<textarea cols="40" id="id_description" name="description" rows="10">\r\n{}</textarea></p>'
+            .format(photo_description), response.content)
+
+    def test_intial_values_photo_date_published(self):
+        photo_id = self.user1.photos.all()[0].id
+        photo_date_published = self.user1.photos.all()[0].date_published
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<input id="id_date_published" name="date_published" type="text" value="{}" /></p>'
+            .format(photo_date_published), response.content)
+
+    def test_intial_values_photo_published_choices(self):
+        photo_id = self.user1.photos.all()[0].id
+
+        response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+        self.assertIn(
+            '<option value="pvt" selected="selected">Private</option>',
+            response.content)
+        self.assertIn(
+            '<option value="shd">Shared</option>',
+            response.content)
+        self.assertIn(
+            '<option value="pub">Public</option>',
+            response.content)
 
 
 class AlbumUpdateTestCase(TestCase):

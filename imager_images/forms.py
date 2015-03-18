@@ -62,7 +62,11 @@ class AlbumUpdateViewForm(ModelForm):
 
     class Meta:
         model = Album
-        fields = ['title', 'description', 'cover', 'published']
+        fields = ('title',
+                  'description',
+                  'cover',
+                  'date_published',
+                  'published')
 
 
 class PhotoAddViewForm(ModelForm):
