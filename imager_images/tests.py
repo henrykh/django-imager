@@ -548,7 +548,7 @@ class AlbumUpdateTestCase(TestCase):
         photo2.save()
 
         photo3 = PhotoFactory()
-        photo3.user = self.user2
+        photo3.user = self.user1
         photo3.title = 'photo3'
         photo3.save()
 
@@ -560,6 +560,7 @@ class AlbumUpdateTestCase(TestCase):
         album1.save()
 
         photo1.albums.add(album1)
+        photo2.albums.add(album1)
 
         self.client.login(username=self.user1.username, password=PASSWORD)
 
@@ -575,9 +576,10 @@ class AlbumUpdateTestCase(TestCase):
 
         response = self.client.get('/album/update/{}/'.format(album_id))
 
-        self.assertIn(
-            '<option value="{}">{}</option>'
-            .format(photo_id, photo_title), response.content)
+        end = response.content.index('Published:')
+        self.assertTrue(response.content.index(
+                        '<option value="{}">{}</option>'
+                        .format(photo_id, photo_title), 0, end))
 
     def test_intial_values_album_cover_choice_selected(self):
         album_id = self.user1.albums.all()[0].id
@@ -587,33 +589,24 @@ class AlbumUpdateTestCase(TestCase):
 
         response = self.client.get('/album/update/{}/'.format(album_id))
 
-        self.assertIn(
-            '<option value="{}" selected="selected">{}</option>'
-            .format(photo_id, photo_title), response.content)
+        end = response.content.index('Published:')
+        self.assertTrue(response.content.index(
+                        '<option value="{}" selected="selected">{}</option>'
+                        .format(photo_id, photo_title), 0, end))
 
-    # def test_intial_values_album_cover_choice_selected(self):
-    #     photo_id = self.user1.photos.all()[0].id
+    def test_intial_values_album_cover_non_album_photo_not_choice(self):
+        album_id = self.user1.albums.all()[0].id
 
-    #     album_id = self.user1.albums.filter(title='album1').all()[0].id
-    #     album_title = self.user1.albums.filter(title='album1').all()[0].title
+        photo_id = self.user1.photos.filter(title='photo3').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo3').all()[0].title
 
-    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
+        response = self.client.get('/album/update/{}/'.format(album_id))
+        end = response.content.index('Published:')
+        with self.assertRaises(ValueError):
+            response.content.index(
+                '<option value="{}">{}</option>'
+                .format(photo_id, photo_title), 0, end)
 
-    #     self.assertIn(
-    #         '<option value="{}" selected="selected">{}</option>'
-    #         .format(album_id, album_title), response.content)
-
-    # def test_intial_values_album_cover_non_album_photo_not_choice(self):
-    #     photo_id = self.user1.photos.all()[0].id
-
-    #     album_id = Album.objects.get(title='album3').id
-    #     album_title = Album.objects.get(title='album3').title
-
-    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
-
-    #     self.assertNotIn(
-    #         '<option value="{}">{}</option>'
-    #         .format(album_id, album_title), response.content)
 
     # def test_intial_values_album_cover_non_user_photo_not_choice(self):
     #     photo_id = self.user1.photos.all()[0].id
