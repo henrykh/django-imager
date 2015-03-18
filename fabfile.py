@@ -169,4 +169,4 @@ def _deploy():
         remote_dir="/home/ubuntu",
         local_dir="../django-imager/",
         exclude=['.git/', '*.pyc', 'media/', 'tests.py'])
-    # sudo('supervisorctl restart bookapp')
+    sudo('service djangoimager restart')
