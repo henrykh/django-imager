@@ -150,6 +150,11 @@ class PhotoAddView(CreateView):
 
 
 class PhotoUpdateView(UpdateView):
+
+    form_class = PhotoUpdateViewForm
+    model = Photo
+    template_name = 'photo_form.html'
+
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
@@ -163,11 +168,8 @@ class PhotoUpdateView(UpdateView):
             request, *args, **kwargs)
 
     def get_success_url(self):
+        # import ipdb; ipdb.set_trace()
         return self.request.GET['src']
-
-    form_class = PhotoUpdateViewForm
-    model = Photo
-    template_name = 'photo_form.html'
 
 
 class PhotoDeleteView(DeleteView):

@@ -529,6 +529,14 @@ class PhotoUpdateTestCase(TestCase):
             '<option value="pub">Public</option>',
             response.content)
 
+    def test_photo_add_to_album(self):
+        kwargs = {u'description': [u"Dan's even newer descriptions again"],
+                  u'title': [u"Dan's New Title"],
+                  u'date_published': [u'2015-03-12'],
+                  u'published': [u'pub'],
+                  u'csrfmiddlewaretoken': [u'5nqI0J7ICscr5d72YZR9uDzetUnU4pmC'],
+                  u'albums': [u'7']}
+
 
 class AlbumUpdateTestCase(TestCase):
     def setUp(self):
