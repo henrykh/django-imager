@@ -61,10 +61,7 @@ class AlbumUpdateViewForm(ModelForm):
         # import ipdb; ipdb.set_trace()
         self.fields['photos'].queryset = Photo.objects.filter(
             user=self.instance.user)
-
-        qs = self.fields['cover'].queryset
-        qs = qs.filter(album=self.instance)
-        self.fields['cover'].queryset = qs
+        self.fields['cover'].queryset = self.instance.photos.all()
 
     def save(self, *args, **kwargs):
         kwargs['commit'] = False
