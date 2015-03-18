@@ -547,6 +547,11 @@ class AlbumUpdateTestCase(TestCase):
         photo2.title = 'photo2'
         photo2.save()
 
+        photo3 = PhotoFactory()
+        photo3.user = self.user2
+        photo3.title = 'photo3'
+        photo3.save()
+
         album1 = Album(title='Old Title')
         album1.description = 'Old Description'
         album1.cover = photo1
@@ -562,19 +567,19 @@ class AlbumUpdateTestCase(TestCase):
         for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
 
-    # def test_intial_values_user_albums_not_selected(self):
-    #     photo_id = self.user1.photos.all()[0].id
+    def test_intial_values_album_cover_choice_not_selected(self):
+        album_id = self.user1.albums.all()[0].id
 
-    #     album_id = self.user1.albums.filter(title='album2').all()[0].id
-    #     album_title = self.user1.albums.filter(title='album2').all()[0].title
+        photo_id = self.user1.photos.filter(title='photo2').all()[0].id
+        photo_title = self.user1.photos.filter(title='photo2').all()[0].title
 
-    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
+        response = self.client.get('/album/update/{}/'.format(album_id))
 
-    #     self.assertIn(
-    #         '<option value="{}">{}</option>'
-    #         .format(album_id, album_title), response.content)
+        self.assertIn(
+            '<option value="{}">{}</option>'
+            .format(photo_id, photo_title), response.content)
 
-    # def test_intial_values_user_albums_selected(self):
+    # def test_intial_values_album_cover_choice_selected(self):
     #     photo_id = self.user1.photos.all()[0].id
 
     #     album_id = self.user1.albums.filter(title='album1').all()[0].id
@@ -586,7 +591,19 @@ class AlbumUpdateTestCase(TestCase):
     #         '<option value="{}" selected="selected">{}</option>'
     #         .format(album_id, album_title), response.content)
 
-    # def test_intial_values_non_user_albums_not_choice(self):
+    # def test_intial_values_album_cover_non_album_photo_not_choice(self):
+    #     photo_id = self.user1.photos.all()[0].id
+
+    #     album_id = Album.objects.get(title='album3').id
+    #     album_title = Album.objects.get(title='album3').title
+
+    #     response = self.client.get('/photo/update/{}/'.format(photo_id))
+
+    #     self.assertNotIn(
+    #         '<option value="{}">{}</option>'
+    #         .format(album_id, album_title), response.content)
+
+    # def test_intial_values_album_cover_non_user_photo_not_choice(self):
     #     photo_id = self.user1.photos.all()[0].id
 
     #     album_id = Album.objects.get(title='album3').id
