@@ -66,6 +66,12 @@ class AlbumUpdateViewForm(ModelForm):
         qs = qs.filter(album=self.instance)
         self.fields['cover'].queryset = qs
 
+    def save(self, *args, **kwargs):
+        kwargs['commit'] = False
+        obj = super(AlbumUpdateViewForm, self).save(*args, **kwargs)
+        obj.save()
+        obj.photos.add(*self.cleaned_data['photos'])
+
     class Meta:
         model = Album
         fields = ('title',
