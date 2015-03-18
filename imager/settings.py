@@ -13,10 +13,12 @@ import os
 import dj_database_url
 from configurations import Configuration
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+USER_NAME = os.environ.get('USER', '')
+DEBUG = ''
+
 
 class Base(Configuration):
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    USER_NAME = os.environ.get('USER')
 
 
     # Quick-start development settings - unsuitable for production
@@ -27,7 +29,7 @@ class Base(Configuration):
 
 
 
-    ALLOWED_HOSTS = ['http://ec2-54-148-68-112.us-west-2.compute.amazonaws.com/']
+    ALLOWED_HOSTS = ['*']
 
     SITE_ID = 1
 
@@ -61,7 +63,6 @@ class Base(Configuration):
         'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
     )
 
     ROOT_URLCONF = 'imager.urls'
@@ -71,8 +72,8 @@ class Base(Configuration):
 
     DATABASES = {
         'default': dj_database_url.config(
-         default='postgres://'+USER_NAME+':@localhost:5432/django_imager')
-        }
+            default='postgres://{}:@localhost:5432/django_imager'.format(USER_NAME))
+    }
 
     # Internationalization
     # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -121,24 +122,6 @@ class Base(Configuration):
 class Dev(Base):
     DEBUG = True
     TEMPLATE_DEBUG = True
-    # Debug toolbar settings
-    DEBUG_TOOLBAR_PATCH_SETTINGS = False
-    DEBUG_TOOLBAR_PANELS = (
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.logging.LoggingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    )
-
-    Base.INSTALLED_APPS += ('debug_toolbar', )
 
     # Password hasher for development
     PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
@@ -148,3 +131,6 @@ class Dev(Base):
 class Prod(Base):
     DEBUG = False
     TEMPLATE_DEBUG = False
+
+    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',
+                        )
