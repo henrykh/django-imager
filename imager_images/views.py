@@ -31,7 +31,7 @@ def library(request):
         photoAll = ''
 
     default_cover = Photo()
-    default_cover.image = 'imager_images/img/man.png'
+    default_cover.image = '/static/imager_images/img/man.png'
     context = {'albums': request.user.albums.all(),
                'photoAll': photoAll,
                'photoNoAlb': photoNoAlb,

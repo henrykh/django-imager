@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{% static 'imager_user/profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'imager_user/css/profile.css' %}" />
 {% endblock %}
 
 {% block title %}Profile: {{user}}{% endblock %}
@@ -13,7 +13,7 @@
     {% if user.profile.picture %}
         <img src="{{user.profile.picture.url}}">
     {% else %}
-        <img src="{% static 'imager_user/man.png' %}">
+        <img src="{% static 'imager_user/img/man.png' %}">
     {% endif %}
         <div id="usageStats">
             <ul>
