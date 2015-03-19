@@ -87,7 +87,7 @@ class AlbumAddView(CreateView):
         return initial
 
     def get_success_url(self):
-        return reverse('images:album_update', kwargs={'pk': self.object.pk})
+        return reverse('images:albumphoto_list', kwargs={'pk': self.object.pk})
 
 
 class AlbumUpdateView(UpdateView):
