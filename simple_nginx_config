@@ -14,4 +14,8 @@ server {
         root /home/ubuntu;
     }
 
+    location /media/ {
+        root /home/ubuntu;
+    }
+
 }
