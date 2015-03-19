@@ -125,6 +125,7 @@ class PhotoUpdateViewForm(ModelForm):
             obj.date_published = None
 
         obj.save()
+        self.save_m2m()
 
     class Meta:
         model = Photo
