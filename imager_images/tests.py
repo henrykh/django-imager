@@ -730,45 +730,72 @@ class UserFactory(factory.django.DjangoModelFactory):
 #                 '<option value="{}">{}</option>'
 #                 .format(photo4_id, photo4_title), beg)
 
-class SeleniumTestCase(LiveServerTestCase):
+# class SeleniumUnauthorizedCase(LiveServerTestCase):
+#     @classmethod
+#     def setUpClass(cls):
+#         cls.driver = webdriver.Firefox()
+#         super(SeleniumUnauthorizedCase, cls).setUpClass()
+
+#     @classmethod
+#     def tearDownClass(cls):
+#         cls.driver.quit()
+#         super(SeleniumUnauthorizedCase, cls).tearDownClass()
+
+#     def setUp(self):
+#         UserFactory()
+
+#     def test_get_home_page(self):
+#         self.driver.get(self.live_server_url + '/')
+#         self.assertEquals(self.driver.find_element_by_id(
+#             'headerTitle').text, 'Imgr')
+
+#     def test_go_to_register(self):
+#         self.driver.get(self.live_server_url + '/')
+#         login_link = self.driver.find_element_by_link_text("Join")
+#         login_link.click()
+#         self.assertEquals(self.driver.current_url,
+#                           self.live_server_url + '/accounts/register/')
+
+#     def test_go_to_login(self):
+#         self.driver.get(self.live_server_url + '/')
+#         login_link = self.driver.find_element_by_link_text("Login")
+#         login_link.click()
+#         self.assertEquals(self.driver.current_url,
+#                           self.live_server_url + '/accounts/login/')
+
+#     def test_login(self):
+#         self.driver.get(self.live_server_url + '/accounts/login')
+#         self.driver.find_element_by_id('id_username').send_keys('john')
+#         self.driver.find_element_by_id(
+#             'id_password').send_keys('test_password')
+#         self.driver.find_element_by_xpath(
+#             '//input[@type="submit" and @value="Log in"]').click()
+#         self.assertEquals(self.driver.current_url,
+#                           self.live_server_url + '/profile/')
+
+
+class SeleniumAuthorizedCase(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = webdriver.Firefox()
-        super(SeleniumTestCase, cls).setUpClass()
+        super(SeleniumAuthorizedCase, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
-        super(SeleniumTestCase, cls).tearDownClass()
+        super(SeleniumAuthorizedCase, cls).tearDownClass()
 
     def setUp(self):
         UserFactory()
-
-    def test_get_home_page(self):
-        self.driver.get(self.live_server_url + '/')
-        self.assertEquals(self.driver.find_element_by_id(
-            'headerTitle').text, 'Imgr')
-
-    def test_go_to_register(self):
-        self.driver.get(self.live_server_url + '/')
-        login_link = self.driver.find_element_by_link_text("Join")
-        login_link.click()
-        self.assertEquals(self.driver.current_url,
-                          self.live_server_url + '/accounts/register/')
-
-    def test_go_to_login(self):
-        self.driver.get(self.live_server_url + '/')
-        login_link = self.driver.find_element_by_link_text("Login")
-        login_link.click()
-        self.assertEquals(self.driver.current_url,
-                          self.live_server_url + '/accounts/login/')
-
-    def test_login(self):
         self.driver.get(self.live_server_url + '/accounts/login')
         self.driver.find_element_by_id('id_username').send_keys('john')
         self.driver.find_element_by_id(
             'id_password').send_keys('test_password')
         self.driver.find_element_by_xpath(
             '//input[@type="submit" and @value="Log in"]').click()
-        self.assertEquals(self.driver.current_url,
-                          self.live_server_url + '/profile/')
+
+    def test_profile_update_link(self):
+        self.driver.get(self.live_server_url + '/profile/')
+        self.driver.find_element_by_link_text("Update Your Profile").click()
+        self.assertIn(self.live_server_url + '/profile/update',
+                      self.driver.current_url)
