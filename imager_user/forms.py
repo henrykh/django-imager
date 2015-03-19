@@ -20,12 +20,12 @@ class ProfileUpdateViewForm(ModelForm):
             emailAddress = kwargs['instance'].user.email
             kwargs.setdefault('initial', {})['email_address'] = emailAddress
 
+        super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
+
         self.base_fields['follows'].queryset = ImagerProfile.objects.exclude(
             user=kwargs['instance'].user)
         self.base_fields['blocking'].queryset = ImagerProfile.objects.exclude(
             user=kwargs['instance'].user)
-
-        return super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         kwargs['commit'] = False
@@ -39,6 +39,7 @@ class ProfileUpdateViewForm(ModelForm):
         new_profile_photo.save()
         obj.user.save()
         obj.save()
+        self.save_m2m()
         return obj
 
     class Meta:
