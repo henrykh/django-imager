@@ -15,16 +15,16 @@ THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 PASSWORD = 'test_password'
 
 
-# class UserFactory(factory.django.DjangoModelFactory):
-#     class Meta:
-#         model = User
-#         django_get_or_create = ('username',)
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+        django_get_or_create = ('username',)
 
-#     username = 'john'
-#     first_name = 'john'
-#     last_name = 'doe'
-#     email = 'john@doe.com'
-#     password = factory.PostGenerationMethodCall('set_password', PASSWORD)
+    username = 'john'
+    first_name = 'john'
+    last_name = 'doe'
+    email = 'john@doe.com'
+    password = factory.PostGenerationMethodCall('set_password', PASSWORD)
 
 
 # class PhotoFactory(factory.django.DjangoModelFactory):
@@ -741,15 +741,34 @@ class SeleniumTestCase(LiveServerTestCase):
         cls.driver.quit()
         super(SeleniumTestCase, cls).tearDownClass()
 
+    def setUp(self):
+        UserFactory()
+
     def test_get_home_page(self):
         self.driver.get(self.live_server_url + '/')
         self.assertEquals(self.driver.find_element_by_id(
             'headerTitle').text, 'Imgr')
 
+    def test_go_to_register(self):
+        self.driver.get(self.live_server_url + '/')
+        login_link = self.driver.find_element_by_link_text("Join")
+        login_link.click()
+        self.assertEquals(self.driver.current_url,
+                          self.live_server_url + '/accounts/register/')
+
     def test_go_to_login(self):
         self.driver.get(self.live_server_url + '/')
         login_link = self.driver.find_element_by_link_text("Login")
         login_link.click()
-        self.assertEquals(self.driver.current_url, self.live_server_url + '/accounts/login/')
+        self.assertEquals(self.driver.current_url,
+                          self.live_server_url + '/accounts/login/')
 
-
+    def test_login(self):
+        self.driver.get(self.live_server_url + '/accounts/login')
+        self.driver.find_element_by_id('id_username').send_keys('john')
+        self.driver.find_element_by_id(
+            'id_password').send_keys('test_password')
+        self.driver.find_element_by_xpath(
+            '//input[@type="submit" and @value="Log in"]').click()
+        self.assertEquals(self.driver.current_url,
+                          self.live_server_url + '/profile/')
