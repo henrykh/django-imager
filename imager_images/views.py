@@ -42,10 +42,12 @@ def library(request):
 
 @login_required
 def AlbumPhotoList(request, pk):
+    # import ipdb; ipdb.set_trace()
     context = {'photos': Photo.objects
                .filter(user=request.user)
                .filter(albums__pk=pk),
-               'source': request.META['PATH_INFO']
+               'source': request.META['PATH_INFO'],
+               'album': Photo.albums.through.album.get_queryset().filter(pk=pk)[0],
                }
     return render(request, 'albumphoto_list.html', context)
 
@@ -95,9 +97,6 @@ class AlbumUpdateView(UpdateView):
     model = Album
     form_class = AlbumUpdateViewForm
 
-    def get_success_url(self):
-        return reverse('images:library')
-
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
@@ -110,9 +109,13 @@ class AlbumUpdateView(UpdateView):
         return super(AlbumUpdateView, self).dispatch(
             request, *args, **kwargs)
 
+    def get_success_url(self):
+        return self.request.GET['src']
+
 
 class AlbumDeleteView(DeleteView):
     model = Album
+    template_name = 'photo_confirm_delete.html'
 
     def user_passes_test(self, request):
         if request.user.is_authenticated():
@@ -126,19 +129,14 @@ class AlbumDeleteView(DeleteView):
         return super(AlbumDeleteView, self).dispatch(
             request, *args, **kwargs)
 
+    def get_success_url(self):
+        return reverse('images:library')
+
 
 class PhotoAddView(CreateView):
-    template_name = "new_photo_form.html"
     model = Photo
     form_class = PhotoAddViewForm
-
     template_name = 'photo_form.html'
-    model = Photo
-    fields = ('image',
-              'title',
-              'description',
-              'published',
-              )
 
     def get_form_kwargs(self):
         kwargs = super(PhotoAddView, self).get_form_kwargs()
@@ -150,9 +148,8 @@ class PhotoAddView(CreateView):
 
 
 class PhotoUpdateView(UpdateView):
-
-    form_class = PhotoUpdateViewForm
     model = Photo
+    form_class = PhotoUpdateViewForm
     template_name = 'photo_form.html'
 
     def user_passes_test(self, request):

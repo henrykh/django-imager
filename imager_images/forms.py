@@ -48,8 +48,12 @@ class AlbumAddViewForm(ModelForm):
 
     class Meta:
         model = Album
-        fields = ['user', 'title', 'description', 'published']
         widgets = {'user': forms.HiddenInput, }
+        fields = ('user',
+                  'title',
+                  'description',
+                  'published',
+                  )
 
 
 class AlbumUpdateViewForm(ModelForm):
