@@ -2,6 +2,7 @@
 {% block title %}Album: {{user}}{% endblock %}
 
 {% block body %}
+<h3>{{object.title}}</h3>
 <h2>
 <a href="{% url 'images:album_delete' object.pk %}">Delete</a>
 </h2>

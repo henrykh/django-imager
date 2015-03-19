@@ -44,7 +44,6 @@ class AlbumAddViewForm(ModelForm):
         obj = super(AlbumAddViewForm, self).save(*args, **kwargs)
         obj.save()
         obj.photos.add(*self.cleaned_data['photos'])
-
         return obj
 
     class Meta:
@@ -128,7 +127,6 @@ class PhotoUpdateViewForm(ModelForm):
 
         fields = ('albums',
                   'title',
-                  'date_published',
                   'description',
                   'published',
                   )

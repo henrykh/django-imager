@@ -132,14 +132,6 @@ class PhotoAddView(CreateView):
     model = Photo
     form_class = PhotoAddViewForm
 
-    def get_form_kwargs(self):
-        kwargs = super(PhotoAddView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
-
-    def get_success_url(self):
-        return reverse('images:photo_update', kwargs={'pk': self.object.pk})
-
     template_name = 'photo_form.html'
     model = Photo
     fields = ('image',
@@ -147,6 +139,14 @@ class PhotoAddView(CreateView):
               'description',
               'published',
               )
+
+    def get_form_kwargs(self):
+        kwargs = super(PhotoAddView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('images:loosephotos_list')
 
 
 class PhotoUpdateView(UpdateView):
@@ -156,6 +156,7 @@ class PhotoUpdateView(UpdateView):
     template_name = 'photo_form.html'
 
     def user_passes_test(self, request):
+        # import ipdb; ipdb.set_trace()
         if request.user.is_authenticated():
             self.object = self.get_object()
             return self.object.user == request.user
@@ -168,11 +169,13 @@ class PhotoUpdateView(UpdateView):
             request, *args, **kwargs)
 
     def get_success_url(self):
-        # import ipdb; ipdb.set_trace()
         return self.request.GET['src']
 
 
 class PhotoDeleteView(DeleteView):
+    template_name = 'photo_confirm_delete.html'
+    model = Photo
+
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
@@ -182,9 +185,8 @@ class PhotoDeleteView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if not self.user_passes_test(request):
             return redirect_to_login(request.get_full_path())
-        return super(PhotoUpdateView, self).dispatch(
+        return super(PhotoDeleteView, self).dispatch(
             request, *args, **kwargs)
 
-    template_name = 'photo_confirm_delete.html'
-    model = Photo
-    success_url = reverse_lazy('images:library')
+    def get_success_url(self):
+        return self.request.GET['src']
