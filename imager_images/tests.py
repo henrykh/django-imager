@@ -839,11 +839,11 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
     #                       'jane')
 
 
-    # def test_stream_view(self):
-    #     self.driver.find_element_by_link_text("Stream").click()
-    #     self.assertEquals(self.driver.current_url, self.live_server_url + '/stream/')
-    #     self.driver.find_element_by_xpath('//a[@data-title="An Image"]').click()
-    #     self.assertTrue(self.IsElementPresent('lightbox'))
+    def test_stream_view(self):
+        self.driver.find_element_by_link_text("Stream").click()
+        self.assertEquals(self.driver.current_url, self.live_server_url + '/stream/')
+        self.driver.find_element_by_xpath('//a[@data-title="An Image"]').click()
+        self.assertTrue(self.IsElementPresent('lightbox'))
 
     def test_library_view_to_all_photos(self):
         self.driver.find_element_by_link_text("Library").click()

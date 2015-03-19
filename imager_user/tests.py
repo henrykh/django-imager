@@ -188,7 +188,7 @@ class ProfilePageTestCase(TestCase):
     def test_profile_page_no_profile_image(self):
         self.client.login(username=self.user2.username, password=PASSWORD)
         response = self.client.get('/profile/')
-        self.assertIn('<img src="/static/imager_user/man.png">',
+        self.assertIn('<img src="/static/imager_user/img/man.png">',
                       response.content)
 
     def test_profile_page_profile_image(self):
