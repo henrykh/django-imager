@@ -799,3 +799,22 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
         self.driver.find_element_by_link_text("Update Your Profile").click()
         self.assertIn(self.live_server_url + '/profile/update',
                       self.driver.current_url)
+
+    # def test_update_profile(self):
+    #     profile_id = User.objects.get(username='john').profile.pk
+    #     self.driver.get(self.live_server_url + '/profile/update/' + str(profile_id))
+    #     self.driver.find_element_by_id('id_first_name').clear()
+    #     self.driver.find_element_by_id('id_first_name').send_keys('jane')
+    #     self.driver.find_element_by_xpath(
+    #         '//input[@type="submit"]').click()
+    #     self.assertEquals(self.driver.current_url,
+    #                       self.live_server_url + '/profile/')
+    #     self.assertEquals(self.driver.find_element_by_id('first_name').text,
+    #                       'jane')
+
+
+    def test_stream_view(self):
+        self.driver.find_element_by_link_text("Stream").click()
+        self.assertEquals(self.driver.current_url, self.live_server_url + '/stream/')
+        # self.driver.find_element_by_link_text("").click()
+
