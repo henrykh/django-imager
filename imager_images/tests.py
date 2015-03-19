@@ -2,6 +2,7 @@ import factory
 from django.test import TestCase, Client
 from imager_images.models import Album, Photo
 from django.contrib.auth.models import User
+from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
 import os
@@ -12,6 +13,8 @@ from django.test import LiveServerTestCase
 
 
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
+REAL_IMAGE = ImageFile(open('media/imager_images/koala.jpg'))
+
 PASSWORD = 'test_password'
 
 
@@ -27,15 +30,15 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.PostGenerationMethodCall('set_password', PASSWORD)
 
 
-# class PhotoFactory(factory.django.DjangoModelFactory):
-#     class Meta:
-#         model = Photo
+class PhotoFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Photo
 
-#     user = UserFactory()
-#     image = THE_FILE
-#     title = factory.Sequence(lambda n: 'test{0}'.format(n))
-#     file_size = 1000000
-#     published = 'pvt'
+    user = UserFactory()
+    image = THE_FILE
+    title = factory.Sequence(lambda n: 'test{0}'.format(n))
+    file_size = 1000000
+    published = 'pvt'
 
 
 # class PhotoTestCase(TestCase):
@@ -786,7 +789,15 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
         super(SeleniumAuthorizedCase, cls).tearDownClass()
 
     def setUp(self):
-        UserFactory()
+        john = UserFactory()
+        photo1 = Photo()
+        photo1.user = john
+        photo1.image = REAL_IMAGE
+        photo1.title = "Image Title"
+        photo1.description = "An Image"
+        photo1.published = "pub"
+        photo1.save()
+
         self.driver.get(self.live_server_url + '/accounts/login')
         self.driver.find_element_by_id('id_username').send_keys('john')
         self.driver.find_element_by_id(
@@ -794,11 +805,26 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
         self.driver.find_element_by_xpath(
             '//input[@type="submit" and @value="Log in"]').click()
 
-    def test_profile_update_link(self):
-        self.driver.get(self.live_server_url + '/profile/')
-        self.driver.find_element_by_link_text("Update Your Profile").click()
-        self.assertIn(self.live_server_url + '/profile/update',
-                      self.driver.current_url)
+    def tearDown(self):
+        for file in glob.glob("media/imager_images/test*.png"):
+            os.remove(file)
+        for file in glob.glob("media/imager_images/koala_*.jpg"):
+            os.remove(file)
+
+
+    def IsElementPresent(self, element, selector):
+        try:
+            self.driver.find_element_by_id(element)
+            return True
+
+        except:
+            return False
+
+    # def test_profile_update_link(self):
+    #     self.driver.get(self.live_server_url + '/profile/')
+    #     self.driver.find_element_by_link_text("Update Your Profile").click()
+    #     self.assertIn(self.live_server_url + '/profile/update',
+    #                   self.driver.current_url)
 
     # def test_update_profile(self):
     #     profile_id = User.objects.get(username='john').profile.pk
@@ -816,5 +842,6 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
     def test_stream_view(self):
         self.driver.find_element_by_link_text("Stream").click()
         self.assertEquals(self.driver.current_url, self.live_server_url + '/stream/')
-        # self.driver.find_element_by_link_text("").click()
+        self.driver.find_element_by_xpath('//a[@data-title="An Image"]').click()
+        self.assertTrue(self.IsElementPresent('lightbox'))
 
