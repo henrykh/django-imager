@@ -79,17 +79,18 @@ def stream(request):
 
 
 class AlbumAddView(CreateView):
-    template_name = "new_album_form.html"
     model = Album
     form_class = AlbumAddViewForm
 
     def get_initial(self):
+        # import ipdb; ipdb.set_trace()
         initial = super(AlbumAddView, self).get_initial()
         initial['user'] = self.request.user
         return initial
 
     def get_success_url(self):
         return reverse('images:albumphoto_list', kwargs={'pk': self.object.pk})
+    template_name = "album_form.html"
 
 
 class AlbumUpdateView(UpdateView):
