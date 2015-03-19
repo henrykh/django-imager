@@ -19,7 +19,7 @@ def host_type():
 
 def get_ec2_connection():
     if 'ec2' not in env:
-        conn = boto.ec2.connect_to_region(env.aws_region)
+        conn = boto.ec2.connect_to_region(env.aws_region, profile_name='djangoimager')
         if conn is not None:
             env.ec2 = conn
             print "Connected to EC2 region %s" % env.aws_region

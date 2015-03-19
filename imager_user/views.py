@@ -27,6 +27,10 @@ def profile_update(request):
 
 
 class ProfileUpdateView(UpdateView):
+    form_class = ProfileUpdateViewForm
+    model = ImagerProfile
+    template_name = 'profile_form.html'
+
     def user_passes_test(self, request):
         if request.user.is_authenticated():
             self.object = self.get_object()
@@ -41,7 +45,3 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('profile:profile')
-
-    form_class = ProfileUpdateViewForm
-    model = ImagerProfile
-    template_name = 'profile_form.html'
