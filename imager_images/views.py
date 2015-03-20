@@ -154,7 +154,6 @@ class PhotoUpdateView(UpdateView):
     template_name = 'photo_form.html'
 
     def user_passes_test(self, request):
-        # import ipdb; ipdb.set_trace()
         if request.user.is_authenticated():
             self.object = self.get_object()
             return self.object.user == request.user
