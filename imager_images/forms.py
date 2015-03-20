@@ -60,25 +60,29 @@ class AlbumAddViewForm(ModelForm):
 class AlbumUpdateViewForm(ModelForm):
     photos = forms.ModelMultipleChoiceField(
         Photo, label='Photos', required=False)
-    widgets = {'image': ImageWidget(template='%(image)s<br />')}
-    fields = ('image',
-              )
-
+    cover_image = forms.ImageField(
+        widget=ImageWidget(template='%(image)s<br />'))
 
     class Meta:
         model = Album
         fields = ('title',
                   'description',
+                  'cover_image',
                   'cover',
                   'date_published',
                   'published')
 
     def __init__(self, *args, **kwargs):
+        if kwargs.get('instance'):
+            coverImage = kwargs['instance'].cover.image
+            kwargs.setdefault('initial', {})['cover_image'] = coverImage
+
         super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
-        # import ipdb; ipdb.set_trace()
+
         self.fields['photos'].queryset = Photo.objects.filter(
             user=self.instance.user).exclude(albums=self.instance)
         self.fields['cover'].queryset = self.instance.photos.all()
+        self.fields['cover_image'].label = 'Cover'
 
     def save(self, *args, **kwargs):
         kwargs['commit'] = False

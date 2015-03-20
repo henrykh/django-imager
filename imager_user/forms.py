@@ -14,7 +14,6 @@ class ProfileUpdateViewForm(ModelForm):
 
     class Meta:
         model = ImagerProfile
-        # widgets = {'picture': ImageWidget()}
         fields = ('follows',
                   'blocking',
                   'picture',
