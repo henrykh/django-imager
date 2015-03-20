@@ -2,12 +2,31 @@ from django import forms
 from django.forms.models import ModelForm
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo
+from form_utils.widgets import ImageWidget
 
 
 class ProfileUpdateViewForm(ModelForm):
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
     email_address = forms.CharField(label='Email Address')
+
+    class Meta:
+        model = ImagerProfile
+        widgets = {'picture': ImageWidget()}
+        fields = ('follows',
+                  'blocking',
+                  'picture',
+                  'picture_privacy',
+                  'phone_number',
+                  'phone_privacy',
+                  'birthday',
+                  'birthday_privacy',
+                  'first_name',
+                  'last_name',
+                  'name_privacy',
+                  'email_address',
+                  'email_privacy',
+                  )
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('instance'):
@@ -21,6 +40,7 @@ class ProfileUpdateViewForm(ModelForm):
             kwargs.setdefault('initial', {})['email_address'] = emailAddress
 
         super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
+        import ipdb; ipdb.set_trace()
 
         self.base_fields['follows'].queryset = ImagerProfile.objects.exclude(
             user=kwargs['instance'].user)
@@ -41,20 +61,3 @@ class ProfileUpdateViewForm(ModelForm):
         obj.save()
         self.save_m2m()
         return obj
-
-    class Meta:
-        model = ImagerProfile
-        fields = ('follows',
-                  'blocking',
-                  'picture',
-                  'picture_privacy',
-                  'phone_number',
-                  'phone_privacy',
-                  'birthday',
-                  'birthday_privacy',
-                  'first_name',
-                  'last_name',
-                  'name_privacy',
-                  'email_address',
-                  'email_privacy',
-                  )

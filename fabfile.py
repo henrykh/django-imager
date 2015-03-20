@@ -7,6 +7,7 @@ from fabric.contrib.files import upload_template
 from fabric.contrib.project import rsync_project
 import boto.ec2
 import time
+import os
 
 env.hosts = ['localhost', ]
 env.aws_region = 'us-west-2'
@@ -165,8 +166,11 @@ def deploy():
 
 
 def _deploy():
+    os.system('pip freeze > requirements.txt')
     rsync_project(
         remote_dir="/home/ubuntu",
         local_dir="../django-imager/",
         exclude=['.git/', '*.pyc', 'media/', 'tests.py'])
+    run('python manage.py collectstatic')
+    sudo('pip install -r requirements.txt')
     sudo('service djangoimager restart')
