@@ -166,11 +166,11 @@ def deploy():
 
 
 def _deploy():
-    os.system('pip freeze > requirements.txt')
+    # os.system('pip freeze > requirements.txt')
     rsync_project(
         remote_dir="/home/ubuntu",
         local_dir="../django-imager/",
         exclude=['.git/', '*.pyc', 'media/', 'tests.py'])
     run('python manage.py collectstatic')
-    sudo('pip install -r requirements.txt')
+    # sudo('pip install -r requirements.txt')
     sudo('service djangoimager restart')
