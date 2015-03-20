@@ -60,6 +60,10 @@ class AlbumAddViewForm(ModelForm):
 class AlbumUpdateViewForm(ModelForm):
     photos = forms.ModelMultipleChoiceField(
         Photo, label='Photos', required=False)
+    widgets = {'image': ImageWidget(template='%(image)s<br />')}
+    fields = ('image',
+              )
+
 
     class Meta:
         model = Album
@@ -137,6 +141,17 @@ class PhotoUpdateViewForm(ModelForm):
 
         obj.save()
         self.save_m2m()
+
+
+# class PhotoDeleteViewForm(ModelForm):
+#     class Meta:
+#         model = Photo
+#         widgets = {'image': ImageWidget(template='%(image)s<br />')}
+#         fields = ('image',
+#                   )
+
+#     def __init__(self, *args, **kwargs):
+#         super(PhotoDeleteViewForm, self).__init__(*args, **kwargs)
 
 
 # class AlbumUpdateViewForm(ModelForm):

@@ -3,16 +3,18 @@ from django.forms.models import ModelForm
 from imager_user.models import ImagerProfile
 from imager_images.models import Photo
 from form_utils.widgets import ImageWidget
+from form_utils.fields import ClearableImageField
 
 
 class ProfileUpdateViewForm(ModelForm):
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
     email_address = forms.CharField(label='Email Address')
+    picture = ClearableImageField(widget=ImageWidget)
 
     class Meta:
         model = ImagerProfile
-        widgets = {'picture': ImageWidget()}
+        # widgets = {'picture': ImageWidget()}
         fields = ('follows',
                   'blocking',
                   'picture',

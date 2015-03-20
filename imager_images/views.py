@@ -10,12 +10,14 @@ from django.core.urlresolvers import (reverse,
 from django.contrib.auth.views import redirect_to_login
 from imager_images.forms import (AlbumAddViewForm,
                                  AlbumUpdateViewForm,
-                                 PhotoUpdateViewForm,
                                  PhotoAddViewForm,
+                                 PhotoUpdateViewForm,
+                                 # PhotoDeleteViewForm,
                                  )
 from imager_images.models import (Photo,
                                   Album
                                   )
+from form_utils.widgets import ImageWidget
 
 
 @login_required
@@ -186,10 +188,11 @@ class PhotoUpdateView(UpdateView):
 
 
 class PhotoDeleteView(DeleteView):
-    template_name = 'photo_confirm_delete.html'
     model = Photo
+    template_name = 'photo_confirm_delete.html'
 
     def user_passes_test(self, request):
+        import ipdb; ipdb.set_trace()
         if request.user.is_authenticated():
             self.object = self.get_object()
             return self.object.user == request.user
