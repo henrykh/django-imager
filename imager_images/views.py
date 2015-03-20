@@ -165,8 +165,25 @@ class PhotoUpdateView(UpdateView):
         return super(PhotoUpdateView, self).dispatch(
             request, *args, **kwargs)
 
+    def form_valid(self, form):
+        if form.has_changed():
+            self.kwargs['changed_data'] = form.changed_data
+            self.kwargs['cleaned_data'] = form.cleaned_data
+
+        return super(PhotoUpdateView, self).form_valid(form)
+
     def get_success_url(self):
-        return self.request.GET['src']
+        try:
+            if 'albums' in self.kwargs['cleaned_data']:
+                if len(self.kwargs['cleaned_data']['albums']) > 1:
+                    success_url = '/library/'
+                else:
+                    success_url = '/album/{}/'.format(
+                        self.kwargs['cleaned_data']['albums'][0].pk)
+        except KeyError:
+            success_url = self.request.GET['src']
+
+        return success_url
 
 
 class PhotoDeleteView(DeleteView):
