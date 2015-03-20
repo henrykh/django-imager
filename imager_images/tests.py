@@ -15,6 +15,7 @@ from django.test import LiveServerTestCase
 THE_FILE = SimpleUploadedFile('test.png', 'a photo')
 REAL_IMAGE = ImageFile(open('media/imager_images/koala.jpg'))
 
+
 PASSWORD = 'test_password'
 
 
@@ -806,7 +807,7 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
             '//input[@type="submit" and @value="Log in"]').click()
 
     def tearDown(self):
-        for file in glob.glob("media/imager_images/test*.png"):
+        for file in glob.glob("media/imager_images/test*"):
             os.remove(file)
         for file in glob.glob("media/imager_images/koala_*.jpg"):
             os.remove(file)
@@ -845,10 +846,28 @@ class SeleniumAuthorizedCase(LiveServerTestCase):
     #     self.driver.find_element_by_xpath('//a[@data-title="An Image"]').click()
     #     self.assertTrue(self.IsElementPresent('lightbox'))
 
-    def test_library_view_to_all_photos(self):
+    # def test_library_view_to_all_photos(self):
+    #     self.driver.find_element_by_link_text("Library").click()
+    #     self.assertEquals(self.driver.current_url, self.live_server_url + '/library/')
+    #     self.driver.find_element_by_link_text("All Photos").click()
+    #     self.assertEquals(self.driver.current_url, self.live_server_url + '/photos/all/')
+    #     self.assertTrue(self.IsElementPresent('gallery'))
+
+    def test_create_photo(self):
         self.driver.find_element_by_link_text("Library").click()
-        self.assertEquals(self.driver.current_url, self.live_server_url + '/library/')
-        self.driver.find_element_by_link_text("All Photos").click()
-        self.assertEquals(self.driver.current_url, self.live_server_url + '/photos/all/')
-        self.assertTrue(self.IsElementPresent('gallery'))
+        self.driver.find_element_by_link_text("Add a Photo").click()
+        self.driver.find_element_by_id('id_image').send_keys(
+            "/Users/henryhowes/projects/django-imager/test_photo/test_photo.jpg")
+        self.driver.find_element_by_id('id_title').send_keys('desert')
+        self.driver.find_element_by_id(
+            'id_description').send_keys('a desert photo')
+        self.driver.find_element_by_id('id_published').send_keys('pub')
+        self.driver.find_element_by_xpath(
+            '//input[@type="submit"]').click()
+        self.assertEquals(self.driver.current_url,
+                          self.live_server_url + '/photos/loose/')
+        self.assertTrue(self.driver.find_element_by_xpath(
+            '//a[@data-title="a desert photo"]').is_displayed())
+
+
 

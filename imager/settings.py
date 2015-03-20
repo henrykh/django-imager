@@ -25,9 +25,7 @@ class Base(Configuration):
     # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = 'i4jz)*^p(o@s32p1)wdq@yonk$d+pdx_b0t%b4(7vn4hztdwrf'
-
-
+    SECRET_KEY = os.environ.get('IMAGER_SECRET_KEY')
 
     ALLOWED_HOSTS = ['*']
 
@@ -135,7 +133,7 @@ class Prod(Base):
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 25
     EMAIL_HOST_USER = 'djangoimagerapp@gmail.com'
-    EMAIL_HOST_PASSWORD = 'superpowerful'
+    EMAIL_HOST_PASSWORD = os.environ.get('IMAGER_EMAIL_PASSWORD')
     EMAIL_USE_TLS = True
 
     DEFAULT_FROM_EMAIL = 'djangoimagerapp@gmail.com'
