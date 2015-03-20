@@ -40,7 +40,6 @@ class ProfileUpdateViewForm(ModelForm):
             kwargs.setdefault('initial', {})['email_address'] = emailAddress
 
         super(ProfileUpdateViewForm, self).__init__(*args, **kwargs)
-        import ipdb; ipdb.set_trace()
 
         self.base_fields['follows'].queryset = ImagerProfile.objects.exclude(
             user=kwargs['instance'].user)

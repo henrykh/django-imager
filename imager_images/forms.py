@@ -4,6 +4,7 @@ from django.forms.models import ModelForm
 from imager_images.models import (Album,
                                   Photo
                                   )
+from form_utils.widgets import ImageWidget
 
 
 class NewAlbumAdminForm(ModelForm):
@@ -34,6 +35,15 @@ class AlbumAddViewForm(ModelForm):
     photos = forms.ModelMultipleChoiceField(
         Photo, label='Photos', required=False)
 
+    class Meta:
+        model = Album
+        widgets = {'user': forms.HiddenInput, }
+        fields = ('user',
+                  'title',
+                  'description',
+                  'published',
+                  )
+
     def __init__(self, *args, **kwargs):
         super(AlbumAddViewForm, self).__init__(*args, **kwargs)
         user = self.initial.get('user')
@@ -46,19 +56,18 @@ class AlbumAddViewForm(ModelForm):
         obj.photos.add(*self.cleaned_data['photos'])
         return obj
 
-    class Meta:
-        model = Album
-        widgets = {'user': forms.HiddenInput, }
-        fields = ('user',
-                  'title',
-                  'description',
-                  'published',
-                  )
-
 
 class AlbumUpdateViewForm(ModelForm):
     photos = forms.ModelMultipleChoiceField(
         Photo, label='Photos', required=False)
+
+    class Meta:
+        model = Album
+        fields = ('title',
+                  'description',
+                  'cover',
+                  'date_published',
+                  'published')
 
     def __init__(self, *args, **kwargs):
         super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
@@ -79,16 +88,16 @@ class AlbumUpdateViewForm(ModelForm):
         obj.save()
         obj.photos.add(*self.cleaned_data['photos'])
 
-    class Meta:
-        model = Album
-        fields = ('title',
-                  'description',
-                  'cover',
-                  'date_published',
-                  'published')
-
 
 class PhotoAddViewForm(ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['image',
+                  'title',
+                  'description',
+                  'published',
+                  ]
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('user', None)
         return super(PhotoAddViewForm, self).__init__(*args, **kwargs)
@@ -101,16 +110,18 @@ class PhotoAddViewForm(ModelForm):
         obj.save()
         return obj
 
+
+class PhotoUpdateViewForm(ModelForm):
     class Meta:
         model = Photo
-        fields = ['image',
+        widgets = {'image': ImageWidget(template='%(image)s<br />')}
+        fields = ('image',
+                  'albums',
                   'title',
                   'description',
                   'published',
-                  ]
+                  )
 
-
-class PhotoUpdateViewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PhotoUpdateViewForm, self).__init__(*args, **kwargs)
         self.fields['albums'].queryset = self.instance.user.albums.all()
@@ -127,14 +138,6 @@ class PhotoUpdateViewForm(ModelForm):
         obj.save()
         self.save_m2m()
 
-    class Meta:
-        model = Photo
-
-        fields = ('albums',
-                  'title',
-                  'description',
-                  'published',
-                  )
 
 # class AlbumUpdateViewForm(ModelForm):
 #     def __init__(self, *args, **kwargs):

@@ -42,7 +42,6 @@ def library(request):
 
 @login_required
 def AlbumPhotoList(request, pk):
-    # import ipdb; ipdb.set_trace()
     context = {'photos': Photo.objects
                .filter(user=request.user)
                .filter(albums__pk=pk),
