@@ -9,7 +9,7 @@ from form_utils.fields import ClearableImageField
 class ProfileUpdateViewForm(ModelForm):
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
-    email_address = forms.CharField(label='Email Address')
+    email_address = forms.CharField(label='Email Address', required=False)
     picture = ClearableImageField(widget=ImageWidget)
 
     class Meta:

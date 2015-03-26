@@ -5,7 +5,6 @@ from django.conf import settings as dcs
 from django.conf.urls.static import static
 
 urlpatterns = patterns('',
-                       # Examples:
                        url(r'^$', 'imager.views.home', name='home'),
                        url(r'^grappelli/',
                            include('grappelli.urls')),

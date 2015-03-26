@@ -4,7 +4,6 @@ from imager_user.views import ProfileUpdateView
 
 
 urlpatterns = patterns('',
-                       # Examples:
                        url(r'^$', 'imager_user.views.profile',
                            name='profile'),
                        url(r'^update/(?P<pk>\d+)/$',
