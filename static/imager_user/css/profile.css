@@ -1,0 +1,57 @@
+#profilePicture {
+    width: 40%;
+    float: left;
+    margin-right: 5%;
+}
+#profilePicture img{
+    display: block;
+    max-height: 30vh;
+    max-width: 50vh;
+}
+
+#usageStats {
+    float: left;
+}
+
+#usageStats li {
+    display: inline-block;
+}
+
+
+#privateHeader {
+    float: right;
+}
+
+#profileInfo {
+    width: 50%;
+    float: right;
+}
+
+#profileInfo li{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 10px;
+}
+
+#profileInfo .privacy {
+    float: right;
+}
+
+#profileInfo #updateLink {
+    border: none;
+    margin-top: 3em;
+}
+
+#updateLink a {
+    color: white;
+    background-color: #2800D7;
+    border: 1px solid lightgray;
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0
+}

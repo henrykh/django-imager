@@ -46,9 +46,15 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.conf
+media/
 
 # Sphinx documentation
 docs/_build/
 
 # PyBuilder
 target/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace

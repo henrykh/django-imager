@@ -34,10 +34,10 @@ class PhotoSizeFilter(admin.SimpleListFilter):
         # Compare the requested value (either 'small', 'medium',
         # 'large', or 'xlarge') to decide how to filter the queryset.
         if self.value() == 'small':
-            return queryset.filter(file_size__lt=1000000)
+            return queryset.filter(file_size__lte=1048576)
         if self.value() == 'medium':
-            return queryset.filter(file_size__lt=10000000)
+            return queryset.filter(file_size__lte=10485760)
         if self.value() == 'large':
-            return queryset.filter(file_size__lt=100000000)
+            return queryset.filter(file_size__lte=104857600)
         if self.value() == 'xlarge':
-            return queryset.filter(file_size__gt=100000000)
+            return queryset.filter(file_size__gt=104857600)

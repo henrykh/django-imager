@@ -1,0 +1,36 @@
+{% extends "../../imager/templates/home.html" %}
+{% load thumbnail %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/css/thumbnail_grid.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/css/lightbox.css' %}" />
+<script src="{% static 'imager_images/js/jquery-1.11.0.min.js' %}"></script>
+<script src="{% static 'imager_images/js/lightbox.min.js' %}"></script>
+{% endblock %}
+
+{% block title %}Album: {{user}}{% endblock %}
+
+{% block body %}
+<h3>{{album.title}}</h3>
+<h3><a href="{% url 'images:album_update' album.pk %}?src={{source}}">Update</a></h3>
+    <div id="profileInfo">
+        <ul id="gallery"> 
+            {% for photo in photos %}
+                <li class="thumbnail_list">
+                    {% thumbnail photo.image "1000x1000" as thumb %}
+                        <a href="{{ thumb.url }}" data-lightbox="album_photos" data-title="{{photo.description}}">
+                        <img src="{{ thumb.url }}"></a>
+                    {% empty %}
+                        <a href="{% static 'imager_images/img/man.png' %}" data-lightbox="album_photos" data-title="{{photo.description}}">
+                        <img src="{% static 'imager_images/img/man.png' %}"></a>
+                    {% endthumbnail %}
+                    <a href="{% url 'images:photo_update' photo.pk %}?src={{source}}">{{photo.title}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="pswpstuff">
+    </div>
+{% endblock %}
+
