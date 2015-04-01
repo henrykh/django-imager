@@ -10,7 +10,7 @@ class ProfileUpdateViewForm(ModelForm):
     first_name = forms.CharField(label='First Name', required=False)
     last_name = forms.CharField(label='Last Name', required=False)
     email_address = forms.CharField(label='Email Address', required=False)
-    picture = ClearableImageField(widget=ImageWidget)
+    picture = ClearableImageField(widget=ImageWidget, required=False)
 
     class Meta:
         model = ImagerProfile
@@ -53,10 +53,11 @@ class ProfileUpdateViewForm(ModelForm):
         obj.user.first_name = self.cleaned_data['first_name']
         obj.user.last_name = self.cleaned_data['last_name']
         obj.user.email = self.cleaned_data['email_address']
-        new_profile_photo = Photo()
-        new_profile_photo.image = self.cleaned_data['picture']
-        new_profile_photo.user = obj.user
-        new_profile_photo.save()
+        if self.cleaned_data['picture']:
+            new_profile_photo = Photo()
+            new_profile_photo.image = self.cleaned_data['picture']
+            new_profile_photo.user = obj.user
+            new_profile_photo.save()
         obj.user.save()
         obj.save()
         self.save_m2m()

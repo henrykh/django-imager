@@ -2,9 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.views.generic import UpdateView
-from django.core.urlresolvers import (reverse,
-                                      reverse_lazy
-                                      )
+from django.core.urlresolvers import reverse
 from imager_user.models import ImagerProfile
 from imager_user.forms import ProfileUpdateViewForm
 
@@ -13,17 +11,12 @@ from imager_user.forms import ProfileUpdateViewForm
 def profile(request):
     photo_count = len(request.user.photos.all())
     album_count = len(request.user.albums.all())
-    follower_count = len(ImagerProfile.objects.filter(follows=request.user.profile))
+    follower_count = len(ImagerProfile.objects.filter(
+        follows=request.user.profile))
     context = {'name': request.user, 'profileID': request.user.profile.id,
                'photo_count': photo_count, "album_count": album_count,
                "follower_count": follower_count}
     return render(request, 'profile.html', context)
-
-
-@login_required
-def profile_update(request):
-    context = {'request': request}
-    return render(request, 'profile_edit.html', context)
 
 
 class ProfileUpdateView(UpdateView):

@@ -84,7 +84,6 @@ class AlbumAddView(CreateView):
     form_class = AlbumAddViewForm
 
     def get_initial(self):
-        # import ipdb; ipdb.set_trace()
         initial = super(AlbumAddView, self).get_initial()
         initial['user'] = self.request.user
         return initial
