@@ -1,9 +1,7 @@
 from django import forms
 import datetime
 from django.forms.models import ModelForm
-from imager_images.models import (Album,
-                                  Photo
-                                  )
+from imager_images.models import Album, Photo
 from form_utils.widgets import ImageWidget
 
 
@@ -145,47 +143,3 @@ class PhotoUpdateViewForm(ModelForm):
 
         obj.save()
         self.save_m2m()
-
-
-# class PhotoDeleteViewForm(ModelForm):
-#     class Meta:
-#         model = Photo
-#         widgets = {'image': ImageWidget(template='%(image)s<br />')}
-#         fields = ('image',
-#                   )
-
-#     def __init__(self, *args, **kwargs):
-#         super(PhotoDeleteViewForm, self).__init__(*args, **kwargs)
-
-
-# class AlbumUpdateViewForm(ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(AlbumUpdateViewForm, self).__init__(*args, **kwargs)
-#         # import ipdb; ipdb.set_trace()
-#         self.fields['photos'].queryset = self.instance.user.photos.all()
-
-#     class Meta:
-#         model = Album
-
-#         fields = ('title',
-#                   'description',
-#                   'photos',
-#                   'published'
-#                   )
-
-
-# class PhotoAlbumForm(ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(PhotoAlbumForm, self).__init__(*args, **kwargs)
-
-#         # # self.fields['photo'].queryset.filter(user=self.instance.album.user)
-#         import pdb; pdb.set_trace()
-#         try:
-#             self.instance.album
-#         except:
-#             pass
-#         else:'photo'].queryset = self.fields['photo'].queryset.filter(
-#                 user=self.instance.album.user)
-
-#     class Meta:
-#          model = Photo.albums.through
