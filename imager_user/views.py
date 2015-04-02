@@ -38,3 +38,7 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('profile:profile')
+
+
+def PublicProfile(request):
+    return render(request, 'public_profile.html')
