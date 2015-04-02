@@ -17,9 +17,9 @@
     {% endif %}
         <div id="usageStats">
             <ul>
-                <li>You have {{photo_count}} photos,</li>
-                <li>{{album_count}} albums,</li>
-                <li>and {{follower_count}} followers</li>
+                <li>You have {{photo_count}} photo{{photo_count | pluralize}},</li>
+                <li>{{album_count}} album{{album_count | pluralize}},</li>
+                <li>and {{follower_count}} follower{{follower_count | pluralize}}</li>
             </ul>
         </div>
     </div>
