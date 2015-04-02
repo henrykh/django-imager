@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import RegexValidator
 
 
 class ActiveProfileManager(models.Manager):
@@ -24,7 +24,11 @@ class ImagerProfile(models.Model):
     picture = models.ImageField(upload_to='imager_user', blank=True)
     picture_privacy = models.BooleanField(default=True)
 
-    phone_number = PhoneNumberField(blank=True)
+    phone_error = "Number must be in the format: '+999999999'. Up to 15 digits"
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message=phone_error)
+    phone_number = models.CharField(max_length=32,
+                                    validators=[phone_regex],
+                                    blank=True)
     phone_privacy = models.BooleanField(default=True)
 
     birthday = models.DateField(null=True, blank=True)

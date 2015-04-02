@@ -1,1 +1,47 @@
-<p>Hello {{name|upper}}</p>
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'imager/normalize.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'imager/style.css' %}" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+    {% block stylesheets %}{% endblock %}
+    <title>{% block title %}Imgr{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        <h2 id="headerTitle"><a href="{% url 'home' %}">Imgr</a></h2>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}">Join</a></li>
+                {% else %}
+                    <li><a href="{% url 'profile:profile' %}">{{user}}</a></li>
+                    <li><a href="{% url 'images:stream' %}">Stream</a></li>
+                    <li><a href="{% url 'images:library' %}">Library</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <div id="sidebar">
+    </div>
+    <div id="content">
+        {% block body %}
+            {% if not user.is_authenticated %}
+                <div id="text">
+                    Welcome to Imgr! Sign up to share images and be awesome!
+                </div>
+            {% else %}
+                <div id="text">
+                    Welcome back {{user}}! Continue being awesome!
+                </div>
+            {% endif %}
+            <div id="coverPhoto" style="background-image: url({{cover_photo_url}});"></div>
+        {% endblock %}
+    </div>
+</body>
+</html>

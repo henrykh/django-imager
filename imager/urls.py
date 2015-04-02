@@ -5,12 +5,17 @@ from django.conf import settings as dcs
 from django.conf.urls.static import static
 
 urlpatterns = patterns('',
-                       # Examples:
-                       url(r'^home/$', 'imager.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-                       url(r'^admin/', include(admin.site.urls)),
-                       # url(r'^accounts/', include(
-                       #     'registration.backends.default.urls'))
+                       url(r'^$', 'imager.views.home', name='home'),
+                       url(r'^grappelli/',
+                           include('grappelli.urls')),
+                       url(r'^admin/',
+                           include(admin.site.urls)),
+                       url(r'^accounts/',
+                           include('registration.backends.default.urls')),
+                       url(r'^profile/',
+                           include('imager_user.urls', namespace='profile')),
+                       url(r'^',
+                           include('imager_images.urls', namespace='images')),
                        )
 
 if settings.DEBUG:

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.admin.options import csrf_protect_m
 from imager_user.models import ImagerProfile
+from sorl.thumbnail import get_thumbnail
 
 
 class ProfileInline(admin.StackedInline):
@@ -11,6 +12,55 @@ class ProfileInline(admin.StackedInline):
 
 
 class ProfileAdmin(admin.ModelAdmin):
+    def get_fields(self, request, obj=None):
+        # import pdb; pdb.set_trace()
+        if obj:
+            return ('user',
+                    'follows',
+                    'blocking',
+                    'picture',
+                    'thumbnail',
+                    'picture_privacy',
+                    'phone_number',
+                    'phone_privacy',
+                    'birthday',
+                    'birthday_privacy',
+                    'name_privacy',
+                    'email_privacy',
+                    )
+        else:
+            return ('user',
+                    'follows',
+                    'blocking',
+                    'picture',
+                    'picture_privacy',
+                    'phone_number',
+                    'phone_privacy',
+                    'birthday',
+                    'birthday_privacy',
+                    'name_privacy',
+                    'email_privacy',
+                    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user',
+                    'thumbnail',
+                    )
+        else:
+            return ()
+
+    def thumbnail(self, obj):
+        if obj.picture:
+            thumb = get_thumbnail(
+                obj.picture, "100x100", crop='center', quality=99)
+            return '<img src="%s"/>' % (thumb.url)
+        else:
+            return 'No Image'
+
+    thumbnail.short_description = 'Image Thumbnail'
+    thumbnail.allow_tags = True
+
     list_display = ('user',
                     'phone_number',
                     'birthday',

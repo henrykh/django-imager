@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from sorl.thumbnail import ImageField
 
-
 PRIVATE = 'pvt'
 SHARED = 'shd'
 PUBLIC = 'pub'
@@ -36,6 +35,17 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_file_name(self):
+        return self.image.name
+
+    def save(self, *args, **kwargs):
+        if not self.title:
+            self.title = self.get_file_name()
+
+        if not self.file_size:
+            self.file_size = self.image.size
+        super(Photo, self).save(*args, **kwargs)
 
 
 class Album(models.Model):

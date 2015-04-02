@@ -1,0 +1,45 @@
+{% extends "../../imager/templates/home.html" %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager_user/css/profile.css' %}" />
+{% endblock %}
+
+{% block title %}Profile: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profilePicture">
+        <h3>{{user}}'s Profile</h3>
+    {% if user.profile.picture %}
+        <img src="{{user.profile.picture.url}}">
+    {% else %}
+        <img src="{% static 'imager_user/img/man.png' %}">
+    {% endif %}
+        <div id="usageStats">
+            <ul>
+                <li>You have {{photo_count}} photos,</li>
+                <li>{{album_count}} albums,</li>
+                <li>and {{follower_count}} followers</li>
+            </ul>
+        </div>
+    </div>
+    <div id="profileInfo">
+        <h3>Profile Info <span id="privateHeader">Private</span></h3>
+        <ul>
+            {% if profileID %}
+            <li id="username">Username: {{user}}<span class="privacy"></span></li>
+            {% if user.first_name %}
+                <li id="first_name">First Name: {{user.first_name}}<span class="privacy">{{user.profile.name_privacy}}</span></li>
+            {% endif %}
+            {% if user.last_name %}
+                <li id="last_name">Last Name: {{user.last_name}}<span class="privacy">{{user.profile.name_privacy}}</span></li>
+            {% endif %}
+            <li id="email">Email: {{user.email}}<span class="privacy">{{user.profile.email_privacy}}</span></li>
+            <li id="phone_number">Phone: {{user.profile.phone_number}}<span class="privacy">{{user.profile.phone_privacy}}</span></li>
+            <li id="birthday">Birthday: {{user.profile.birthday}}<span class="privacy">{{user.profile.birthday_privacy}}</span></li>
+            <li id="updateLink"><a href="{% url 'profile:profile_update' profileID %}">Update Your Profile</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+

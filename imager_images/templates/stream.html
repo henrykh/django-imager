@@ -1,0 +1,32 @@
+{% extends "../../imager/templates/home.html" %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/css/stream.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'imager_images/css/lightbox.css' %}" />
+<script src="{% static 'imager_images/js/jquery-1.11.0.min.js' %}"></script>
+<script src="{% static 'imager_images/js/lightbox.min.js' %}"></script>
+{% endblock %}
+
+{% block title %}Stream: {{user}}{% endblock %}
+
+{% block body %}
+    <div id="profileInfo">
+        <h3>{{user}}'s Stream</h3>
+        <div id="photoStream"> 
+            {% for photo in photos %}
+                <div class="photo">
+                    {% thumbnail photo.image "1000x1000" as thumb %}
+                    <a href="{{ thumb.url }}" data-lightbox="streamphotos" data-title="{{photo.description}}">
+                    <img src="{{ thumb.url }}"></a>
+                    {% endthumbnail %}
+                    <div class="meta">
+                        <div class="photoTitle">By {{photo.user}}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
