@@ -42,5 +42,10 @@ class ProfileUpdateView(UpdateView):
 
 
 def PublicProfile(request, pk):
+    selected_user = User.objects.get(pk=pk)
+    for attr, value in selected_user.__dict__.iteritems():
+        if r'privacy'.search(attr) and value:
+            ('_').split(attr)[0]
+    import pdb; pdb.set_trace();
     context = {'selected_user': User.objects.get(pk=pk)}
     return render(request, 'public_profile.html', context)
