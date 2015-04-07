@@ -35,5 +35,8 @@ urlpatterns = patterns('',
                            name='loosephotos_list'),
                        url(r'^photos/all/$',
                            'imager_images.views.AllPhotosList',
-                           name='allphotos_list')
+                           name='allphotos_list'),
+                       url(r'^albums/all/$',
+                           'imager_images.views.AllAlbums',
+                           name='all_albums')
                        )

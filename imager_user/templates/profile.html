@@ -17,7 +17,7 @@
     {% endif %}
         <div id="usageStats">
             <ul>
-                <li>You have {{photo_count}} photo{{photo_count | pluralize}},</li>
+                <li>You have <a href="{% url 'images:allphotos_list' %}">{{photo_count}} photo{{photo_count | pluralize}}</a>,</li>
                 <li>{{album_count}} album{{album_count | pluralize}},</li>
                 <li>and {{follower_count}} follower{{follower_count | pluralize}}</li>
             </ul>

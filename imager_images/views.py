@@ -70,8 +70,15 @@ def AllPhotosList(request):
 
 
 @login_required
+def AllAlbums(request):
+    context = {'albums': request.user.albums.all()}
+    return render(request, 'all_albums.html', context)
+
+
+@login_required
 def stream(request):
-    stream_users = [profile.user for profile in request.user.profile.following()]
+    stream_users = [
+        profile.user for profile in request.user.profile.following()]
     stream_users.append(request.user)
     context = {'photos': Photo.objects.filter(
         user__in=stream_users).filter(
