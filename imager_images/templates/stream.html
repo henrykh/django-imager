@@ -23,7 +23,7 @@
                     <img src="{{ thumb.url }}"></a>
                     {% endthumbnail %}
                     <div class="meta">
-                        <div class="photoTitle">By {{photo.user}}</div>
+                        <div class="photoTitle">By <a href="{% url 'profile:PublicProfile' photo.user.pk %}">{{photo.user}}</a></div>
                     </div>
                 </div>
             {% endfor %}

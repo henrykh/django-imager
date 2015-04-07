@@ -86,7 +86,8 @@ class AlbumUpdateViewForm(ModelForm):
         kwargs['commit'] = False
         obj = super(AlbumUpdateViewForm, self).save(*args, **kwargs)
 
-        if (obj.published == u'pub' or obj.published == u'shd') and not obj.date_published:
+        if (obj.published == u'pub' or obj.published == u'shd') and not (
+                obj.date_published):
             obj.date_published = datetime.datetime.utcnow()
         else:
             obj.date_published = None
@@ -136,7 +137,8 @@ class PhotoUpdateViewForm(ModelForm):
         kwargs['commit'] = False
 
         obj = super(PhotoUpdateViewForm, self).save(*args, **kwargs)
-        if (obj.published == u'pub' or obj.published == u'shd') and not obj.date_published:
+        if (obj.published == u'pub' or obj.published == u'shd') and not (
+                obj.date_published):
             obj.date_published = datetime.datetime.utcnow()
         else:
             obj.date_published = None

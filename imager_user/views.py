@@ -5,6 +5,8 @@ from django.views.generic import UpdateView
 from django.core.urlresolvers import reverse
 from imager_user.models import ImagerProfile
 from imager_user.forms import ProfileUpdateViewForm
+from django.contrib.auth.models import User
+
 
 
 @login_required
@@ -40,5 +42,6 @@ class ProfileUpdateView(UpdateView):
         return reverse('profile:profile')
 
 
-def PublicProfile(request):
-    return render(request, 'public_profile.html')
+def PublicProfile(request, pk):
+    context = {'user': User.objects.get(pk=pk)}
+    return render(request, 'public_profile.html', context)

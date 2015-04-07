@@ -1,4 +1,5 @@
 {% extends "../../imager/templates/home.html" %}
+{% load staticfiles %}
 
 {% block title %}{{user}}'s Profile{% endblock %}
 
@@ -10,5 +11,10 @@
     	{% else %}
         <img src="{% static 'imager_user/img/man.png' %}">
     	{% endif %}
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
 	</div>
 {% endblock %}
