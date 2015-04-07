@@ -8,7 +8,6 @@ from imager_user.forms import ProfileUpdateViewForm
 from django.contrib.auth.models import User
 
 
-
 @login_required
 def profile(request):
     photo_count = len(request.user.photos.all())
@@ -43,5 +42,5 @@ class ProfileUpdateView(UpdateView):
 
 
 def PublicProfile(request, pk):
-    context = {'user': User.objects.get(pk=pk)}
+    context = {'selected_user': User.objects.get(pk=pk)}
     return render(request, 'public_profile.html', context)

@@ -1,20 +1,28 @@
 {% extends "../../imager/templates/home.html" %}
 {% load staticfiles %}
 
-{% block title %}{{user}}'s Profile{% endblock %}
+{% block title %}{{selected_user}}'s Profile{% endblock %}
 
 {% block body %}
 	<div id="profileContent">
-		<h3>{{user}}'s Profile</h3>
-		{% if user.profile.picture %}
-        <img src="{{user.profile.picture.url}}">
+		<h3>{{selected_user}}'s Profile</h3>
+		{% if selected_user.profile.picture and not selected_user.profile.picture_privacy%}
+        <img src="{{selected_user.profile.picture.url}}">
     	{% else %}
         <img src="{% static 'imager_user/img/man.png' %}">
     	{% endif %}
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+        <div>
+            <ul>
+                {% if not selected_user.name_privacy %}
+                {% if selected_user.first_name %}
+                <li>{{ selected_user.first_name }}</li>
+                {% endif %}
+                {% if selected_user.last_name %}
+                <li>{{ selected_user.last_name }}</li>
+                {% endif %}
+                {% endif %}
+                <li></li>
+            </ul>
+        </div>
 	</div>
 {% endblock %}
