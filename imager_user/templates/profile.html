@@ -18,7 +18,7 @@
         <div id="usageStats">
             <ul>
                 <li>You have <a href="{% url 'images:allphotos_list' %}">{{photo_count}} photo{{photo_count | pluralize}}</a>,</li>
-                <li>{{album_count}} album{{album_count | pluralize}},</li>
+                <li><a href="{% url 'images:all_albums' %}">{{album_count}} album{{album_count | pluralize}}</a>,</li>
                 <li>and {{follower_count}} follower{{follower_count | pluralize}}</li>
             </ul>
         </div>
